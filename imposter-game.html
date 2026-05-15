@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imposter - Role Assignment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <div id="app" class="min-h-screen p-4">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+            <div class="text-center">
+                <h1 class="text-6xl font-bold text-purple-800 mb-4">
+                    <i class="fas fa-user-astronaut"></i> IMPOSTER
+                </h1>
+                <p class="text-xl text-gray-700 mb-8">Role Assignment System</p>
+                
+                <div class="bg-purple-100 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-semibold text-purple-800 mb-4">Setup</h2>
+                    <div class="grid md:grid-cols-2 gap-4 text-left">
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-bold text-purple-700 mb-2">
+                                <i class="fas fa-users"></i> Crewmates
+                            </h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Find the imposter</li>
+                                <li>• Work together as a team</li>
+                                <li>• Use secret word to identify friends</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-bold text-red-700 mb-2">
+                                <i class="fas fa-skull"></i> Imposter
+                            </h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Blend in and deceive</li>
+                                <li>• Don't know the secret word</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-bold text-green-700 mb-2">
+                                <i class="fas fa-jester"></i> Jester
+                            </h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Get voted out to win</li>
+                                <li>• See partial word info</li>
+                                <li>• Act suspicious to get eliminated</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <button onclick="openSettings()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg mb-4">
+                        <i class="fas fa-cog"></i> Game Settings
+                    </button>
+                    
+                    <button onclick="startGame()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-xl text-xl transition-all transform hover:scale-105">
+                        <i class="fas fa-random"></i> Assign Roles
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Screen -->
+        <div id="settingsScreen" class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8 hidden">
+            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+                <i class="fas fa-cog"></i> Game Settings
+            </h2>
+            
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Player Configuration</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-lg font-semibold">Players:</label>
+                            <select id="playerCount" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <option value="4">4 Players</option>
+                                <option value="5">5 Players</option>
+                                <option value="6" selected>6 Players</option>
+                                <option value="7">7 Players</option>
+                                <option value="8">8 Players</option>
+                                <option value="9">9 Players</option>
+                                <option value="10">10 Players</option>
+                                <option value="11">11 Players</option>
+                                <option value="12">12 Players</option>
+                                <option value="13">13 Players</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Imposters:</label>
+                            <select id="imposterCount" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <option value="1">1 Imposter</option>
+                                <option value="2">2 Imposters</option>
+                                <option value="3">3 Imposters</option>
+                                <option value="4">4 Imposters</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Jester:</label>
+                            <select id="jesterCount" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <option value="0">No Jester</option>
+                                <option value="1">1 Jester</option>
+                                <option value="2">2 Jesters</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Secret Word Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-lg font-semibold">Secret Word:</label>
+                            <div class="flex space-x-2">
+                                <input type="password" id="secretWord" placeholder="Enter secret word" class="flex-1 px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <button onclick="toggleWordVisibility()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg" title="Show/Hide word">
+                                    <i class="fas fa-eye" id="wordToggleIcon"></i>
+                                </button>
+                                <button onclick="generateRandomWord()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" title="Generate random word">
+                                    <i class="fas fa-dice"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Jester Info:</label>
+                            <select id="jesterInfo" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <option value="nothing">Nothing</option>
+                                <option value="category">Category Only</option>
+                                <option value="partial">Partial Word</option>
+                                <option value="full">Full Word</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button onclick="toggleWordOptions()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">
+                                <i class="fas fa-eye" id="toggleIcon"></i> <span id="toggleText">Show Word Options</span>
+                            </button>
+                        </div>
+                        <div id="wordOptions" class="hidden space-y-4">
+                            <div>
+                                <label class="text-lg font-semibold">Word Category:</label>
+                                <select id="wordCategory" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                    <option value="Animals">Animals</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Colors">Colors</option>
+                                    <option value="Objects">Objects</option>
+                                    <option value="Places">Places</option>
+                                    <option value="Nature">Nature</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Movies">Movies</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Common">Common Words</option>
+                                    <option value="custom">Custom Word</option>
+                                </select>
+                            </div>
+                            <div id="wordSuggestion">
+                                <label class="text-lg font-semibold">Suggested Words:</label>
+                                <div id="suggestedWords" class="grid grid-cols-3 gap-2 text-sm">
+                                    <!-- Words will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p><strong>Nothing:</strong> Jester gets no word info</p>
+                            <p><strong>Category:</strong> Jester sees word category (e.g., "Animal", "Food")</p>
+                            <p><strong>Partial:</strong> Jester sees part of word (e.g., first 3 letters)</p>
+                            <p><strong>Full:</strong> Jester sees complete word</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center space-x-4">
+                    <button onclick="showWelcome()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button onclick="saveSettings()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Player Setup Screen -->
+        <div id="setupScreen" class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8 hidden">
+            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+                <i class="fas fa-user-plus"></i> Add Players
+            </h2>
+            
+            <div id="playerInputs" class="space-y-3 mb-6">
+                <!-- Player inputs will be generated here -->
+            </div>
+            
+            <div class="flex justify-center space-x-4">
+                <button onclick="showWelcome()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button onclick="assignRoles()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg">
+                    <i class="fas fa-random"></i> Assign Roles
+                </button>
+            </div>
+        </div>
+        
+        <!-- Role Reveal Screen -->
+        <div id="roleScreen" class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8 hidden">
+            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+                <i class="fas fa-eye"></i> Role Assignment
+            </h2>
+            
+            <div id="roleReveal" class="text-center">
+                <!-- Role reveal will be shown here -->
+            </div>
+            
+            <div class="flex justify-center mt-6 space-x-4">
+                <button onclick="playAgain()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
+                    <i class="fas fa-redo"></i> Play Again
+                </button>
+                <button onclick="showWelcome()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="word-dictionary.js"></script>
+    <script>
+        // Game State
+        let gameState = {
+            players: [],
+            currentPhase: 'welcome',
+            imposterCount: 1,
+            jesterCount: 0,
+            jesterInfo: 'nothing',
+            secretWord: '',
+            wordCategory: 'Animals'
+        };
+
+        // Initialize game
+        function showWelcome() {
+            hideAllScreens();
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            gameState.currentPhase = 'welcome';
+        }
+
+        function openSettings() {
+            hideAllScreens();
+            document.getElementById('settingsScreen').classList.remove('hidden');
+            gameState.currentPhase = 'settings';
+        }
+
+        function hideAllScreens() {
+            const screens = ['welcomeScreen', 'settingsScreen', 'setupScreen', 'roleScreen'];
+            screens.forEach(screen => document.getElementById(screen).classList.add('hidden'));
+        }
+
+        function updateWordSuggestions() {
+            const category = document.getElementById('wordCategory').value;
+            const suggestionDiv = document.getElementById('wordSuggestion');
+            const wordsDiv = document.getElementById('suggestedWords');
+            
+            if (category === 'custom') {
+                suggestionDiv.classList.add('hidden');
+            } else {
+                suggestionDiv.classList.remove('hidden');
+                const words = wordDictionary[category] || [];
+                wordsDiv.innerHTML = words.map(word => 
+                    `<button onclick="selectWord('${word}')" class="bg-purple-100 hover:bg-purple-200 px-2 py-1 rounded text-sm">${word}</button>`
+                ).join('');
+            }
+        }
+
+        function selectWord(word) {
+            document.getElementById('secretWord').value = word;
+        }
+
+        function generateRandomWord() {
+            const allWords = Object.values(wordDictionary).flat();
+            const randomWord = allWords[Math.floor(Math.random() * allWords.length)];
+            document.getElementById('secretWord').value = randomWord;
+            
+            // Update category to match the random word
+            for (let category in wordDictionary) {
+                if (wordDictionary[category].includes(randomWord)) {
+                    document.getElementById('wordCategory').value = category;
+                    updateWordSuggestions();
+                    break;
+                }
+            }
+        }
+
+        function toggleWordOptions() {
+            const wordOptions = document.getElementById('wordOptions');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const toggleText = document.getElementById('toggleText');
+            
+            if (wordOptions.classList.contains('hidden')) {
+                wordOptions.classList.remove('hidden');
+                toggleIcon.className = 'fas fa-eye-slash';
+                toggleText.textContent = 'Hide Word Options';
+                updateWordSuggestions();
+            } else {
+                wordOptions.classList.add('hidden');
+                toggleIcon.className = 'fas fa-eye';
+                toggleText.textContent = 'Show Word Options';
+            }
+        }
+
+        function toggleWordVisibility() {
+            const secretWordInput = document.getElementById('secretWord');
+            const wordToggleIcon = document.getElementById('wordToggleIcon');
+            
+            if (secretWordInput.type === 'password') {
+                secretWordInput.type = 'text';
+                wordToggleIcon.className = 'fas fa-eye-slash';
+            } else {
+                secretWordInput.type = 'password';
+                wordToggleIcon.className = 'fas fa-eye';
+            }
+        }
+
+        // Update word suggestions when category changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('wordCategory');
+            if (categorySelect) {
+                categorySelect.addEventListener('change', updateWordSuggestions);
+            }
+        });
+
+        function saveSettings() {
+            gameState.playerCount = parseInt(document.getElementById('playerCount').value);
+            gameState.imposterCount = parseInt(document.getElementById('imposterCount').value);
+            gameState.jesterCount = parseInt(document.getElementById('jesterCount').value);
+            gameState.jesterInfo = document.getElementById('jesterInfo').value;
+            gameState.wordCategory = document.getElementById('wordCategory').value;
+            
+            const secretWordInput = document.getElementById('secretWord').value;
+            gameState.secretWord = secretWordInput || (gameState.wordCategory !== 'custom' ? 
+                wordDictionary[gameState.wordCategory][Math.floor(Math.random() * wordDictionary[gameState.wordCategory].length)] : 
+                'secret');
+            
+            showWelcome();
+        }
+
+        function startGame() {
+            // Generate random word if none is set
+            if (gameState.secretWord === '') {
+                const allWords = Object.values(wordDictionary).flat();
+                gameState.secretWord = allWords[Math.floor(Math.random() * allWords.length)];
+                
+                // Update category to match the random word
+                for (let category in wordDictionary) {
+                    if (wordDictionary[category].includes(gameState.secretWord)) {
+                        gameState.wordCategory = category;
+                        break;
+                    }
+                }
+            }
+            
+            hideAllScreens();
+            document.getElementById('setupScreen').classList.remove('hidden');
+            generatePlayerInputs();
+        }
+
+        function playAgain() {
+            // Generate new random word
+            const allWords = Object.values(wordDictionary).flat();
+            gameState.secretWord = allWords[Math.floor(Math.random() * allWords.length)];
+            
+            // Update category to match the random word
+            for (let category in wordDictionary) {
+                if (wordDictionary[category].includes(gameState.secretWord)) {
+                    gameState.wordCategory = category;
+                    break;
+                }
+            }
+            
+            // Reassign roles with same players
+            assignRoles();
+        }
+
+        function generatePlayerInputs() {
+            const container = document.getElementById('playerInputs');
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= gameState.playerCount; i++) {
+                const inputDiv = document.createElement('div');
+                inputDiv.className = 'flex items-center space-x-3';
+                inputDiv.innerHTML = `
+                    <label class="font-semibold w-24">Player ${i}:</label>
+                    <input type="text" id="player${i}" placeholder="Enter name" class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none">
+                    <input type="color" id="color${i}" value="#${Math.floor(Math.random()*16777215).toString(16)}" class="w-12 h-10 rounded cursor-pointer">
+                `;
+                container.appendChild(inputDiv);
+            }
+        }
+
+        function assignRoles() {
+            gameState.players = [];
+            
+            // Collect player data
+            for (let i = 1; i <= gameState.playerCount; i++) {
+                const name = document.getElementById(`player${i}`).value || `Player ${i}`;
+                const color = document.getElementById(`color${i}`).value;
+                
+                gameState.players.push({
+                    id: i,
+                    name: name,
+                    color: color,
+                    role: 'crewmate'
+                });
+            }
+            
+            // Check for All Imposter Mode (10% chance)
+            const allImposterMode = Math.random() < 0.1;
+            
+            if (allImposterMode) {
+                // Everyone is an imposter!
+                for (let i = 0; i < gameState.players.length; i++) {
+                    gameState.players[i].role = 'imposter';
+                }
+                console.log("🎭 ALL IMPOSTER MODE ACTIVATED! Everyone is an imposter!");
+            } else {
+                // Normal role assignment
+                // Randomly assign special roles
+                const playerIndices = Array.from({length: gameState.playerCount}, (_, i) => i);
+                shuffleArray(playerIndices);
+                
+                let roleIndex = 0;
+                
+                // Assign imposters
+                for (let i = 0; i < gameState.imposterCount; i++) {
+                    gameState.players[playerIndices[roleIndex++]].role = 'imposter';
+                }
+                
+                // Assign jester
+                if (gameState.jesterCount > 0) {
+                    gameState.players[playerIndices[roleIndex++]].role = 'jester';
+                }
+            }
+            
+            hideAllScreens();
+            document.getElementById('roleScreen').classList.remove('hidden');
+            showRoleReveal();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function getJesterWordInfo() {
+            switch (gameState.jesterInfo) {
+                case 'nothing':
+                    return 'No word information';
+                case 'category':
+                    return `Category: ${gameState.wordCategory}`;
+                case 'partial':
+                    return `Partial word: ${gameState.secretWord.substring(0, 3)}...`;
+                case 'full':
+                    return `Full word: ${gameState.secretWord}`;
+                default:
+                    return 'No word information';
+            }
+        }
+
+        function showRoleReveal() {
+            const container = document.getElementById('roleReveal');
+            let currentIndex = 0;
+            
+            function showCurrentPlayer() {
+                if (currentIndex >= gameState.players.length) {
+                    // All players have seen their roles
+                    container.innerHTML = `
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4">All Roles Assigned!</h3>
+                            <p class="text-lg mb-6">The game can now begin!</p>
+                            <p class="text-gray-600 mb-6">Remember your role and don't reveal it to others!</p>
+                            <button onclick="showWelcome()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg">
+                                <i class="fas fa-home"></i> Home
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const player = gameState.players[currentIndex];
+                const isImposter = player.role === 'imposter';
+                const isJester = player.role === 'jester';
+                
+                let roleDisplay = '';
+                
+                if (isImposter) {
+                    roleDisplay = `
+                        <div class="text-6xl mb-4">
+                            <i class="fas fa-skull text-red-600"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-6 text-red-600">
+                            IMPOSTER
+                        </div>
+                        <p class="text-red-600">Eliminate all crewmates to win!</p>
+                        <p class="text-gray-500 mt-4">You don't know the secret word</p>
+                    `;
+                } else if (isJester) {
+                    roleDisplay = `
+                        <div class="text-6xl mb-4">
+                            <i class="fas fa-jester text-green-600"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-6 text-green-600">
+                            JESTER
+                        </div>
+                        <p class="text-green-600">Get voted out to win!</p>
+                        <div class="bg-yellow-100 rounded-lg p-4 mt-4">
+                            <p class="text-yellow-800 font-semibold">${getJesterWordInfo()}</p>
+                        </div>
+                    `;
+                } else {
+                    roleDisplay = `
+                        <div class="text-6xl mb-4">
+                            <i class="fas fa-user-astronaut text-blue-600"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-6 text-blue-600">
+                            CREWMATE
+                        </div>
+                        <p class="text-blue-600">Find the imposter!</p>
+                        <div class="bg-blue-100 rounded-lg p-4 mt-4">
+                            <p class="text-blue-800 font-semibold">Secret Word: ${gameState.secretWord}</p>
+                            <p class="text-sm text-blue-600 mt-2">Use this to identify other crewmates</p>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = `
+                    <div class="slide-in">
+                        <h3 class="text-2xl font-bold mb-4">${player.name}</h3>
+                        <p class="text-lg mb-6 text-gray-600">Pass laptop to ${player.name} and click below to reveal their role:</p>
+                        <button onclick="revealRole(${currentIndex})" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg mb-6">
+                            <i class="fas fa-eye"></i> Reveal Role
+                        </button>
+                        <div id="roleDisplay" class="hidden">
+                            ${roleDisplay}
+                            <button onclick="nextPlayerRole()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg mt-4">
+                                <i class="fas fa-arrow-right"></i> Next Player
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            window.revealRole = function(index) {
+                document.getElementById('roleDisplay').classList.remove('hidden');
+            };
+            
+            window.nextPlayerRole = function() {
+                currentIndex++;
+                showCurrentPlayer();
+            };
+            
+            showCurrentPlayer();
+        }
+
+        // Initialize game
+        showWelcome();
+    </script>
+</body>
+</html>

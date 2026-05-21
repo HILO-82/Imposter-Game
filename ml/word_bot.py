@@ -7,6 +7,8 @@ then KNN finds the nearest dictionary word.
 """
 
 from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import joblib
 import numpy as np

@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% block title %}Imposter - Role Assignment{% endblock %}
+{% block content %}
+        {% if phase == 'welcome' %}
+        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+            <div class="text-center">
+                <h1 class="text-6xl font-bold text-purple-800 mb-4">
+                    <i class="fas fa-user-astronaut"></i> IMPOSTER
+                </h1>
+                <p class="text-xl text-gray-700 mb-8">Role Assignment System</p>
+                
+                <div class="bg-purple-100 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-semibold text-purple-800 mb-4">Setup</h2>
+                    <div class="grid md:grid-cols-2 gap-4 text-left">
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-bold text-purple-700 mb-2">
+                                <i class="fas fa-users"></i> Crewmates
+                            </h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Find the imposter</li>
+                                <li>• Work together as a team</li>
+                                <li>• Use secret word to identify friends</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-bold text-red-700 mb-2">
+                                <i class="fas fa-skull"></i> Imposter
+                            </h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Blend in and deceive</li>
+                                <li>• Don't know the secret word</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h3 class="font-bold text-green-700 mb-2">
+                                <i class="fas fa-jester"></i> Jester
+                            </h3>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Get voted out to win</li>
+                                <li>• See partial word info</li>
+                                <li>• Act suspicious to get eliminated</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <a href="{{ url_for('lobby.settings') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg mb-4 inline-block">
+                        <i class="fas fa-cog"></i> Game Settings
+                    </a>
+                    
+                    <a href="{{ url_for('lobby.start_game') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-xl text-xl transition-all transform hover:scale-105 inline-block">
+                        <i class="fas fa-random"></i> Assign Roles
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        {% elif phase == 'settings' %}
+        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+                <i class="fas fa-cog"></i> Game Settings
+            </h2>
+            
+            <form action="{{ url_for('lobby.save_settings') }}" method="POST" class="space-y-6">
+                <div class="bg-white rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Player Configuration</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-lg font-semibold">Players:</label>
+                            <select name="player_count" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                {% for n in range(4, 14) %}
+                                <option value="{{ n }}" {% if game_state.player_count == n %}selected{% endif %}>{{ n }} Players</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Imposters:</label>
+                            <select name="imposter_count" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                {% for n in range(1, 5) %}
+                                <option value="{{ n }}" {% if game_state.imposter_count == n %}selected{% endif %}>{{ n }} Imposter{% if n > 1 %}s{% endif %}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Jester:</label>
+                            <select name="jester_count" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <option value="0" {% if game_state.jester_count == 0 %}selected{% endif %}>No Jester</option>
+                                <option value="1" {% if game_state.jester_count == 1 %}selected{% endif %}>1 Jester</option>
+                                <option value="2" {% if game_state.jester_count == 2 %}selected{% endif %}>2 Jesters</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Secret Word Settings</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-lg font-semibold">Secret Word:</label>
+                            <div class="flex space-x-2">
+                                <input type="password" name="secret_word" placeholder="Enter secret word" value="{{ game_state.secret_word if game_state.secret_word else '' }}" class="flex-1 px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <a href="{{ url_for('lobby.generate_random_word') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" title="Generate random word">
+                                    <i class="fas fa-dice"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Jester Info:</label>
+                            <select name="jester_info" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                <option value="nothing" {% if game_state.jester_info == 'nothing' %}selected{% endif %}>Nothing</option>
+                                <option value="category" {% if game_state.jester_info == 'category' %}selected{% endif %}>Category Only</option>
+                                <option value="partial" {% if game_state.jester_info == 'partial' %}selected{% endif %}>Partial Word</option>
+                                <option value="full" {% if game_state.jester_info == 'full' %}selected{% endif %}>Full Word</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-lg font-semibold">Word Category:</label>
+                            <select name="word_category" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+                                {% for category in word_categories %}
+                                <option value="{{ category }}" {% if game_state.word_category == category %}selected{% endif %}>{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center space-x-4">
+                    <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% elif phase == 'setup' %}
+        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+                <i class="fas fa-user-plus"></i> Add Players
+            </h2>
+            
+            <form action="{{ url_for('lobby.assign_roles_route') }}" method="POST" class="space-y-3 mb-6">
+                {% for i in range(1, game_state.player_count + 1) %}
+                <div class="flex items-center space-x-3">
+                    <label class="font-semibold w-24">Player {{ i }}:</label>
+                    <input type="text" name="player{{ i }}" placeholder="Enter name" maxlength="50" class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none">
+                    <input type="color" name="color{{ i }}" value="#ff0000" class="w-12 h-10 rounded cursor-pointer">
+                </div>
+                {% endfor %}
+                
+                <div class="flex justify-center space-x-4 mt-6">
+                    <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-random"></i> Assign Roles
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% elif phase == 'role_reveal' %}
+        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+                <i class="fas fa-eye"></i> Role Assignment
+            </h2>
+            
+            <div id="roleReveal" class="text-center">
+                {% if game_state.current_player_index < game_state.players|length %}
+                {% set player = game_state.players[game_state.current_player_index] %}
+                {% set is_imposter = player.role == 'imposter' %}
+                {% set is_jester = player.role == 'jester' %}
+                
+                <div class="slide-in">
+                    <h3 class="text-2xl font-bold mb-4">{{ player.name }}</h3>
+                    <p class="text-lg mb-6 text-gray-600">Pass laptop to {{ player.name }} and click below to reveal their role:</p>
+                    <a href="{{ url_for('lobby.reveal_role') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg mb-6 inline-block">
+                        <i class="fas fa-eye"></i> Reveal Role
+                    </a>
+                    
+                    <div class="mt-6">
+                        {% if is_imposter %}
+                        <div class="text-6xl mb-4">
+                            <i class="fas fa-skull text-red-600"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-6 text-red-600">IMPOSTER</div>
+                        <p class="text-red-600">Eliminate all crewmates to win!</p>
+                        <p class="text-gray-500 mt-4">You don't know the secret word</p>
+                        
+                        {% elif is_jester %}
+                        <div class="text-6xl mb-4">
+                            <i class="fas fa-mask text-green-600"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-6 text-green-600">JESTER</div>
+                        <p class="text-green-600">Get voted out to win!</p>
+                        <div class="bg-yellow-100 rounded-lg p-4 mt-4">
+                            <p class="text-yellow-800 font-semibold">
+                                {% if game_state.jester_info == 'nothing' %}No word information
+                                {% elif game_state.jester_info == 'category' %}Category: {{ game_state.word_category }}
+                                {% elif game_state.jester_info == 'partial' %}Partial word: {{ game_state.secret_word[:3] }}...
+                                {% elif game_state.jester_info == 'full' %}Full word: {{ game_state.secret_word }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        
+                        {% else %}
+                        <div class="text-6xl mb-4">
+                            <i class="fas fa-user-astronaut text-blue-600"></i>
+                        </div>
+                        <div class="text-3xl font-bold mb-6 text-blue-600">CREWMATE</div>
+                        <p class="text-blue-600">Find the imposter!</p>
+                        <div class="bg-blue-100 rounded-lg p-4 mt-4">
+                            <p class="text-blue-800 font-semibold">Secret Word: {{ game_state.secret_word }}</p>
+                        </div>
+                        {% endif %}
+                        
+                        <a href="{{ url_for('lobby.next_player') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg mt-4 inline-block">
+                            <i class="fas fa-arrow-right"></i> Next Player
+                        </a>
+                    </div>
+                </div>
+                
+                {% else %}
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">All Roles Assigned!</h3>
+                    <p class="text-lg mb-6">Start the online game with clues, votes, and AI bots.</p>
+                    <div class="flex justify-center flex-wrap gap-4">
+                        <form action="{{ url_for('game.new_game') }}" method="POST">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">
+                                <i class="fas fa-play"></i> Start Game (DB + Bots)
+                            </button>
+                        </form>
+                        <a href="{{ url_for('lobby.play_again') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
+                            <i class="fas fa-redo"></i> Play Again
+                        </a>
+                        <a href="{{ url_for('lobby.index') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+{% endblock %}

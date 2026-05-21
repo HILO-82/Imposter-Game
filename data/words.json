@@ -1,0 +1,4082 @@
+[
+  {
+    "word": "cat",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "dog",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "elephant",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "giraffe",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "penguin",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "dolphin",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "lion",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "tiger",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "monkey",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "zebra",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "koala",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "panda",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "kangaroo",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "owl",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "eagle",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "shark",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "whale",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "butterfly",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "snake",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "turtle",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "rabbit",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "bear",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "wolf",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "fox",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 3,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "horse",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "cow",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "pig",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "sheep",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "goat",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "chicken",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "duck",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "mouse",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "rat",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "hamster",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "parrot",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "frog",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "lizard",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "crocodile",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "alligator",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "hippo",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "rhino",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "deer",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "moose",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "elk",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "antelope",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "gazelle",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "cheetah",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "leopard",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "jaguar",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "otter",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "beaver",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "seal",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "walrus",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "polar bear",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "grizzly",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "bobcat",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "lynx",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 8,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "coyote",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 8,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "foxhound",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 8,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "beagle",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 8,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "poodle",
+    "category": "Animals",
+    "category_id": 1,
+    "subcategory_id": 8,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "pizza",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "burger",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "sushi",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "taco",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "pasta",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "salad",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "soup",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "sandwich",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "chocolate",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "cookie",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "cake",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "ice cream",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "coffee",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "tea",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "juice",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "bread",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "cheese",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "bacon",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "eggs",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "rice",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "noodles",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "fruit",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "vegetables",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 10,
+    "commonality": 0.5
+  },
+  {
+    "word": "apple",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "banana",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "orange",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "grape",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "strawberry",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 10,
+    "commonality": 0.5
+  },
+  {
+    "word": "blueberry",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "watermelon",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 10,
+    "commonality": 0.5
+  },
+  {
+    "word": "pineapple",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "mango",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "kiwi",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "peach",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "plum",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "carrot",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "broccoli",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "potato",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "tomato",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "onion",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "garlic",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "beef",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "pork",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "fish",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "shrimp",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "crab",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "lobster",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "tuna",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "salmon",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "turkey",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "ham",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "sausage",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "pancake",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "waffle",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "cereal",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "oatmeal",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 8,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "yogurt",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 8,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "milk",
+    "category": "Food",
+    "category_id": 2,
+    "subcategory_id": 8,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "purple",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "turquoise",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 9,
+    "commonality": 0.55
+  },
+  {
+    "word": "magenta",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "cyan",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "yellow",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "green",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "blue",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "red",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.85
+  },
+  {
+    "word": "pink",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "brown",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "black",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "white",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "gray",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "gold",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "silver",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "bronze",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "indigo",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "violet",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "maroon",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "navy",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "teal",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "lime",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "coral",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "khaki",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "beige",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "ivory",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "cream",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "charcoal",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "slate",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "olive",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "emerald",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "ruby",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.8
+  },
+  {
+    "word": "sapphire",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "amber",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "copper",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.7
+  },
+  {
+    "word": "brass",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "platinum",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "pearl",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "obsidian",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "crimson",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "scarlet",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.65
+  },
+  {
+    "word": "burgundy",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "lavender",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 8,
+    "commonality": 0.6
+  },
+  {
+    "word": "lilac",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "mauve",
+    "category": "Colors",
+    "category_id": 3,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.75
+  },
+  {
+    "word": "chair",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "table",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "lamp",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "clock",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "mirror",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "bottle",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "phone",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "computer",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "book",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "pen",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "paper",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "key",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "door",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "window",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "car",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "bicycle",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "guitar",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "camera",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "television",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "radio",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "headphones",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "pillow",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "blanket",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "towel",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "backpack",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "wallet",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "purse",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "watch",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "glasses",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "shoes",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "shirt",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "pants",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "jacket",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "hat",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "belt",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "socks",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "knife",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "fork",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "spoon",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "plate",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "cup",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "mug",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "bowl",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "basket",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "box",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "bag",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "case",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "container",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 6,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "scissors",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "ruler",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "pencil",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "eraser",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "notebook",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "folder",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "umbrella",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "flashlight",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 7,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "battery",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 8,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "remote",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 8,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "controller",
+    "category": "Objects",
+    "category_id": 4,
+    "subcategory_id": 8,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "beach",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "forest",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "mountain",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "desert",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "city",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "village",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "island",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "river",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "lake",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "park",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "garden",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "school",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "hospital",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "airport",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "station",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "museum",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "library",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "castle",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "bridge",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "tunnel",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "highway",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "street",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "road",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "house",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "apartment",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "office",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "store",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "market",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "restaurant",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "cinema",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "theater",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "stadium",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "gym",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "pool",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "playground",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "farm",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "ranch",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "campground",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "cabin",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "cottage",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "mansion",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "hotel",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "motel",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "resort",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "spa",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "salon",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "garage",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "basement",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 6,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "attic",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "balcony",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "porch",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "patio",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "deck",
+    "category": "Places",
+    "category_id": 5,
+    "subcategory_id": 7,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "flower",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "tree",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "grass",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "cloud",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "rain",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "snow",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "wind",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "sun",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 1,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "moon",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "star",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "ocean",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "wave",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "fire",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "ice",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "rock",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "sand",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "leaf",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "root",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "branch",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "storm",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "thunder",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "lightning",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "rainbow",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "fog",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 3,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "mist",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "dew",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "frost",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "hail",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "sleet",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "breeze",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "gale",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "volcano",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "earthquake",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "tsunami",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "hurricane",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "tornado",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "blizzard",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "meadow",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "valley",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "canyon",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "waterfall",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "cave",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "spring",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "prairie",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "savanna",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "jungle",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "arctic",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "tundra",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "reef",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 7,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "lagoon",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 7,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "delta",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "estuary",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "glacier",
+    "category": "Nature",
+    "category_id": 6,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "internet",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "software",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "hardware",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "database",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "network",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "server",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "laptop",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "tablet",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "app",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "website",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "code",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "program",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "algorithm",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "data",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "file",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "email",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "message",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "chat",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "video",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "audio",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "microphone",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "speaker",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "screen",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "monitor",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "keyboard",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "printer",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "scanner",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "router",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "modem",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "cable",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "wireless",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "bluetooth",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "wifi",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "usb",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "hdmi",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "ethernet",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "memory",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "storage",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "drive",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "disk",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "chip",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "processor",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 6,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "charger",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "adapter",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "cover",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "stand",
+    "category": "Technology",
+    "category_id": 7,
+    "subcategory_id": 7,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "football",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "basketball",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "tennis",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "soccer",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "baseball",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "swimming",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "running",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "cycling",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "skiing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "surfing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "golf",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "hockey",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "volleyball",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "cricket",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "rugby",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "boxing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "wrestling",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "bowling",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "archery",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "fencing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "judo",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "karate",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "taekwondo",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "yoga",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "pilates",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "aerobics",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "dance",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "skateboarding",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 13,
+    "commonality": 0.4
+  },
+  {
+    "word": "rollerblading",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 13,
+    "commonality": 0.4
+  },
+  {
+    "word": "climbing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "hiking",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "camping",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "fishing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "hunting",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "sailing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "boating",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "kayaking",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "canoeing",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "skydiving",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "parachuting",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 5,
+    "word_length": 11,
+    "commonality": 0.4
+  },
+  {
+    "word": "bungee",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "rafting",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "diving",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "snorkeling",
+    "category": "Sports",
+    "category_id": 8,
+    "subcategory_id": 6,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "action",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "comedy",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "drama",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "horror",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "romance",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "thriller",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "fantasy",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "sci-fi",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 1,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "documentary",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 11,
+    "commonality": 0.4
+  },
+  {
+    "word": "animation",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "musical",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "mystery",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "adventure",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "western",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "historical",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "sequel",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "prequel",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "trilogy",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "saga",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "epic",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "indie",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "blockbuster",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 11,
+    "commonality": 0.4
+  },
+  {
+    "word": "flop",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "hit",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 3,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "classic",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "cult",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "mainstream",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "director",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "actor",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "actress",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "character",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "plot",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "script",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "scene",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "trailer",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 5,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "premiere",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "remake",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "reboot",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "projection",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 6,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "soundtrack",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 6,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "score",
+    "category": "Movies",
+    "category_id": 9,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "pop",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "jazz",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "classical",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "hip-hop",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "country",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "electronic",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 10,
+    "commonality": 0.4
+  },
+  {
+    "word": "folk",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 1,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "blues",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "reggae",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "metal",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "punk",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "alternative",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 11,
+    "commonality": 0.4
+  },
+  {
+    "word": "r&b",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 3,
+    "commonality": 0.75
+  },
+  {
+    "word": "soul",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 2,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "disco",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "techno",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "trance",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "dubstep",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "ambient",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "instrumental",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 12,
+    "commonality": 0.4
+  },
+  {
+    "word": "vocal",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 3,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "piano",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "drums",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "bass",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "violin",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "flute",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "saxophone",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 9,
+    "commonality": 0.45
+  },
+  {
+    "word": "trumpet",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 4,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "trombone",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "clarinet",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "oboe",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "harp",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "album",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "single",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "track",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "song",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 5,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "melody",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "harmony",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "rhythm",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 6,
+    "commonality": 0.6
+  },
+  {
+    "word": "beat",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "tempo",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "chord",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "note",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "scale",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 6,
+    "word_length": 5,
+    "commonality": 0.65
+  },
+  {
+    "word": "concert",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 7,
+    "word_length": 7,
+    "commonality": 0.55
+  },
+  {
+    "word": "festival",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 7,
+    "word_length": 8,
+    "commonality": 0.5
+  },
+  {
+    "word": "tour",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 7,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "performance",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 7,
+    "word_length": 11,
+    "commonality": 0.4
+  },
+  {
+    "word": "show",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 7,
+    "word_length": 4,
+    "commonality": 0.7
+  },
+  {
+    "word": "gig",
+    "category": "Music",
+    "category_id": 10,
+    "subcategory_id": 7,
+    "word_length": 3,
+    "commonality": 0.75
+  }
+]

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Game #{{ game.game_id }}{% endblock %}
+{% block content %}
+<div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+    <h2 class="text-3xl font-bold text-purple-800 mb-2 text-center">
+        <i class="fas fa-gamepad"></i> Round {{ game.round_number }}
+    </h2>
+    <p class="text-center text-gray-600 mb-6">
+        Phase: <strong>{{ game.phase }}</strong> |
+        Secret category: <strong>{{ game.category }}</strong>
+    </p>
+
+    {% if game.phase == 'clue' %}
+    <div class="bg-white rounded-lg p-6 mb-6">
+        <h3 class="text-xl font-semibold text-purple-800 mb-4">Submit Clues</h3>
+        <p class="text-sm text-gray-600 mb-4">Each alive player gives one clue (don't say the word!).</p>
+        {% for player in alive %}
+        {% if not player.is_bot %}
+        <form action="{{ url_for('game.submit_clue', game_id=game.game_id) }}" method="POST" class="flex gap-2 mb-3">
+            <input type="hidden" name="player_id" value="{{ player.player_id }}">
+            <label class="w-28 font-semibold pt-2">{{ player.name }}:</label>
+            <input type="text" name="clue" maxlength="100" placeholder="One-word clue"
+                class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"
+                {% if clues.get(player.player_id) %}value="{{ clues[player.player_id] }}"{% endif %}>
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">Save</button>
+        </form>
+        {% endif %}
+        {% endfor %}
+        <ul class="mt-4 text-sm text-gray-700">
+            {% for player in players %}
+            {% if clues.get(player.player_id) %}
+            <li><strong>{{ player.name }}:</strong> {{ clues[player.player_id] }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% elif game.phase == 'vote' %}
+    <div class="bg-white rounded-lg p-6 mb-6">
+        <h3 class="text-xl font-semibold text-purple-800 mb-4">Vote</h3>
+        <p class="text-sm text-gray-600 mb-4">Select who to eliminate. AI Bot will vote after you.</p>
+        <form action="{{ url_for('game.submit_vote', game_id=game.game_id) }}" method="POST" class="space-y-4">
+            <div>
+                <label class="font-semibold">Your voter (player):</label>
+                <select name="voter_id" class="w-full mt-1 px-3 py-2 border-2 border-purple-300 rounded-lg">
+                    {% for player in alive %}
+                    {% if not player.is_bot %}
+                    <option value="{{ player.player_id }}">{{ player.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="font-semibold">Vote to eliminate:</label>
+                <select name="target_id" class="w-full mt-1 px-3 py-2 border-2 border-purple-300 rounded-lg">
+                    {% for player in alive %}
+                    <option value="{{ player.player_id }}">{{ player.name }}{% if player.is_bot %} (Bot){% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg w-full">
+                <i class="fas fa-gavel"></i> Submit Vote
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="flex justify-center gap-4">
+        <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">Home</a>
+        {% if game.status == 'finished' %}
+        <a href="{{ url_for('game.result', game_id=game.game_id) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">Results</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -17,6 +17,8 @@ def default_setup_state():
         "players": [],
         "current_player_index": 0,
         "phase": "welcome",
+        "has_ai_bot": False,
+        "saved_player_inputs": {},
     }
 
 
@@ -37,7 +39,7 @@ def assign_roles(players_data, imposter_count, jester_count):
     return players_data
 
 
-def create_game_from_setup(setup, include_bot=True):
+def create_game_from_setup(setup):
     """Persist game + players; returns Game."""
     secret = setup.get("secret_word", "").strip().lower()
     category = setup.get("word_category", "Animals")
@@ -47,9 +49,9 @@ def create_game_from_setup(setup, include_bot=True):
         secret = word_meta["word"]
         category = word_meta["category"]
 
-    human_count = len(setup["players"])
+    players = setup["players"]
     game = Game(
-        num_players=human_count + (1 if include_bot else 0),
+        num_players=len(players),
         secret_word=secret,
         category=category,
         status="active",
@@ -59,25 +61,16 @@ def create_game_from_setup(setup, include_bot=True):
     db.session.add(game)
     db.session.flush()
 
-    for p in setup["players"]:
-        player = Player(
-            game_id=game.game_id,
-            name=p["name"],
-            role=p["role"],
-            color=p.get("color", "#ff0000"),
-            is_bot=False,
+    for p in players:
+        db.session.add(
+            Player(
+                game_id=game.game_id,
+                name=p["name"],
+                role=p["role"],
+                color=p.get("color", "#ff0000"),
+                is_bot=p.get("is_bot", False),
+            )
         )
-        db.session.add(player)
-
-    if include_bot:
-        bot = Player(
-            game_id=game.game_id,
-            name="AI Bot",
-            role="imposter",
-            color="#333333",
-            is_bot=True,
-        )
-        db.session.add(bot)
 
     db.session.commit()
     return game

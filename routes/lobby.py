@@ -18,6 +18,17 @@ def save_setup(setup):
     session.modified = True
 
 
+def _save_player_inputs_from_form(setup):
+    """Keep typed names/colors when navigating setup actions."""
+    saved = {}
+    for i in range(1, setup["player_count"] + 1):
+        saved[str(i)] = {
+            "name": request.form.get(f"player{i}", "").strip(),
+            "color": request.form.get(f"color{i}", "#ff0000"),
+        }
+    setup["saved_player_inputs"] = saved
+
+
 @lobby_bp.route("/")
 def index():
     setup = get_setup()
@@ -93,6 +104,7 @@ def start_game():
 @lobby_bp.route("/assign-roles", methods=["POST"])
 def assign_roles_route():
     setup = get_setup()
+    _save_player_inputs_from_form(setup)
     count = setup["player_count"]
     players = []
     for i in range(1, count + 1):
@@ -100,7 +112,11 @@ def assign_roles_route():
         if not validate_player_name(name):
             name = f"Player {i}"
         color = request.form.get(f"color{i}", "#ff0000")
-        players.append({"name": name, "color": color, "role": "crewmate"})
+        players.append({"name": name, "color": color, "role": "crewmate", "is_bot": False})
+    if setup.get("has_ai_bot"):
+        players.append(
+            {"name": "AI Bot", "color": "#333333", "role": "crewmate", "is_bot": True}
+        )
     players = assign_roles(players, setup["imposter_count"], setup["jester_count"])
     setup["players"] = players
     setup["current_player_index"] = 0
@@ -148,8 +164,15 @@ def play_again():
         setup["secret_word"] = w["word"]
         setup["word_category"] = w["category"]
     if setup.get("players"):
-        names_colors = [(p["name"], p.get("color", "#ff0000")) for p in setup["players"]]
-        players = [{"name": n, "color": c, "role": "crewmate"} for n, c in names_colors]
+        players = [
+            {
+                "name": p["name"],
+                "color": p.get("color", "#ff0000"),
+                "role": "crewmate",
+                "is_bot": p.get("is_bot", False),
+            }
+            for p in setup["players"]
+        ]
         setup["players"] = assign_roles(
             players, setup["imposter_count"], setup["jester_count"]
         )
@@ -164,10 +187,26 @@ def play_again():
     )
 
 
-@lobby_bp.route("/add-ai-bot")
+@lobby_bp.route("/add-ai-bot", methods=["POST"])
 def add_ai_bot():
     setup = get_setup()
-    setup["player_count"] = min(setup["player_count"] + 1, 13)
+    _save_player_inputs_from_form(setup)
+    setup["has_ai_bot"] = True
+    setup["phase"] = "setup"
+    save_setup(setup)
+    return render_template(
+        "index.html",
+        phase="setup",
+        game_state=setup,
+        word_categories=get_word_categories(),
+    )
+
+
+@lobby_bp.route("/remove-ai-bot", methods=["POST"])
+def remove_ai_bot():
+    setup = get_setup()
+    _save_player_inputs_from_form(setup)
+    setup["has_ai_bot"] = False
     setup["phase"] = "setup"
     save_setup(setup)
     return render_template(

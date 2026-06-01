@@ -21,7 +21,7 @@ def new_game():
     setup = session.get("setup")
     if not setup or not setup.get("players"):
         return redirect(url_for("lobby.index"))
-    game = create_game_from_setup(setup, include_bot=True)
+    game = create_game_from_setup(setup)
     session["game_id"] = game.game_id
     session.modified = True
     return redirect(url_for("game.view_game", game_id=game.game_id))

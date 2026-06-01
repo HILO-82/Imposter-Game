@@ -162,3 +162,17 @@ def play_again():
         game_state=setup,
         word_categories=get_word_categories(),
     )
+
+
+@lobby_bp.route("/add-ai-bot")
+def add_ai_bot():
+    setup = get_setup()
+    setup["player_count"] = min(setup["player_count"] + 1, 13)
+    setup["phase"] = "setup"
+    save_setup(setup)
+    return render_template(
+        "index.html",
+        phase="setup",
+        game_state=setup,
+        word_categories=get_word_categories(),
+    )

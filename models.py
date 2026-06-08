@@ -7,14 +7,20 @@ class Game(db.Model):
     __tablename__ = "games"
 
     game_id = db.Column(db.Integer, primary_key=True)
+    room_code = db.Column(db.String(10), unique=True, nullable=False, index=True)
     date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     num_players = db.Column(db.Integer, nullable=False)
+    imposter_count = db.Column(db.Integer, default=1, nullable=False)
+    jester_count = db.Column(db.Integer, default=0, nullable=False)
+    jester_info = db.Column(db.String(20), default="nothing", nullable=False)
     winning_role = db.Column(db.String(20), nullable=True)
     secret_word = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(20), default="active", nullable=False)
+    status = db.Column(db.String(20), default="lobby", nullable=False)
     round_number = db.Column(db.Integer, default=1, nullable=False)
-    phase = db.Column(db.String(20), default="clue", nullable=False)
+    phase = db.Column(db.String(20), default="lobby", nullable=False)
+    current_player_index = db.Column(db.Integer, default=0, nullable=False)
+    creator_player_id = db.Column(db.Integer, nullable=True)
 
     players = db.relationship("Player", backref="game", lazy=True, cascade="all, delete-orphan")
     rounds = db.relationship("Round", backref="game", lazy=True, cascade="all, delete-orphan")
@@ -26,11 +32,15 @@ class Player(db.Model):
 
     player_id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey("games.game_id"), nullable=False)
+    session_id = db.Column(db.String(100), nullable=True, index=True)
+    player_token = db.Column(db.String(100), nullable=True, unique=True, index=True)
     name = db.Column(db.String(50), nullable=False)
     role = db.Column(db.String(20), nullable=False)
     color = db.Column(db.String(10), default="#ff0000")
     was_voted_out = db.Column(db.Boolean, default=False, nullable=False)
     is_bot = db.Column(db.Boolean, default=False, nullable=False)
+    is_connected = db.Column(db.Boolean, default=True, nullable=False)
+    is_ready = db.Column(db.Boolean, default=False, nullable=False)
 
     rounds = db.relationship("Round", backref="player", lazy=True)
     votes_cast = db.relationship(

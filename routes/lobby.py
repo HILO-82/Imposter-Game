@@ -1,6 +1,10 @@
 from flask import Blueprint, redirect, render_template, request, session, url_for
+import secrets
 
+from extensions import db
 from game_logic import assign_roles, default_setup_state
+from models import Player
+from room_manager import create_room, get_room, room_exists
 from security import validate_player_name
 from words import get_word_categories, random_word
 
@@ -34,12 +38,35 @@ def index():
     setup = get_setup()
     setup["phase"] = "welcome"
     save_setup(setup)
+    player_name = session.get("player_name")
     return render_template(
         "index.html",
         phase="welcome",
         game_state=setup,
         word_categories=get_word_categories(),
+        player_name=player_name,
     )
+
+
+@lobby_bp.route("/login", methods=["POST"])
+def login():
+    """Log in a player by setting their name."""
+    player_name = request.form.get("player_name", "").strip()
+    
+    if not player_name:
+        return redirect(url_for("lobby.index"))
+    
+    session["player_name"] = player_name
+    return redirect(url_for("lobby.index"))
+
+
+@lobby_bp.route("/logout", methods=["POST"])
+def logout():
+    """Log out the current player."""
+    session.pop("player_name", None)
+    session.pop("room_code", None)
+    session.pop("player_token", None)
+    return redirect(url_for("lobby.index"))
 
 
 @lobby_bp.route("/settings")
@@ -215,3 +242,416 @@ def remove_ai_bot():
         game_state=setup,
         word_categories=get_word_categories(),
     )
+
+
+@lobby_bp.route("/create-room", methods=["POST"])
+def create_room_route():
+    """Create a new game room and redirect to it."""
+    player_name = session.get("player_name")
+    
+    if not player_name:
+        return redirect(url_for("lobby.index"))
+    
+    setup = get_setup()
+    
+    # Generate secret word if not set
+    if not setup.get("secret_word"):
+        w = random_word(setup.get("word_category"))
+        setup["secret_word"] = w["word"] if w else "cat"
+        setup["word_category"] = w["category"] if w else "Animals"
+    
+    game = create_room(
+        player_count=setup["player_count"],
+        imposter_count=setup["imposter_count"],
+        jester_count=setup["jester_count"],
+        jester_info=setup["jester_info"],
+        secret_word=setup["secret_word"],
+        category=setup["word_category"]
+    )
+    
+    # Create the creator as the first player using logged-in name
+    player_token = secrets.token_urlsafe(32)
+    player = Player(
+        game_id=game.game_id,
+        session_id=secrets.token_hex(16),
+        player_token=player_token,
+        name=player_name,
+        color="#ff0000",
+        role="crewmate",
+        is_connected=True,
+        is_ready=False
+    )
+    db.session.add(player)
+    db.session.commit()
+    
+    # Set the creator
+    game.creator_player_id = player.player_id
+    db.session.commit()
+    
+    session["room_code"] = game.room_code
+    session["player_token"] = player_token
+    
+    return redirect(url_for("lobby.player_room", room_code=game.room_code, player_token=player_token))
+
+
+@lobby_bp.route("/join-room", methods=["POST"])
+def join_room_route():
+    """Join an existing game room."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    
+    if not room_exists(room_code):
+        return redirect(url_for("lobby.index"))
+    
+    session["room_code"] = room_code
+    # Redirect to the generic room page where players can join with their name
+    return redirect(url_for("lobby.room", room_code=room_code))
+
+
+@lobby_bp.route("/room/<room_code>")
+def room(room_code):
+    """Display the game room lobby or game phase."""
+    game = get_room(room_code)
+    
+    if not game:
+        return redirect(url_for("lobby.index"))
+    
+    players = Player.query.filter_by(game_id=game.game_id).all()
+    current_player_name = session.get("player_name")
+    current_player = None
+    if current_player_name:
+        current_player = Player.query.filter_by(game_id=game.game_id, name=current_player_name).first()
+    
+    if game.phase == "game":
+        from models import Round
+        # Get existing clues for the current round
+        existing_clues = Round.query.filter_by(
+            game_id=game.game_id,
+            round_number=game.round_number
+        ).all()
+        
+        return render_template(
+            "index.html",
+            phase="game",
+            game=game,
+            room_code=room_code,
+            players=players,
+            current_player=current_player,
+            existing_clues=existing_clues,
+            word_categories=get_word_categories(),
+        )
+    
+    return render_template(
+        "index.html",
+        phase="room_lobby",
+        game=game,
+        room_code=room_code,
+        players=players,
+        current_player=current_player,
+        word_categories=get_word_categories(),
+    )
+
+
+@lobby_bp.route("/room/<room_code>/player/<player_token>")
+def player_room(room_code, player_token):
+    """Display the game room lobby or game phase for a specific player."""
+    game = get_room(room_code)
+    
+    if not game:
+        return redirect(url_for("lobby.index"))
+    
+    # Get the current player by token
+    current_player = Player.query.filter_by(
+        game_id=game.game_id,
+        player_token=player_token
+    ).first()
+    
+    if not current_player:
+        return redirect(url_for("lobby.index"))
+    
+    # Update session
+    session["room_code"] = room_code
+    session["player_name"] = current_player.name
+    session["player_token"] = player_token
+    
+    players = Player.query.filter_by(game_id=game.game_id).all()
+    
+    if game.phase == "game":
+        from models import Round
+        # Get existing clues for the current round
+        existing_clues = Round.query.filter_by(
+            game_id=game.game_id,
+            round_number=game.round_number
+        ).all()
+        
+        return render_template(
+            "index.html",
+            phase="game",
+            game=game,
+            room_code=room_code,
+            players=players,
+            current_player=current_player,
+            existing_clues=existing_clues,
+            word_categories=get_word_categories(),
+        )
+    
+    return render_template(
+        "index.html",
+        phase="room_lobby",
+        game=game,
+        room_code=room_code,
+        players=players,
+        current_player=current_player,
+        word_categories=get_word_categories(),
+    )
+
+
+@lobby_bp.route("/join-game", methods=["POST"])
+def join_game():
+    """Join a game room as a player."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    player_name = request.form.get("player_name", "").strip()
+    player_color = request.form.get("player_color", "#ff0000")
+    
+    if not room_exists(room_code):
+        return redirect(url_for("lobby.index"))
+    
+    # Use logged-in name if provided, otherwise use form input
+    if not player_name:
+        player_name = session.get("player_name", "").strip()
+    
+    if not validate_player_name(player_name):
+        return redirect(url_for("lobby.room", room_code=room_code))
+    
+    game = get_room(room_code)
+    
+    # Check if player already exists in this game
+    existing_player = Player.query.filter_by(
+        game_id=game.game_id,
+        name=player_name
+    ).first()
+    
+    if existing_player:
+        # Name is already taken, redirect with error
+        session["error"] = f"The name '{player_name}' is already taken in this room."
+        return redirect(url_for("lobby.room", room_code=room_code))
+    
+    # Create new player with unique token
+    player_token = secrets.token_urlsafe(32)
+    player = Player(
+        game_id=game.game_id,
+        session_id=secrets.token_hex(16),
+        player_token=player_token,
+        name=player_name,
+        color=player_color,
+        role="crewmate",
+        is_connected=True
+    )
+    db.session.add(player)
+    db.session.commit()
+    
+    session["room_code"] = room_code
+    session["player_name"] = player_name
+    session["player_token"] = player_token
+    
+    # Clear any previous error
+    session.pop("error", None)
+    
+    # Emit socket event for real-time update (will be handled by client-side polling)
+    # The client will automatically reload when it detects new players
+    
+    return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
+
+
+@lobby_bp.route("/add-ai-bot-room", methods=["POST"])
+def add_ai_bot_room():
+    """Add an AI bot to the current room."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    player_token = session.get("player_token")
+    
+    if not room_exists(room_code):
+        return redirect(url_for("lobby.index"))
+    
+    game = get_room(room_code)
+    
+    # Create AI bot player
+    bot = Player(
+        game_id=game.game_id,
+        session_id=None,
+        name=f"AI Bot {Player.query.filter_by(game_id=game.game_id).count() + 1}",
+        color="#333333",
+        role="crewmate",
+        is_bot=True,
+        is_connected=True,
+        is_ready=True
+    )
+    db.session.add(bot)
+    game.num_players += 1
+    db.session.commit()
+    
+    return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
+
+
+@lobby_bp.route("/start-multiplayer-game", methods=["POST"])
+def start_multiplayer_game():
+    """Start the multiplayer game and assign roles."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    player_token = session.get("player_token")
+    
+    if not room_exists(room_code):
+        return redirect(url_for("lobby.index"))
+    
+    game = get_room(room_code)
+    current_player = Player.query.filter_by(
+        game_id=game.game_id,
+        player_token=player_token
+    ).first()
+    
+    # Check if current player is the creator
+    if not current_player or current_player.player_id != game.creator_player_id:
+        return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
+    
+    players = Player.query.filter_by(game_id=game.game_id).all()
+    
+    if len(players) < game.num_players:
+        return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
+    
+    # Assign roles using the existing assign_roles function
+    player_data = [
+        {"name": p.name, "color": p.color, "role": "crewmate", "is_bot": p.is_bot}
+        for p in players
+    ]
+    assigned_players = assign_roles(player_data, game.imposter_count, game.jester_count)
+    
+    # Update players in database with assigned roles
+    for i, player in enumerate(players):
+        player.role = assigned_players[i]["role"]
+    
+    game.phase = "role_reveal"
+    game.status = "active"
+    game.current_player_index = 0
+    db.session.commit()
+    
+    return redirect(url_for("lobby.multiplayer_role_reveal", room_code=room_code, player_token=player_token))
+
+
+@lobby_bp.route("/multiplayer-role-reveal/<room_code>/<player_token>")
+def multiplayer_role_reveal(room_code, player_token):
+    """Display the multiplayer role reveal screen."""
+    game = get_room(room_code)
+    
+    if not game:
+        return redirect(url_for("lobby.index"))
+    
+    current_player = Player.query.filter_by(
+        game_id=game.game_id,
+        player_token=player_token
+    ).first()
+    
+    if not current_player:
+        return redirect(url_for("lobby.index"))
+    
+    players = Player.query.filter_by(game_id=game.game_id).all()
+    
+    # Find the current player's index
+    player_index = 0
+    for i, player in enumerate(players):
+        if player.player_id == current_player.player_id:
+            player_index = i
+            break
+    
+    return render_template(
+        "index.html",
+        phase="multiplayer_role_reveal",
+        game=game,
+        room_code=room_code,
+        players=players,
+        current_player=current_player,
+        current_player_index=player_index,
+        word_categories=get_word_categories(),
+    )
+
+
+@lobby_bp.route("/mark-ready", methods=["POST"])
+def mark_ready():
+    """Mark the current player as ready."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    player_token = request.form.get("player_token", "").strip()
+    
+    if not room_exists(room_code) or not player_token:
+        return {"success": False}
+    
+    game = get_room(room_code)
+    player = Player.query.filter_by(game_id=game.game_id, player_token=player_token).first()
+    
+    if player:
+        player.is_ready = True
+        db.session.commit()
+        
+        # Check if all players are ready
+        all_players = Player.query.filter_by(game_id=game.game_id).all()
+        all_ready = all(p.is_ready for p in all_players)
+        
+        if all_ready:
+            game.phase = "game"
+            db.session.commit()
+            return {"success": True, "all_ready": True}
+        
+        return {"success": True, "all_ready": False}
+    
+    return {"success": False}
+
+
+@lobby_bp.route("/submit-clue", methods=["POST"])
+def submit_clue():
+    """Submit a clue for the current round."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    clue = request.form.get("clue", "").strip()
+    player_token = request.form.get("player_token", "").strip()
+    
+    if not room_exists(room_code) or not clue or not player_token:
+        return {"success": False}
+    
+    game = get_room(room_code)
+    player = Player.query.filter_by(game_id=game.game_id, player_token=player_token).first()
+    
+    if player and not player.was_voted_out:
+        from models import Round
+        round_record = Round(
+            game_id=game.game_id,
+            round_number=game.round_number,
+            clue_given=clue,
+            player_id=player.player_id
+        )
+        db.session.add(round_record)
+        db.session.commit()
+        return {"success": True, "clue": clue, "player": player.name}
+    
+    return {"success": False}
+
+
+@lobby_bp.route("/submit-vote", methods=["POST"])
+def submit_vote():
+    """Submit a vote to eliminate a player."""
+    room_code = request.form.get("room_code", "").strip().upper()
+    target_name = request.form.get("target", "").strip()
+    player_token = request.form.get("player_token", "").strip()
+    
+    if not room_exists(room_code) or not target_name or not player_token:
+        return {"success": False}
+    
+    game = get_room(room_code)
+    voter = Player.query.filter_by(game_id=game.game_id, player_token=player_token).first()
+    target = Player.query.filter_by(game_id=game.game_id, name=target_name).first()
+    
+    if voter and target and not voter.was_voted_out and not target.was_voted_out:
+        from models import Vote
+        vote = Vote(
+            game_id=game.game_id,
+            voter_id=voter.player_id,
+            target_id=target.player_id
+        )
+        db.session.add(vote)
+        db.session.commit()
+        return {"success": True, "voter": voter.name, "target": target_name}
+    
+    return {"success": False}

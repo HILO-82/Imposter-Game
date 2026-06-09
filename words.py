@@ -15,7 +15,7 @@ def _load_words():
     with open(WORDS_PATH, encoding="utf-8") as f:
         entries = json.load(f)
     for entry in entries:
-        lookup[entry["word"]] = entry
+        lookup[entry["word"].strip().lower()] = entry
         cat_map[entry["category"]] = entry["category_id"]
     _WORD_LOOKUP = lookup
     _CATEGORY_TO_ID = cat_map

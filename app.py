@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 
 from config import Config
-from extensions import db
+from extensions import db, socketio
 from models import Word
 from routes.game import game_bp
 from routes.lobby import lobby_bp
@@ -20,7 +20,7 @@ def create_app(config_class=Config):
     app.register_blueprint(lobby_bp)
     app.register_blueprint(game_bp)
 
-    socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+    socketio.init_app(app, cors_allowed_origins="*", async_mode='eventlet')
     register_socketio_events(socketio)
 
     with app.app_context():

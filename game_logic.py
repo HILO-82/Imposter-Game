@@ -3,6 +3,7 @@ from collections import Counter
 
 from extensions import db
 from models import Game, Player, Round, Vote
+from room_manager import generate_room_code
 from words import lookup_word, random_word
 
 
@@ -32,8 +33,9 @@ def assign_roles(players_data, imposter_count, jester_count):
     for _ in range(min(imposter_count, n)):
         roles[indices[idx]] = "imposter"
         idx += 1
-    if jester_count > 0 and idx < n:
+    for _ in range(min(jester_count, n - idx)):
         roles[indices[idx]] = "jester"
+        idx += 1
     for i, p in enumerate(players_data):
         p["role"] = roles[i]
     return players_data
@@ -51,6 +53,7 @@ def create_game_from_setup(setup):
 
     players = setup["players"]
     game = Game(
+        room_code=generate_room_code(),
         num_players=len(players),
         secret_word=secret,
         category=category,

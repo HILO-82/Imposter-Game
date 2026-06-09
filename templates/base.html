@@ -26,10 +26,78 @@
         });
         
         socket.on('player_joined', function(data) {
-            console.log('Player joined:', data);
-            // Refresh the page to show updated player list
-            if (document.querySelector('[data-phase="room_lobby"]')) {
-                location.reload();
+            console.log('Socket: player_joined event received', data);
+            // If on room lobby, update player list incrementally without full reload
+            const roomLobbyDiv = document.querySelector('[data-phase="room_lobby"]');
+            console.log('Room lobby div found:', !!roomLobbyDiv);
+            
+            if (roomLobbyDiv) {
+                // Find the player list container - it should have class space-y-2
+                const playerList = roomLobbyDiv.querySelector('.space-y-2');
+                console.log('Player list container found:', !!playerList);
+                
+                if (playerList) {
+                    // Add data-player-name to existing players if not already there
+                    const existingPlayerDivs = playerList.querySelectorAll('div.flex.items-center.justify-between');
+                    existingPlayerDivs.forEach(div => {
+                        const nameSpan = div.querySelector('.font-semibold');
+                        if (nameSpan && !div.hasAttribute('data-player-name')) {
+                            div.setAttribute('data-player-name', nameSpan.textContent.trim());
+                        }
+                    });
+                    
+                    // Check if player already exists
+                    let playerExists = false;
+                    const allPlayers = playerList.querySelectorAll('[data-player-name]');
+                    allPlayers.forEach(p => {
+                        if (p.getAttribute('data-player-name') === data.player_name) {
+                            playerExists = true;
+                        }
+                    });
+                    
+                    console.log('Player already exists:', playerExists);
+                    
+                    // If not exists, add new player to list
+                    if (!playerExists) {
+                        const playerDiv = document.createElement('div');
+                        playerDiv.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+                        playerDiv.setAttribute('data-player-name', data.player_name);
+                        playerDiv.innerHTML = `
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full" style="background-color: ${data.player_color || '#ff0000'}"></div>
+                                <span class="font-semibold">${data.player_name}</span>
+                                ${data.is_bot ? '<span class="text-gray-500 text-sm"><i class="fas fa-robot"></i> AI Bot</span>' : ''}
+                            </div>
+                        `;
+                        
+                        // Remove "No players yet" message if it exists
+                        const noPlayersMsg = playerList.querySelector('p.text-gray-500');
+                        if (noPlayersMsg) {
+                            noPlayersMsg.remove();
+                        }
+                        
+                        playerList.appendChild(playerDiv);
+                        console.log('Player added to list');
+                        
+                        // Update player count display
+                        const h3s = roomLobbyDiv.querySelectorAll('h3');
+                        for (let h3 of h3s) {
+                            if (h3.textContent.includes('Players in Room')) {
+                                const match = h3.textContent.match(/\((\d+)\/(\d+)\)/);
+                                if (match) {
+                                    const currentCount = parseInt(match[1]) + 1;
+                                    const totalCount = parseInt(match[2]);
+                                    h3.textContent = `Players in Room (${currentCount}/${totalCount})`;
+                                    console.log('Updated player count to:', currentCount + '/' + totalCount);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    console.log('Player list not found, falling back to reload');
+                    location.reload();
+                }
             }
         });
         

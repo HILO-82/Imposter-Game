@@ -43,11 +43,14 @@ def register_socketio_events(socketio):
         room_code = data.get('room_code')
         player_name = data.get('player_name')
         
+        print(f"[SOCKET] join_room: {player_name} joining {room_code}")
+        
         if room_code:
             join_room(room_code)
             session['room_code'] = room_code
             session['player_name'] = player_name
             
+            print(f"[SOCKET] Joined room {room_code}, emitting player_joined for {player_name}")
             emit('player_joined', {
                 'player_name': player_name,
                 'room_code': room_code

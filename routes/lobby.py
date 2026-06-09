@@ -633,9 +633,23 @@ def join_game():
     # Clear any previous error
     session.pop("error", None)
     
-    # Emit socket event for real-time update (will be handled by client-side polling)
-    # The client will automatically reload when it detects new players
-    
+    # Notify existing clients in the room about the new player with full player data
+    try:
+        print(f"[EMIT] player_joined: {player.name} to room {room_code}")
+        socketio.emit(
+            "player_joined",
+            {
+                "player_name": player.name,
+                "player_color": player.color,
+                "is_bot": player.is_bot,
+                "room_code": room_code,
+            },
+            room=room_code,
+        )
+        print(f"[EMIT] Success: player_joined emitted for {player.name}")
+    except Exception as e:
+        print(f"[ERROR] Failed to emit player_joined: {e}")
+
     return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
 
 
@@ -664,6 +678,21 @@ def add_ai_bot_room():
     db.session.add(bot)
     game.num_players += 1
     db.session.commit()
+
+    # Notify existing clients in the room about the new AI bot with full player data
+    try:
+        socketio.emit(
+            "player_joined",
+            {
+                "player_name": bot.name,
+                "player_color": bot.color,
+                "is_bot": bot.is_bot,
+                "room_code": room_code,
+            },
+            room=room_code,
+        )
+    except Exception:
+        pass
     
     return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
 

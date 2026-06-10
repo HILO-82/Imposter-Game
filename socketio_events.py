@@ -86,34 +86,6 @@ def register_socketio_events(socketio):
                     'phase': 'role_reveal'
                 }, room=room_code)
 
-    @socketio.on('submit_clue')
-    def handle_submit_clue(data):
-        """Handle clue submission."""
-        room_code = data.get('room_code')
-        clue = data.get('clue')
-        player_name = data.get('player_name')
-        
-        if room_code and clue:
-            emit('clue_submitted', {
-                'player_name': player_name,
-                'clue': clue,
-                'room_code': room_code
-            }, room=room_code)
-
-    @socketio.on('submit_vote')
-    def handle_submit_vote(data):
-        """Handle vote submission."""
-        room_code = data.get('room_code')
-        voter_name = data.get('voter_name')
-        target_name = data.get('target_name')
-        
-        if room_code and voter_name and target_name:
-            emit('vote_submitted', {
-                'voter_name': voter_name,
-                'target_name': target_name,
-                'room_code': room_code
-            }, room=room_code)
-
     @socketio.on('clue_submitted')
     def handle_clue_submitted(data):
         """Broadcast clue submission to all players in room."""

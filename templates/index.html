@@ -287,7 +287,15 @@
                         <i class="fas fa-robot"></i> Add AI Bot
                     </button>
                 </form>
-                {% if current_player and game.players|length >= game.num_players %}
+                {% if current_player and game.players|length >= game.num_players and game.phase == 'room_lobby' and current_player.player_id == game.creator_player_id %}
+                <form action="{{ url_for('lobby.start_multiplayer_game') }}" method="POST">
+                    <input type="hidden" name="room_code" value="{{ room_code }}">
+                    <input type="hidden" name="player_token" value="{{ current_player.player_token }}">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
+                        <i class="fas fa-play"></i> Start Game
+                    </button>
+                </form>
+                {% elif current_player and game.players|length >= game.num_players and game.phase != 'room_lobby' %}
                 <a href="{{ url_for('lobby.multiplayer_role_reveal', room_code=room_code, player_token=current_player.player_token) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
                     <i class="fas fa-eye"></i> View Your Role
                 </a>
@@ -479,11 +487,6 @@
                     .then(data => {
                         if (data.success) {
                             this.reset();
-                            socket.emit('clue_submitted', {
-                                room_code: '{{ room_code }}',
-                                clue: data.clue,
-                                player: data.player
-                            });
                         }
                     });
                 });
@@ -500,11 +503,6 @@
                     .then(data => {
                         if (data.success) {
                             this.reset();
-                            socket.emit('vote_submitted', {
-                                room_code: '{{ room_code }}',
-                                voter: data.voter,
-                                target: data.target
-                            });
                         }
                     });
                 });
@@ -626,28 +624,36 @@
                                 document.getElementById('readyBtn').textContent = 'Ready!';
                                 document.getElementById('readyBtn').classList.remove('bg-green-600', 'hover:bg-green-700');
                                 document.getElementById('readyBtn').classList.add('bg-gray-400');
-                                
-                                if (data.all_ready) {
-                                    // All players ready, redirect to game
-                                    setTimeout(() => {
-                                        window.location.href = '/room/{{ room_code }}/player/{{ current_player.player_token }}';
-                                    }, 1000);
-                                } else {
-                                    // Poll for other players becoming ready
-                                    const checkReady = setInterval(() => {
-                                        fetch('/room/{{ room_code }}/player/{{ current_player.player_token }}')
-                                        .then(response => response.text())
-                                        .then(html => {
-                                            // Check if page has changed to game phase
-                                            if (html.includes('phase="game"') || !html.includes('multiplayer_role_reveal')) {
-                                                clearInterval(checkReady);
-                                                window.location.reload();
-                                            }
-                                        });
-                                    }, 2000);
-                                }
                             }
                         });
+                    });
+
+                    socket.on('player_ready', function(data) {
+                        if (data.room_code === '{{ room_code }}') {
+                            const readyList = document.querySelector('.space-y-1');
+                            if (readyList) {
+                                const items = readyList.querySelectorAll('.flex.items-center');
+                                items.forEach(item => {
+                                    const nameSpan = item.querySelector('span');
+                                    if (nameSpan && nameSpan.textContent.trim() === data.player_name) {
+                                        if (!item.querySelector('.text-green-600')) {
+                                            const check = document.createElement('span');
+                                            check.className = 'text-green-600';
+                                            check.innerHTML = '<i class="fas fa-check"></i>';
+                                            item.appendChild(check);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                    socket.on('game_phase_changed', function(data) {
+                        if (data.room_code === '{{ room_code }}' && data.phase === 'game') {
+                            setTimeout(() => {
+                                window.location.href = '/room/{{ room_code }}/player/{{ current_player.player_token }}';
+                            }, 1000);
+                        }
                     });
                 </script>
                 

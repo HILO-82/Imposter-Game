@@ -771,29 +771,11 @@ def multiplayer_role_reveal(room_code, player_token):
     
     if not current_player:
         return redirect(url_for("lobby.index"))
+
+    if game.phase == "room_lobby":
+        return redirect(url_for("lobby.player_room", room_code=room_code, player_token=player_token))
     
     players = Player.query.filter_by(game_id=game.game_id).all()
-
-    if game.phase == "room_lobby" and len(players) >= game.num_players:
-        player_data = [
-            {"name": p.name, "color": p.color, "role": "crewmate", "is_bot": p.is_bot}
-            for p in players
-        ]
-        assigned_players = assign_roles(player_data, game.imposter_count, game.jester_count)
-
-        for i, player in enumerate(players):
-            player.role = assigned_players[i]["role"]
-
-        game.phase = "role_reveal"
-        game.status = "active"
-        game.current_player_index = 0
-        db.session.commit()
-
-        socketio.emit(
-            "game_started",
-            {"room_code": room_code, "phase": "role_reveal"},
-            room=room_code,
-        )
 
     # Find the current player's index
     player_index = 0
@@ -829,6 +811,11 @@ def mark_ready():
     if player:
         player.is_ready = True
         db.session.commit()
+
+        socketio.emit("player_ready", {
+            "player_name": player.name,
+            "room_code": room_code,
+        }, room=room_code)
         
         # Check if all players are ready
         all_players = Player.query.filter_by(game_id=game.game_id).all()
@@ -837,6 +824,10 @@ def mark_ready():
         if all_ready:
             game.phase = "game"
             db.session.commit()
+            socketio.emit("game_phase_changed", {
+                "room_code": room_code,
+                "phase": "game",
+            }, room=room_code)
             return {"success": True, "all_ready": True}
         
         return {"success": True, "all_ready": False}
@@ -867,6 +858,12 @@ def submit_clue():
         )
         db.session.add(round_record)
         db.session.commit()
+
+        socketio.emit("new_clue", {
+            "room_code": room_code,
+            "clue": clue,
+            "player": player.name,
+        }, room=room_code)
         return {"success": True, "clue": clue, "player": player.name}
     
     return {"success": False}
@@ -895,6 +892,12 @@ def submit_vote():
         )
         db.session.add(vote)
         db.session.commit()
+
+        socketio.emit("new_vote", {
+            "room_code": room_code,
+            "voter": voter.name,
+            "target": target_name,
+        }, room=room_code)
         return {"success": True, "voter": voter.name, "target": target_name}
     
     return {"success": False}

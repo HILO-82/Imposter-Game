@@ -1,779 +1,580 @@
 {% extends "base.html" %}
-{% block title %}Imposter - Role Assignment{% endblock %}
+{% block title %}Imposter{% endblock %}
 {% block content %}
-        {% if phase == 'home' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <div class="text-center">
-                <h1 class="text-6xl font-bold text-purple-800 mb-4">
-                    <i class="fas fa-user-astronaut"></i> IMPOSTER
-                </h1>
-                <p class="text-xl text-gray-700 mb-8">Role Assignment System</p>
-                
-                <div class="bg-white rounded-lg p-6 mb-8">
-                    <h2 class="text-2xl font-semibold text-purple-800 mb-4">Enter Your Name</h2>
-                    {% if error %}
-                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
-                        <p class="font-bold">Error</p>
-                        <p>{{ error }}</p>
-                    </div>
-                    {% endif %}
-                    <form action="{{ url_for('lobby.login') }}" method="POST">
-                        <input type="text" name="player_name" placeholder="Enter your name" maxlength="20" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none mb-4">
-                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg w-full">
-                            <i class="fas fa-sign-in-alt"></i> Enter
-                        </button>
-                    </form>
-                </div>
-            </div>
+{% if phase == "home" %}
+<div class="game-container max-w-md mx-auto rounded-2xl shadow-2xl p-8 mt-12" style="background: rgba(255,255,255,0.95);">
+    <div class="text-center">
+        <h1 class="text-5xl font-bold text-purple-800 mb-2"><i class="fas fa-user-astronaut"></i> IMPOSTER</h1>
+        <p class="text-gray-600 mb-6">Social deduction game</p>
+        {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 text-sm">{{ error }}</div>
+        {% endif %}
+        <form action="{{ url_for('lobby.login') }}" method="POST">
+            <input type="text" name="player_name" placeholder="Enter your name" maxlength="50" value="{{ player_name }}" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none mb-4">
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg w-full"><i class="fas fa-sign-in-alt"></i> Enter</button>
+        </form>
+    </div>
+</div>
+
+{% elif phase == "hub" %}
+<div class="game-container max-w-lg mx-auto rounded-2xl shadow-2xl p-8 mt-8" style="background: rgba(255,255,255,0.95);">
+    <div class="text-center">
+        <h1 class="text-4xl font-bold text-purple-800 mb-2"><i class="fas fa-user-astronaut"></i> IMPOSTER</h1>
+        <p class="text-green-700 font-semibold mb-6">Welcome, {{ player_name }}!</p>
+        {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 text-sm">{{ error }}</div>
+        {% endif %}
+        <form action="{{ url_for('lobby.create_room_route') }}" method="POST" class="mb-4">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl w-full"><i class="fas fa-plus"></i> Create Room</button>
+        </form>
+        <hr class="my-4">
+        <form action="{{ url_for('lobby.join_room_route') }}" method="POST" class="space-y-3">
+            <input type="text" name="room_code" placeholder="Room code" maxlength="6" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none uppercase text-center tracking-widest">
+            <input type="text" name="player_name" placeholder="Your name" maxlength="50" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg w-full"><i class="fas fa-sign-in-alt"></i> Join Room</button>
+        </form>
+        <form action="{{ url_for('lobby.logout') }}" method="POST" class="mt-4">
+            <button type="submit" class="text-gray-500 hover:text-gray-700 text-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </form>
+    </div>
+</div>
+
+{% elif phase == "lobby" %}
+{% if not current_player %}
+<div class="game-container max-w-md mx-auto rounded-2xl shadow-2xl p-8 mt-8" style="background: rgba(255,255,255,0.95);">
+    <h2 class="text-2xl font-bold text-purple-800 mb-4 text-center">Join Room</h2>
+    {% if error %}
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 text-sm">{{ error }}</div>
+    {% endif %}
+    <form action="{{ url_for('lobby.join_room_route') }}" method="POST" class="space-y-3">
+        <input type="hidden" name="room_code" value="{{ room_code }}">
+        <input type="text" name="player_name" placeholder="Your name" maxlength="50" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg w-full"><i class="fas fa-sign-in-alt"></i> Join</button>
+    </form>
+</div>
+{% else %}
+<div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8" style="background: rgba(255,255,255,0.95);">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-3xl font-bold text-purple-800"><i class="fas fa-door-open"></i> Lobby</h2>
+            <div class="text-lg font-mono tracking-widest text-purple-600">Room: {{ room_code }}</div>
         </div>
-        
-        {% elif phase == 'player_hub' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <div class="text-center">
-                <h1 class="text-6xl font-bold text-purple-800 mb-4">
-                    <i class="fas fa-user-astronaut"></i> IMPOSTER
-                </h1>
-                <p class="text-xl text-gray-700 mb-8">Role Assignment System</p>
-                
-                <div class="bg-green-100 rounded-lg p-6 mb-8">
-                    <h2 class="text-2xl font-semibold text-green-800 mb-2">Welcome, {{ player_name }}!</h2>
-                    <p class="text-sm text-gray-600 mb-4">Your personal URL: <code class="bg-gray-200 px-2 py-1 rounded">{{ request.url }}</code></p>
-                    <form action="{{ url_for('lobby.logout') }}" method="POST" class="inline">
-                        <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </button>
-                    </form>
-                </div>
-                
-                <div class="bg-purple-100 rounded-xl p-6 mb-8">
-                    <h2 class="text-2xl font-semibold text-purple-800 mb-4">Setup</h2>
-                    <div class="grid md:grid-cols-3 gap-4 text-left">
-                        <div class="bg-white rounded-lg p-4">
-                            <h3 class="font-bold text-red-700 mb-2">
-                                <i class="fas fa-skull"></i> Imposter
-                            </h3>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>• Blend in with the crewmates</li>
-                                <li>• Avoid being detected during voting</li>
-                                <li>• Stop the crew before they find you</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white rounded-lg p-4">
-                            <h3 class="font-bold text-green-700 mb-2">
-                                <i class="fas fa-mask"></i> Jester
-                            </h3>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>• Try to get voted out</li>
-                                <li>• Use your role info carefully</li>
-                                <li>• Win if the town sends you away</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white rounded-lg p-4">
-                            <h3 class="font-bold text-blue-700 mb-2">
-                                <i class="fas fa-users"></i> Crewmates
-                            </h3>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>• Find the imposter</li>
-                                <li>• Use the secret word to confirm allies</li>
-                                <li>• Stay alert during discussion</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="space-y-4">
-                    <a href="{{ url_for('lobby.player_settings', player_token=player_token) }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg mb-4 inline-block">
-                        <i class="fas fa-cog"></i> Game Settings
-                    </a>
-                    
-                    <form action="{{ url_for('lobby.create_room_route') }}" method="POST" class="inline-block">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl text-xl transition-all transform hover:scale-105">
-                            <i class="fas fa-plus"></i> Create Room
-                        </button>
-                    </form>
-                    
-                    <div class="mt-4">
-                        <form action="{{ url_for('lobby.join_room_route') }}" method="POST" class="flex items-center space-x-2 justify-center">
-                            <input type="text" name="room_code" placeholder="Enter room code" maxlength="6" class="px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none uppercase text-center tracking-widest">
-                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
-                                <i class="fas fa-sign-in-alt"></i> Join Room
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <a href="{{ url_for('lobby.player_start_game', player_token=player_token) }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-xl text-xl transition-all transform hover:scale-105 inline-block mt-4">
-                        <i class="fas fa-random"></i> Local Game
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        {% elif phase == 'settings' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
-                <i class="fas fa-cog"></i> Game Settings
-            </h2>
-            
-            {% if player_token %}
-            <form action="{{ url_for('lobby.player_save_settings', player_token=player_token) }}" method="POST" class="space-y-6">
-            {% else %}
-            <form action="{{ url_for('lobby.save_settings') }}" method="POST" class="space-y-6">
-            {% endif %}
-                <div class="bg-white rounded-lg p-6">
-                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Player Configuration</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-lg font-semibold">Players:</label>
-                            <select name="player_count" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                                {% for n in range(4, 14) %}
-                                <option value="{{ n }}" {% if game_state.player_count == n %}selected{% endif %}>{{ n }} Players</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-lg font-semibold">Imposters:</label>
-                            <select name="imposter_count" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                                {% for n in range(1, 5) %}
-                                <option value="{{ n }}" {% if game_state.imposter_count == n %}selected{% endif %}>{{ n }} Imposter{% if n > 1 %}s{% endif %}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-lg font-semibold">Jester:</label>
-                            <select name="jester_count" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                                <option value="0" {% if game_state.jester_count == 0 %}selected{% endif %}>No Jester</option>
-                                <option value="1" {% if game_state.jester_count == 1 %}selected{% endif %}>1 Jester</option>
-                                <option value="2" {% if game_state.jester_count == 2 %}selected{% endif %}>2 Jesters</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-lg p-6">
-                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Secret Word Settings</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-lg font-semibold">Secret Word:</label>
-                            <div class="flex space-x-2">
-                                <input type="password" name="secret_word" placeholder="Enter secret word" value="{{ game_state.secret_word if game_state.secret_word else '' }}" class="flex-1 px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                                {% if player_token %}
-                                <a href="{{ url_for('lobby.player_generate_random_word', player_token=player_token) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" title="Generate random word">
-                                    <i class="fas fa-dice"></i>
-                                </a>
-                                {% else %}
-                                <a href="{{ url_for('lobby.generate_random_word') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" title="Generate random word">
-                                    <i class="fas fa-dice"></i>
-                                </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="text-lg font-semibold">Jester Info:</label>
-                            <select name="jester_info" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                                <option value="nothing" {% if game_state.jester_info == 'nothing' %}selected{% endif %}>Nothing</option>
-                                <option value="category" {% if game_state.jester_info == 'category' %}selected{% endif %}>Category Only</option>
-                                <option value="partial" {% if game_state.jester_info == 'partial' %}selected{% endif %}>Partial Word</option>
-                                <option value="full" {% if game_state.jester_info == 'full' %}selected{% endif %}>Full Word</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-lg font-semibold">Word Category:</label>
-                            <select name="word_category" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                                {% for category in word_categories %}
-                                <option value="{{ category }}" {% if game_state.word_category == category %}selected{% endif %}>{{ category }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-center space-x-4">
-                    {% if player_token %}
-                    <a href="{{ url_for('lobby.player_hub', player_token=player_token) }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </a>
-                    {% else %}
-                    <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </a>
-                    {% endif %}
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-save"></i> Save Settings
-                    </button>
-                </div>
-            </form>
-        </div>
-        
-        {% elif phase == 'room_lobby' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8" data-phase="room_lobby">
-            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
-                <i class="fas fa-door-open"></i> Room Lobby
-            </h2>
-            
-            <div class="bg-purple-100 rounded-xl p-6 mb-6 text-center">
-                <h3 class="text-xl font-semibold text-purple-800 mb-2">Room Code</h3>
-                <div class="text-4xl font-bold text-purple-900 tracking-widest">{{ room_code }}</div>
-                <p class="text-sm text-gray-600 mt-2">Share this code with other players</p>
-            </div>
-            
-            {% if error %}
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-                <p class="font-bold">Error</p>
-                <p>{{ error }}</p>
-            </div>
-            {% endif %}
-            
-            {% if not current_player %}
-            <div class="bg-white rounded-lg p-6 mb-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Join Game</h3>
-                <form action="{{ url_for('lobby.join_game') }}" method="POST" class="space-y-4">
-                    <input type="hidden" name="room_code" value="{{ room_code }}">
-                    <div>
-                        <label class="text-lg font-semibold">Your Name:</label>
-                        {% if session.get("player_name") %}
-                        <input type="text" name="player_name" value="{{ session.get('player_name') }}" maxlength="50" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none" readonly>
-                        <p class="text-sm text-gray-500 mt-1">Using your logged-in name</p>
-                        {% else %}
-                        <input type="text" name="player_name" placeholder="Enter your name" maxlength="50" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none">
-                        {% endif %}
-                    </div>
-                    <div>
-                        <label class="text-lg font-semibold">Your Color:</label>
-                        <input type="color" name="player_color" value="#ff0000" class="w-16 h-10 rounded cursor-pointer">
-                    </div>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-sign-in-alt"></i> Join Room
-                    </button>
-                </form>
-            </div>
-            {% endif %}
-            
-            <div class="bg-white rounded-lg p-6 mb-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Players in Room ({{ game.players|length }}/{{ game.num_players }})</h3>
-                {% if game.players %}
-                <div class="space-y-2">
-                    {% for player in game.players %}
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <a href="{{ url_for('lobby.index') }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i> Leave</a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+            {# Player list #}
+            <div class="bg-gray-50 rounded-xl p-4">
+                <h3 class="font-semibold text-lg mb-3">Players <span id="playerCount">({{ players|length }})</span></h3>
+                <div id="playerList" class="space-y-2">
+                    {% for p in players %}
+                    <div class="flex items-center justify-between p-2 bg-white rounded-lg" data-player-id="{{ p.player_id }}">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full" style="background-color: {{ player.color }}"></div>
-                            <span class="font-semibold">{{ player.name }}</span>
-                            {% if not player.is_connected %}
-                            <span class="text-red-500 text-sm">(Disconnected)</span>
-                            {% endif %}
-                            {% if player.is_bot %}
-                            <span class="text-gray-500 text-sm"><i class="fas fa-robot"></i> AI Bot</span>
-                            {% endif %}
+                            <div class="w-6 h-6 rounded-full" style="background: {{ p.color }}"></div>
+                            <span class="font-medium">{{ p.name }}</span>
+                            {% if p.is_bot %}<span class="text-xs bg-gray-200 px-2 py-0.5 rounded"><i class="fas fa-robot"></i> Bot</span>{% endif %}
                         </div>
-                        {% if player.player_token and not player.is_bot %}
-                        <a href="{{ url_for('lobby.player_room', room_code=room_code, player_token=player.player_token) }}" class="text-sm text-purple-600 hover:text-purple-800">
-                            <i class="fas fa-link"></i> Your Link
-                        </a>
-                        {% endif %}
+                        <div class="flex items-center space-x-2">
+                            {% if p.is_connected %}<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>{% else %}<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>{% endif %}
+                            {% if p.is_ready %}<span class="text-green-600"><i class="fas fa-check-circle"></i></span>{% endif %}
+                            {% if p.was_voted_out %}<span class="text-red-500 text-sm">Eliminated</span>{% endif %}
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
-                {% else %}
-                <p class="text-gray-500">No players yet. Be the first to join!</p>
-                {% endif %}
             </div>
-            
-            <div class="flex justify-center space-x-4">
-                <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
-                    <i class="fas fa-arrow-left"></i> Leave Room
-                </a>
-                <form action="{{ url_for('lobby.add_ai_bot_room') }}" method="POST">
-                    <input type="hidden" name="room_code" value="{{ room_code }}">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-robot"></i> Add AI Bot
-                    </button>
-                </form>
-                {% if current_player and game.players|length >= game.num_players and game.phase == 'room_lobby' and current_player.player_id == game.creator_player_id %}
-                <form action="{{ url_for('lobby.start_multiplayer_game') }}" method="POST">
-                    <input type="hidden" name="room_code" value="{{ room_code }}">
-                    <input type="hidden" name="player_token" value="{{ current_player.player_token }}">
-                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-play"></i> Start Game
-                    </button>
-                </form>
-                {% elif current_player and game.players|length >= game.num_players and game.phase != 'room_lobby' %}
-                <a href="{{ url_for('lobby.multiplayer_role_reveal', room_code=room_code, player_token=current_player.player_token) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
-                    <i class="fas fa-eye"></i> View Your Role
-                </a>
-                {% else %}
-                <div class="flex items-center px-4 py-2 bg-white rounded-lg text-sm text-gray-700">
-                    Waiting for players to join... ({{ game.players|length }}/{{ game.num_players }})
+
+            {# Chat #}
+            <div class="bg-gray-50 rounded-xl p-4">
+                <h3 class="font-semibold text-lg mb-3"><i class="fas fa-comments"></i> Chat</h3>
+                <div id="chatMessages" class="h-40 overflow-y-auto mb-3 space-y-1 text-sm bg-white rounded-lg p-3">
+                    {% for m in messages %}
+                    <div><span class="font-semibold" style="color:{{ m.player.color }}">{{ m.player.name }}:</span> {{ m.content }}</div>
+                    {% endfor %}
                 </div>
-                {% endif %}
+                <form id="chatForm" class="flex space-x-2">
+                    <input type="text" id="chatInput" placeholder="Type a message..." maxlength="500" class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none text-sm">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-paper-plane"></i></button>
+                </form>
             </div>
         </div>
-        <script>
-            const _roomLobbyCode = '{{ room_code }}';
-            const _roomLobbyPlayerName = '{{ current_player.name if current_player else session.get("player_name", "") }}';
 
-            function _joinRoomLobby() {
-                if (!_roomLobbyCode || !_roomLobbyPlayerName) {
-                    return;
-                }
-                if (socket.connected) {
-                    socket.emit('join_room', {
-                        room_code: _roomLobbyCode,
-                        player_name: _roomLobbyPlayerName,
-                    });
-                }
-            }
+        <div class="space-y-4">
+            {# Creator controls #}
+            {% if current_player.player_id == game.creator_player_id and game.phase == "lobby" %}
+            <div class="bg-purple-50 rounded-xl p-4">
+                <h3 class="font-semibold text-lg mb-3"><i class="fas fa-cog"></i> Settings</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-sm font-medium">Imposters</label>
+                        <select id="imposterCount" class="w-full px-3 py-1.5 border-2 border-purple-300 rounded-lg text-sm">
+                            {% for n in range(1,5) %}<option value="{{ n }}" {% if game.imposter_count == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Jesters</label>
+                        <select id="jesterCount" class="w-full px-3 py-1.5 border-2 border-purple-300 rounded-lg text-sm">
+                            {% for n in range(0,3) %}<option value="{{ n }}" {% if game.jester_count == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Jester Info</label>
+                        <select id="jesterInfo" class="w-full px-3 py-1.5 border-2 border-purple-300 rounded-lg text-sm">
+                            <option value="nothing" {% if game.jester_info == 'nothing' %}selected{% endif %}>Nothing</option>
+                            <option value="category" {% if game.jester_info == 'category' %}selected{% endif %}>Category</option>
+                            <option value="partial" {% if game.jester_info == 'partial' %}selected{% endif %}>Partial</option>
+                            <option value="full" {% if game.jester_info == 'full' %}selected{% endif %}>Full</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Category</label>
+                        <select id="wordCategory" class="w-full px-3 py-1.5 border-2 border-purple-300 rounded-lg text-sm">
+                            {% for c in word_categories %}<option value="{{ c }}" {% if game.category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <button id="saveSettingsBtn" class="w-full bg-gray-600 hover:bg-gray-700 text-white text-sm py-1.5 rounded-lg"><i class="fas fa-save"></i> Save</button>
+                </div>
+            </div>
 
-            socket.on('connect', _joinRoomLobby);
-            _joinRoomLobby();
-        </script>
-        
-        {% elif phase == 'setup' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
-                <i class="fas fa-user-plus"></i> Add Players
-            </h2>
-            
-            {% if player_token %}
-            <form action="{{ url_for('lobby.player_assign_roles_route', player_token=player_token) }}" method="POST" class="space-y-3 mb-6" id="playerSetupForm">
+            <button id="addAiBotBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg"><i class="fas fa-robot"></i> Add AI Bot</button>
+            <button id="startGameBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg"><i class="fas fa-play"></i> Start Game</button>
+
             {% else %}
-            <form action="{{ url_for('lobby.assign_roles_route') }}" method="POST" class="space-y-3 mb-6" id="playerSetupForm">
+            <div class="bg-yellow-50 rounded-xl p-4 text-center">
+                <p class="text-yellow-800 font-semibold">Waiting for the host to start the game...</p>
+                <p class="text-sm text-yellow-600 mt-2">Players: {{ players|length }}</p>
+            </div>
             {% endif %}
-                {% for i in range(1, game_state.player_count + 1) %}
-                {% set saved = game_state.saved_player_inputs.get(i|string, {}) if game_state.saved_player_inputs else {} %}
-                <div class="flex items-center space-x-3">
-                    <label class="font-semibold w-24">Player {{ i }}:</label>
-                    <input type="text" name="player{{ i }}" placeholder="Enter name" maxlength="50"
-                        value="{{ saved.get('name', '') }}"
-                        class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none">
-                    <input type="color" name="color{{ i }}" value="{{ saved.get('color', '#ff0000') }}" class="w-12 h-10 rounded cursor-pointer">
-                </div>
-                {% endfor %}
-                
-                <div class="flex justify-center flex-wrap gap-4 mt-6">
-                    {% if player_token %}
-                    <a href="{{ url_for('lobby.player_hub', player_token=player_token) }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </a>
-                    {% else %}
-                    <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </a>
-                    {% endif %}
-                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-random"></i> Assign Roles
-                    </button>
-                </div>
-            </form>
+
+            {# Ready toggle for non-creator #}
+            {% if current_player.player_id != game.creator_player_id %}
+            <button id="readyBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-lg"><i class="fas fa-check"></i> I'm Ready</button>
+            {% endif %}
         </div>
-        
-        {% elif phase == 'game' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
-                <i class="fas fa-gamepad"></i> Game in Progress
-            </h2>
-            
-            <div class="bg-purple-100 rounded-xl p-6 mb-6 text-center">
-                <h3 class="text-xl font-semibold text-purple-800 mb-2">Room Code</h3>
-                <div class="text-4xl font-bold text-purple-900 tracking-widest">{{ room_code }}</div>
-                <p class="text-sm text-gray-600 mt-2">Round {{ game.round_number }}</p>
-            </div>
-            
-            {% if current_player %}
-            <div class="bg-white rounded-lg p-6 mb-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Your Role</h3>
-                <div class="text-center">
-                    {% if current_player.role == 'imposter' %}
-                    <div class="text-4xl mb-2">
-                        <i class="fas fa-skull text-red-600"></i>
-                    </div>
-                    <div class="text-2xl font-bold text-red-600">IMPOSTER</div>
-                    <p class="text-gray-600 mt-2">Eliminate all crewmates to win!</p>
-                    {% elif current_player.role == 'jester' %}
-                    <div class="text-4xl mb-2">
-                        <i class="fas fa-mask text-green-600"></i>
-                    </div>
-                    <div class="text-2xl font-bold text-green-600">JESTER</div>
-                    <p class="text-gray-600 mt-2">Get voted out to win!</p>
-                    {% else %}
-                    <div class="text-4xl mb-2">
-                        <i class="fas fa-user-astronaut text-blue-600"></i>
-                    </div>
-                    <div class="text-2xl font-bold text-blue-600">CREWMATE</div>
-                    <div class="bg-blue-100 rounded-lg p-4 mt-4 inline-block">
-                        <p class="text-blue-800 font-semibold">Secret Word: {{ game.secret_word }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
-            
-            <div class="bg-white rounded-lg p-6 mb-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Players</h3>
-                <div class="space-y-2">
-                    {% for player in players %}
-                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                        <div class="w-8 h-8 rounded-full" style="background-color: {{ player.color }}"></div>
-                        <span class="font-semibold">{{ player.name }}</span>
-                        {% if player.was_voted_out %}
-                        <span class="text-red-500 text-sm">(Eliminated)</span>
-                        {% endif %}
-                        {% if player.is_bot %}
-                        <span class="text-gray-500 text-sm"><i class="fas fa-robot"></i> AI Bot</span>
-                        {% endif %}
+    </div>
+</div>
+
+<script>
+const ROOM_CODE = '{{ room_code }}';
+const PLAYER_TOKEN = '{{ current_player.player_token }}';
+const IS_CREATOR = {{ 'true' if current_player.player_id == game.creator_player_id else 'false' }};
+
+function joinSocketRoom() {
+    if (socket.connected) {
+        socket.emit('join_room', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    }
+}
+socket.on('connect', joinSocketRoom);
+joinSocketRoom();
+
+socket.on('players_updated', function(data) {
+    const list = document.getElementById('playerList');
+    const count = document.getElementById('playerCount');
+    list.innerHTML = '';
+    data.players.forEach(function(p) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between p-2 bg-white rounded-lg';
+        div.innerHTML = '<div class="flex items-center space-x-3"><div class="w-6 h-6 rounded-full" style="background:' + p.color + '"></div><span class="font-medium">' + p.name + '</span>' + (p.is_bot ? '<span class="text-xs bg-gray-200 px-2 py-0.5 rounded"><i class="fas fa-robot"></i> Bot</span>' : '') + '</div><div class="flex items-center space-x-2">' + (p.is_connected ? '<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>' : '<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>') + (p.is_ready ? '<span class="text-green-600"><i class="fas fa-check-circle"></i></span>' : '') + (p.was_voted_out ? '<span class="text-red-500 text-sm">Eliminated</span>' : '') + '</div>';
+        list.appendChild(div);
+    });
+    count.textContent = '(' + data.players.length + ')';
+});
+
+socket.on('chat_message', function(data) {
+    const container = document.getElementById('chatMessages');
+    const msg = document.createElement('div');
+    msg.innerHTML = '<span class="font-semibold" style="color:' + (data.player_color || '#000') + '">' + data.player_name + ':</span> ' + data.message;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+});
+
+socket.on('settings_updated', function(data) {
+    document.getElementById('imposterCount').value = data.imposter_count;
+    document.getElementById('jesterCount').value = data.jester_count;
+    document.getElementById('jesterInfo').value = data.jester_info;
+    document.getElementById('wordCategory').value = data.category;
+});
+
+socket.on('game_starting', function() { location.reload(); });
+
+if (document.getElementById('chatForm')) {
+    document.getElementById('chatForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('chatInput');
+        const msg = input.value.trim();
+        if (msg) {
+            socket.emit('chat_message', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN, message: msg });
+            input.value = '';
+        }
+    });
+}
+
+if (document.getElementById('readyBtn')) {
+    document.getElementById('readyBtn').addEventListener('click', function() {
+        socket.emit('toggle_ready', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    });
+}
+
+if (document.getElementById('addAiBotBtn')) {
+    document.getElementById('addAiBotBtn').addEventListener('click', function() {
+        socket.emit('add_ai_bot', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    });
+}
+
+if (document.getElementById('saveSettingsBtn')) {
+    document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+        socket.emit('update_settings', {
+            room_code: ROOM_CODE,
+            player_token: PLAYER_TOKEN,
+            settings: {
+                imposter_count: parseInt(document.getElementById('imposterCount').value),
+                jester_count: parseInt(document.getElementById('jesterCount').value),
+                jester_info: document.getElementById('jesterInfo').value,
+                category: document.getElementById('wordCategory').value,
+            }
+        });
+    });
+}
+
+if (document.getElementById('startGameBtn')) {
+    document.getElementById('startGameBtn').addEventListener('click', function() {
+        socket.emit('start_game', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    });
+}
+
+// Scroll chat to bottom
+const chatContainer = document.getElementById('chatMessages');
+if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
+{% endif %}
+
+{% elif phase == "role_reveal" %}
+<div class="game-container max-w-lg mx-auto rounded-2xl shadow-2xl p-8 mt-8" style="background: rgba(255,255,255,0.95);">
+    <div class="text-center">
+        <h2 class="text-3xl font-bold text-purple-800 mb-6"><i class="fas fa-eye"></i> Your Role</h2>
+
+        {% set role = current_player.role %}
+        {% if role == "imposter" %}
+        <div class="text-6xl mb-4"><i class="fas fa-skull text-red-600"></i></div>
+        <div class="text-4xl font-bold text-red-600 mb-4">IMPOSTER</div>
+        <p class="text-red-600 mb-4">Eliminate all crewmates to win!</p>
+        <p class="text-gray-500 text-sm">You don't know the secret word</p>
+        {% elif role == "jester" %}
+        <div class="text-6xl mb-4"><i class="fas fa-mask text-green-600"></i></div>
+        <div class="text-4xl font-bold text-green-600 mb-4">JESTER</div>
+        <p class="text-green-600 mb-4">Get voted out to win!</p>
+        <div class="bg-yellow-100 rounded-lg p-4 mt-4">
+            <p class="text-yellow-800 font-semibold">
+                {% if game.jester_info == "nothing" %}No word information
+                {% elif game.jester_info == "category" %}Category: {{ game.category }}
+                {% elif game.jester_info == "partial" %}Partial word: {{ game.secret_word[:3] }}...
+                {% elif game.jester_info == "full" %}Full word: {{ game.secret_word }}
+                {% endif %}
+            </p>
+        </div>
+        {% else %}
+        <div class="text-6xl mb-4"><i class="fas fa-user-astronaut text-blue-600"></i></div>
+        <div class="text-4xl font-bold text-blue-600 mb-4">CREWMATE</div>
+        <p class="text-blue-600 mb-4">Find the imposter!</p>
+        <div class="bg-blue-100 rounded-lg p-4 mt-4">
+            <p class="text-blue-800 font-semibold">Secret Word: {{ game.secret_word }}</p>
+        </div>
+        {% endif %}
+
+        <hr class="my-6">
+
+        <div class="space-y-3">
+            <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold mb-2">Players</h4>
+                <div id="readyList" class="space-y-1 text-sm">
+                    {% for p in players %}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-4 h-4 rounded-full" style="background:{{ p.color }}"></div>
+                            <span>{{ p.name }}</span>
+                        </div>
+                        <span id="ready-{{ p.player_id }}">{% if p.is_ready %}<i class="fas fa-check text-green-600"></i>{% endif %}</span>
                     </div>
                     {% endfor %}
                 </div>
             </div>
-            
+
+            <button id="readyBtnRole" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg">
+                <i class="fas fa-check"></i> I'm Ready
+            </button>
+
+            <p class="text-gray-500 text-sm text-center">Waiting for all players to be ready...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+const ROOM_CODE = '{{ room_code }}';
+const PLAYER_TOKEN = '{{ current_player.player_token }}';
+
+function joinSocketRoom() {
+    if (socket.connected) {
+        socket.emit('join_room', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    }
+}
+socket.on('connect', joinSocketRoom);
+joinSocketRoom();
+
+socket.on('players_updated', function(data) {
+    const list = document.getElementById('readyList');
+    list.innerHTML = '';
+    data.players.forEach(function(p) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between';
+        div.innerHTML = '<div class="flex items-center space-x-2"><div class="w-4 h-4 rounded-full" style="background:' + p.color + '"></div><span>' + p.name + '</span></div><span>' + (p.is_ready ? '<i class="fas fa-check text-green-600"></i>' : '') + '</span>';
+        list.appendChild(div);
+    });
+});
+
+socket.on('phase_changed', function(data) {
+    if (data.phase === 'clue' || data.phase === 'vote') {
+        location.reload();
+    }
+});
+
+socket.on('game_starting', function() { location.reload(); });
+
+document.getElementById('readyBtnRole').addEventListener('click', function() {
+    socket.emit('toggle_ready', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    this.disabled = true;
+    this.textContent = 'Ready!';
+    this.classList.remove('bg-green-600', 'hover:bg-green-700');
+    this.classList.add('bg-gray-400', 'cursor-default');
+});
+</script>
+
+{% elif phase == "game" %}
+<div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8" style="background: rgba(255,255,255,0.95);">
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            <h2 class="text-2xl font-bold text-purple-800"><i class="fas fa-gamepad"></i> Round {{ game.round_number }}</h2>
+            <span class="text-sm text-gray-600">Room: {{ room_code }}</span>
+        </div>
+        <div class="text-right">
+            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                {% if game.phase == 'clue' %}bg-blue-100 text-blue-800
+                {% else %}bg-red-100 text-red-800{% endif %}">
+                {{ game.phase|upper }}
+            </span>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
             {% if current_player and not current_player.was_voted_out %}
-            <div class="bg-white rounded-lg p-6 mb-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Submit Clue</h3>
-                <form id="clueForm" action="{{ url_for('lobby.submit_clue') }}" method="POST">
-                    <input type="hidden" name="room_code" value="{{ room_code }}">
-                    <input type="hidden" name="player_token" value="{{ current_player.player_token }}">
-                    <input type="text" name="clue" placeholder="Enter your clue" maxlength="100" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none mb-4">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-paper-plane"></i> Submit Clue
-                    </button>
+            {# Clue form #}
+            {% if game.phase == "clue" %}
+            <div class="bg-blue-50 rounded-xl p-4">
+                <h3 class="font-semibold mb-2">Submit a Clue</h3>
+                <p class="text-xs text-gray-500 mb-2">Give a one-word hint about the secret word (don't say the word!)</p>
+                <form id="clueForm" class="flex space-x-2">
+                    <input type="text" id="clueInput" placeholder="Your clue" maxlength="100" class="flex-1 px-3 py-2 border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
             {% endif %}
-            
-            <div class="bg-white rounded-lg p-6 mb-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Recent Clues</h3>
-                <div id="cluesList" class="space-y-2">
-                    {% if existing_clues %}
-                    {% for clue in existing_clues %}
-                    <div class="p-2 bg-blue-50 rounded">
-                        <strong>{{ clue.player.name }}:</strong> {{ clue.clue_given }}
-                    </div>
-                    {% endfor %}
-                    {% else %}
-                    <p class="text-gray-500">No clues yet...</p>
-                    {% endif %}
-                </div>
-            </div>
-            
-            {% if current_player and not current_player.was_voted_out %}
-            <div class="bg-white rounded-lg p-6">
-                <h3 class="text-xl font-semibold text-purple-800 mb-4">Vote to Eliminate</h3>
-                <form id="voteForm" action="{{ url_for('lobby.submit_vote') }}" method="POST">
-                    <input type="hidden" name="room_code" value="{{ room_code }}">
-                    <input type="hidden" name="player_token" value="{{ current_player.player_token }}">
-                    <select name="target" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none mb-4">
-                        <option value="">Select a player to vote for</option>
-                        {% for player in players %}
-                        {% if not player.was_voted_out and player.name != current_player.name %}
-                        <option value="{{ player.name }}">{{ player.name }}</option>
+
+            {# Vote form #}
+            {% if game.phase == "vote" %}
+            <div class="bg-red-50 rounded-xl p-4">
+                <h3 class="font-semibold mb-2">Vote to Eliminate</h3>
+                <form id="voteForm" class="space-y-2">
+                    <select id="voteTarget" class="w-full px-3 py-2 border-2 border-red-300 rounded-lg">
+                        <option value="">Select a player...</option>
+                        {% for p in players %}
+                        {% if not p.was_voted_out and p.player_id != current_player.player_id %}
+                        <option value="{{ p.player_id }}">{{ p.name }}{% if p.is_bot %} (Bot){% endif %}</option>
                         {% endif %}
                         {% endfor %}
                     </select>
-                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg">
-                        <i class="fas fa-vote-yea"></i> Vote
-                    </button>
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg w-full"><i class="fas fa-gavel"></i> Vote</button>
                 </form>
             </div>
             {% endif %}
-            
-            <script>
-                // Handle clue submission
-                document.getElementById('clueForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-                    fetch(this.action, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.reset();
-                        }
-                    });
-                });
-                
-                // Handle vote submission
-                document.getElementById('voteForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-                    fetch(this.action, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.reset();
-                        }
-                    });
-                });
-                
-                // Listen for new clues
-                socket.on('new_clue', function(data) {
-                    if (data.room_code === '{{ room_code }}') {
-                        const cluesList = document.getElementById('cluesList');
-                        if (cluesList.querySelector('p')) {
-                            cluesList.innerHTML = '';
-                        }
-                        const clueDiv = document.createElement('div');
-                        clueDiv.className = 'p-2 bg-blue-50 rounded';
-                        clueDiv.innerHTML = `<strong>${data.player}:</strong> ${data.clue}`;
-                        cluesList.appendChild(clueDiv);
-                    }
-                });
-                
-                // Listen for new votes
-                socket.on('new_vote', function(data) {
-                    if (data.room_code === '{{ room_code }}') {
-                        alert(`${data.voter} voted for ${data.target}`);
-                    }
-                });
-            </script>
-        </div>
-        
-        {% elif phase == 'multiplayer_role_reveal' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
-                <i class="fas fa-eye"></i> Your Role
-            </h2>
-            
-            <div class="text-center">
-                {% set current_player_obj = players[current_player_index] if players|length > current_player_index else none %}
-                {% if current_player_obj %}
-                {% set is_imposter = current_player_obj.role == 'imposter' %}
-                {% set is_jester = current_player_obj.role == 'jester' %}
-                
-                <div class="slide-in">
-                    <h3 class="text-2xl font-bold mb-4">{{ current_player_obj.name }}</h3>
-                    
-                    <div class="mt-6">
-                        {% if is_imposter %}
-                        <div class="text-6xl mb-4">
-                            <i class="fas fa-skull text-red-600"></i>
-                        </div>
-                        <div class="text-3xl font-bold mb-6 text-red-600">IMPOSTER</div>
-                        <p class="text-red-600">Eliminate all crewmates to win!</p>
-                        <p class="text-gray-500 mt-4">You don't know the secret word</p>
-                        
-                        {% elif is_jester %}
-                        <div class="text-6xl mb-4">
-                            <i class="fas fa-mask text-green-600"></i>
-                        </div>
-                        <div class="text-3xl font-bold mb-6 text-green-600">JESTER</div>
-                        <p class="text-green-600">Get voted out to win!</p>
-                        <div class="bg-yellow-100 rounded-lg p-4 mt-4">
-                            <p class="text-yellow-800 font-semibold">
-                                {% if game.jester_info == 'nothing' %}No word information
-                                {% elif game.jester_info == 'category' %}Category: {{ game.category }}
-                                {% elif game.jester_info == 'partial' %}Partial word: {{ game.secret_word[:3] }}...
-                                {% elif game.jester_info == 'full' %}Full word: {{ game.secret_word }}
-                                {% endif %}
-                            </p>
-                        </div>
-                        
-                        {% else %}
-                        <div class="text-6xl mb-4">
-                            <i class="fas fa-user-astronaut text-blue-600"></i>
-                        </div>
-                        <div class="text-3xl font-bold mb-6 text-blue-600">CREWMATE</div>
-                        <p class="text-blue-600">Find the imposter!</p>
-                        <div class="bg-blue-100 rounded-lg p-4 mt-4">
-                            <p class="text-blue-800 font-semibold">Secret Word: {{ game.secret_word }}</p>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                <div class="mt-8">
-                    <form id="readyForm" action="{{ url_for('lobby.mark_ready') }}" method="POST">
-                        <input type="hidden" name="room_code" value="{{ room_code }}">
-                        <input type="hidden" name="player_token" value="{{ current_player.player_token }}">
-                        <button type="submit" id="readyBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-xl">
-                            <i class="fas fa-check"></i> I'm Ready
-                        </button>
-                    </form>
-                    
-                    <p class="text-lg mb-4 mt-6">Waiting for all players to view their roles...</p>
-                    <div class="bg-gray-100 rounded-lg p-4">
-                        <h4 class="font-semibold mb-2">Players Ready:</h4>
-                        <div class="space-y-1">
-                            {% for player in players %}
-                            <div class="flex items-center space-x-2">
-                                <div class="w-4 h-4 rounded-full" style="background-color: {{ player.color }}"></div>
-                                <span>{{ player.name }}</span>
-                                {% if player.is_ready %}
-                                <span class="text-green-600"><i class="fas fa-check"></i></span>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                
-                <script>
-                    document.getElementById('readyForm').addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const formData = new FormData(this);
-                        fetch(this.action, {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                document.getElementById('readyBtn').disabled = true;
-                                document.getElementById('readyBtn').textContent = 'Ready!';
-                                document.getElementById('readyBtn').classList.remove('bg-green-600', 'hover:bg-green-700');
-                                document.getElementById('readyBtn').classList.add('bg-gray-400');
-                            }
-                        });
-                    });
+            {% endif %}
 
-                    socket.on('player_ready', function(data) {
-                        if (data.room_code === '{{ room_code }}') {
-                            const readyList = document.querySelector('.space-y-1');
-                            if (readyList) {
-                                const items = readyList.querySelectorAll('.flex.items-center');
-                                items.forEach(item => {
-                                    const nameSpan = item.querySelector('span');
-                                    if (nameSpan && nameSpan.textContent.trim() === data.player_name) {
-                                        if (!item.querySelector('.text-green-600')) {
-                                            const check = document.createElement('span');
-                                            check.className = 'text-green-600';
-                                            check.innerHTML = '<i class="fas fa-check"></i>';
-                                            item.appendChild(check);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
+            {% if current_player.was_voted_out %}
+            <div class="bg-gray-100 rounded-xl p-4 text-center">
+                <p class="text-lg font-semibold text-gray-600"><i class="fas fa-skull"></i> You have been eliminated</p>
+            </div>
+            {% endif %}
 
-                    socket.on('game_phase_changed', function(data) {
-                        if (data.room_code === '{{ room_code }}' && data.phase === 'game') {
-                            setTimeout(() => {
-                                window.location.href = '/room/{{ room_code }}/player/{{ current_player.player_token }}';
-                            }, 1000);
-                        }
-                    });
-                </script>
-                
-                {% else %}
-                <p class="text-red-600">Player not found</p>
-                {% endif %}
+            {# Clues display #}
+            <div class="bg-gray-50 rounded-xl p-4">
+                <h3 class="font-semibold mb-3">Clues This Round</h3>
+                <div id="cluesList" class="space-y-1 text-sm">
+                    {% for pid, clue in clues.items() %}
+                    {% set p = players|selectattr("player_id", "equalto", pid)|first %}
+                    {% if p %}
+                    <div class="p-2 bg-white rounded"><span class="font-semibold" style="color:{{ p.color }}">{{ p.name }}:</span> {{ clue }}</div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# Chat #}
+            <div class="bg-gray-50 rounded-xl p-4">
+                <h3 class="font-semibold mb-2"><i class="fas fa-comments"></i> Chat</h3>
+                <div id="gameChat" class="h-32 overflow-y-auto mb-2 space-y-1 text-sm bg-white rounded-lg p-3">
+                    {% for m in messages %}
+                    <div><span class="font-semibold" style="color:{{ m.player.color }}">{{ m.player.name }}:</span> {{ m.content }}</div>
+                    {% endfor %}
+                </div>
+                <form id="gameChatForm" class="flex space-x-2">
+                    <input type="text" id="gameChatInput" placeholder="Chat..." maxlength="500" class="flex-1 px-3 py-1.5 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none text-sm">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-paper-plane"></i></button>
+                </form>
             </div>
         </div>
-        
-        {% elif phase == 'role_reveal' %}
-        <div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
-            <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
-                <i class="fas fa-eye"></i> Role Assignment
-            </h2>
-            
-            <div id="roleReveal" class="text-center">
-                {% if game_state.current_player_index < game_state.players|length %}
-                {% set player = game_state.players[game_state.current_player_index] %}
-                {% set is_imposter = player.role == 'imposter' %}
-                {% set is_jester = player.role == 'jester' %}
-                {% set is_bot = player.get('is_bot', false) %}
-                
-                {% if not game_state.role_revealed %}
-                <div class="slide-in">
-                    <h3 class="text-2xl font-bold mb-4">
-                        {% if is_bot %}<i class="fas fa-robot text-gray-700"></i> {% endif %}{{ player.name }}
-                    </h3>
-                    <p class="text-lg mb-6 text-gray-600">
-                        {% if is_bot %}
-                        AI Bot — click below to reveal its assigned role.
-                        {% else %}
-                        Pass the device to {{ player.name }} and click below to reveal their role.
-                        {% endif %}
-                    </p>
-                    {% if player_token %}
-                    <a href="{{ url_for('lobby.player_reveal_role', player_token=player_token) }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg mb-6 inline-block">
-                        <i class="fas fa-eye"></i> Reveal Role
-                    </a>
-                    {% else %}
-                    <a href="{{ url_for('lobby.reveal_role') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg mb-6 inline-block">
-                        <i class="fas fa-eye"></i> Reveal Role
-                    </a>
-                    {% endif %}
+
+        {# Sidebar: Players #}
+        <div class="bg-gray-50 rounded-xl p-4 h-fit">
+            <h3 class="font-semibold mb-3">Players</h3>
+            <div id="gamePlayerList" class="space-y-2">
+                {% for p in players %}
+                <div class="flex items-center justify-between p-2 bg-white rounded-lg" data-player-id="{{ p.player_id }}">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full" style="background:{{ p.color }}"></div>
+                        <span class="text-sm font-medium">{{ p.name }}</span>
+                        {% if p.is_bot %}<span class="text-xs bg-gray-200 px-1.5 py-0.5 rounded"><i class="fas fa-robot"></i></span>{% endif %}
+                    </div>
+                    {% if p.was_voted_out %}<span class="text-xs text-red-500 font-semibold">ELIMINATED</span>{% endif %}
                 </div>
-                {% else %}
-                <div class="slide-in">
-                    <h3 class="text-2xl font-bold mb-4">
-                        {% if is_bot %}<i class="fas fa-robot text-gray-700"></i> {% endif %}{{ player.name }}
-                    </h3>
-                    {% if is_bot %}
-                    <p class="text-gray-600 mb-4">This player uses KNN to guess the word and logistic regression to vote.</p>
-                    {% endif %}
-                    {% if is_imposter %}
-                    <div class="text-6xl mb-4">
-                        <i class="fas fa-skull text-red-600"></i>
-                    </div>
-                    <div class="text-3xl font-bold mb-6 text-red-600">IMPOSTER</div>
-                    <p class="text-red-600">Eliminate all crewmates to win!</p>
-                    {% if not is_bot %}<p class="text-gray-500 mt-4">You don't know the secret word</p>{% endif %}
-                    {% elif is_jester %}
-                    <div class="text-6xl mb-4">
-                        <i class="fas fa-mask text-green-600"></i>
-                    </div>
-                    <div class="text-3xl font-bold mb-6 text-green-600">JESTER</div>
-                    <p class="text-green-600">Get voted out to win!</p>
-                    <div class="bg-yellow-100 rounded-lg p-4 mt-4">
-                        <p class="text-yellow-800 font-semibold">
-                            {% if game_state.jester_info == 'nothing' %}No word information
-                            {% elif game_state.jester_info == 'category' %}Category: {{ game_state.word_category }}
-                            {% elif game_state.jester_info == 'partial' %}Partial word: {{ game_state.secret_word[:3] }}...
-                            {% elif game_state.jester_info == 'full' %}Full word: {{ game_state.secret_word }}
-                            {% endif %}
-                        </p>
-                    </div>
-                    {% else %}
-                    <div class="text-6xl mb-4">
-                        <i class="fas fa-user-astronaut text-blue-600"></i>
-                    </div>
-                    <div class="text-3xl font-bold mb-6 text-blue-600">CREWMATE</div>
-                    <p class="text-blue-600">Find the imposter!</p>
-                    <div class="bg-blue-100 rounded-lg p-4 mt-4">
-                        <p class="text-blue-800 font-semibold">Secret Word: {{ game_state.secret_word }}</p>
-                    </div>
-                    {% endif %}
-                    {% if player_token %}
-                    <a href="{{ url_for('lobby.player_next_player', player_token=player_token) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg mt-4 inline-block">
-                        <i class="fas fa-arrow-right"></i> Next Player
-                    </a>
-                    {% else %}
-                    <a href="{{ url_for('lobby.next_player') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg mt-4 inline-block">
-                        <i class="fas fa-arrow-right"></i> Next Player
-                    </a>
-                    {% endif %}
-                </div>
-                {% endif %}
-                
-                {% else %}
-                <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-4">All Roles Assigned!</h3>
-                    <p class="text-lg mb-6">Use the current roles to continue your local game or restart if needed.</p>
-                    <div class="flex justify-center flex-wrap gap-4">
-                        {% if player_token %}
-                        <a href="{{ url_for('lobby.player_play_again', player_token=player_token) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
-                            <i class="fas fa-redo"></i> Play Again
-                        </a>
-                        <a href="{{ url_for('lobby.player_hub', player_token=player_token) }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg">
-                            <i class="fas fa-home"></i> Home
-                        </a>
-                        {% else %}
-                        <a href="{{ url_for('lobby.play_again') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg">
-                            <i class="fas fa-redo"></i> Play Again
-                        </a>
-                        <a href="{{ url_for('lobby.index') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg">
-                            <i class="fas fa-home"></i> Home
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endif %}
+                {% endfor %}
             </div>
         </div>
-        {% endif %}
+    </div>
+</div>
+
+<script>
+const ROOM_CODE = '{{ room_code }}';
+const PLAYER_TOKEN = '{{ current_player.player_token if current_player else "" }}';
+
+function joinSocketRoom() {
+    if (socket.connected && PLAYER_TOKEN) {
+        socket.emit('join_room', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
+    }
+}
+socket.on('connect', joinSocketRoom);
+if (PLAYER_TOKEN) joinSocketRoom();
+
+socket.on('clue_submitted', function(data) {
+    const list = document.getElementById('cluesList');
+    const div = document.createElement('div');
+    div.className = 'p-2 bg-white rounded';
+    div.innerHTML = '<span class="font-semibold">' + data.player_name + ':</span> ' + data.clue;
+    list.appendChild(div);
+});
+
+socket.on('vote_cast', function(data) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'bg-yellow-100 text-yellow-800 p-2 rounded text-sm text-center';
+    alertDiv.textContent = data.player_name + ' has voted.';
+    const container = document.querySelector('.md\\:col-span-2');
+    if (container) {
+        container.prepend(alertDiv);
+        setTimeout(function() { alertDiv.remove(); }, 3000);
+    }
+});
+
+socket.on('vote_results', function(data) {
+    let msg = 'Vote results are in!';
+    if (data.eliminated_player) {
+        msg = data.eliminated_player + ' has been eliminated!';
+    }
+    const div = document.createElement('div');
+    div.className = 'bg-red-100 text-red-800 p-4 rounded text-center font-bold text-lg';
+    div.textContent = msg;
+    const container = document.querySelector('.md\\:col-span-2');
+    if (container) container.prepend(div);
+});
+
+socket.on('phase_changed', function(data) {
+    if (data.phase === 'clue' || data.phase === 'vote') {
+        setTimeout(function() { location.reload(); }, 2000);
+    }
+});
+
+socket.on('game_over', function(data) {
+    const msg = data.winning_role.charAt(0).toUpperCase() + data.winning_role.slice(1) + 's win! The word was: ' + data.secret_word;
+    const div = document.createElement('div');
+    div.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50';
+    div.innerHTML = '<div class="bg-white rounded-2xl p-8 text-center max-w-md mx-4 shadow-2xl"><div class="text-5xl mb-4"><i class="fas fa-trophy text-yellow-500"></i></div><h2 class="text-3xl font-bold mb-2">' + msg + '</h2><p class="text-gray-600 mb-6">The secret word was: <strong>' + data.secret_word + '</strong></p><a href="/" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg inline-block">Play Again</a></div>';
+    document.body.appendChild(div);
+});
+
+socket.on('chat_message', function(data) {
+    const container = document.getElementById('gameChat');
+    const msg = document.createElement('div');
+    msg.innerHTML = '<span class="font-semibold" style="color:' + (data.player_color || '#000') + '">' + data.player_name + ':</span> ' + data.message;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+});
+
+socket.on('players_updated', function(data) {
+    const list = document.getElementById('gamePlayerList');
+    if (!list) return;
+    list.innerHTML = '';
+    data.players.forEach(function(p) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between p-2 bg-white rounded-lg';
+        div.innerHTML = '<div class="flex items-center space-x-2"><div class="w-5 h-5 rounded-full" style="background:' + p.color + '"></div><span class="text-sm font-medium">' + p.name + '</span>' + (p.is_bot ? '<span class="text-xs bg-gray-200 px-1.5 py-0.5 rounded"><i class="fas fa-robot"></i></span>' : '') + '</div>' + (p.was_voted_out ? '<span class="text-xs text-red-500 font-semibold">ELIMINATED</span>' : '');
+        list.appendChild(div);
+    });
+});
+
+// Clue form
+const clueForm = document.getElementById('clueForm');
+if (clueForm) {
+    clueForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('clueInput');
+        const clue = input.value.trim();
+        if (clue) {
+            socket.emit('submit_clue', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN, clue: clue });
+            input.value = '';
+            input.disabled = true;
+            this.querySelector('button').disabled = true;
+        }
+    });
+}
+
+// Vote form
+const voteForm = document.getElementById('voteForm');
+if (voteForm) {
+    voteForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const target = document.getElementById('voteTarget').value;
+        if (target) {
+            socket.emit('cast_vote', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN, target_id: parseInt(target) });
+            this.querySelector('button').disabled = true;
+            this.querySelector('button').textContent = 'Voted!';
+        }
+    });
+}
+
+// Chat
+const gameChatForm = document.getElementById('gameChatForm');
+if (gameChatForm) {
+    gameChatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('gameChatInput');
+        const msg = input.value.trim();
+        if (msg && PLAYER_TOKEN) {
+            socket.emit('chat_message', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN, message: msg });
+            input.value = '';
+        }
+    });
+}
+
+const gameChat = document.getElementById('gameChat');
+if (gameChat) gameChat.scrollTop = gameChat.scrollHeight;
+</script>
+{% endif %}
 {% endblock %}

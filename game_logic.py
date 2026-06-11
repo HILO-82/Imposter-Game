@@ -3,7 +3,6 @@ from collections import Counter
 
 from extensions import db
 from models import Game, Player, Round, Vote
-from room_manager import generate_room_code
 from words import lookup_word, random_word
 
 
@@ -24,7 +23,6 @@ def default_setup_state():
 
 
 def assign_roles(players_data, imposter_count, jester_count):
-    """Shuffle and assign imposter/jester/crewmate roles."""
     n = len(players_data)
     indices = list(range(n))
     random.shuffle(indices)
@@ -39,44 +37,6 @@ def assign_roles(players_data, imposter_count, jester_count):
     for i, p in enumerate(players_data):
         p["role"] = roles[i]
     return players_data
-
-
-def create_game_from_setup(setup):
-    """Persist game + players; returns Game."""
-    secret = setup.get("secret_word", "").strip().lower()
-    category = setup.get("word_category", "Animals")
-    word_meta = lookup_word(secret) if secret else None
-    if not word_meta:
-        word_meta = random_word(category if category != "custom" else None)
-        secret = word_meta["word"]
-        category = word_meta["category"]
-
-    players = setup["players"]
-    game = Game(
-        room_code=generate_room_code(),
-        num_players=len(players),
-        secret_word=secret,
-        category=category,
-        status="active",
-        round_number=1,
-        phase="clue",
-    )
-    db.session.add(game)
-    db.session.flush()
-
-    for p in players:
-        db.session.add(
-            Player(
-                game_id=game.game_id,
-                name=p["name"],
-                role=p["role"],
-                color=p.get("color", "#ff0000"),
-                is_bot=p.get("is_bot", False),
-            )
-        )
-
-    db.session.commit()
-    return game
 
 
 def alive_players(game_id):
@@ -94,27 +54,17 @@ def all_clues_submitted(game):
 
 
 def tally_votes(game_id, round_number):
-    round_ids = [
-        r.round_id
-        for r in Round.query.filter_by(game_id=game_id, round_number=round_number).all()
-    ]
-    if round_ids:
-        votes = Vote.query.filter(
-            Vote.game_id == game_id, Vote.round_id.in_(round_ids)
-        ).all()
-    else:
-        votes = Vote.query.filter_by(game_id=game_id).all()
+    votes = Vote.query.filter_by(game_id=game_id, round_number=round_number).all()
     return Counter(v.target_id for v in votes)
 
 
 def eliminate_top_voted(game):
-    """Eliminate player with most votes; return eliminated Player or None."""
     counts = tally_votes(game.game_id, game.round_number)
     if not counts:
         return None
     max_votes = max(counts.values())
     top = [pid for pid, c in counts.items() if c == max_votes]
-    target_id = random.choice(top)  # nosec B311 — gameplay tie-break, not cryptography
+    target_id = random.choice(top)
     player = Player.query.get(target_id)
     if player:
         player.was_voted_out = True
@@ -123,12 +73,6 @@ def eliminate_top_voted(game):
 
 
 def check_win_condition(game):
-    """
-    Returns winning_role string or None if game continues.
-    crewmate: all imposters out
-    imposter: imposters >= crewmates alive
-    jester: jester voted out
-    """
     players = Player.query.filter_by(game_id=game.game_id).all()
     alive = [p for p in players if not p.was_voted_out]
     alive_imposters = [p for p in alive if p.role == "imposter"]

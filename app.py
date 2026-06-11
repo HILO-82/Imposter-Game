@@ -24,10 +24,9 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
         seed_words_table(db.session, Word)
-        from ml.train_models import main as train_models
-
         model_dir = os.path.join(app.root_path, "knn_model.pkl")
         if not os.path.exists(model_dir):
+            from ml.train_models import main as train_models
             train_models()
 
     @app.errorhandler(403)

@@ -13,6 +13,9 @@
             <input type="text" name="player_name" placeholder="Enter your name" maxlength="50" value="{{ player_name }}" class="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 focus:outline-none mb-4">
             <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg w-full"><i class="fas fa-sign-in-alt"></i> Enter</button>
         </form>
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('game.setup_form') }}" class="text-purple-600 hover:text-purple-800 text-sm"><i class="fas fa-gamepad"></i> Play Local (pass-and-play)</a>
+        </div>
     </div>
 </div>
 

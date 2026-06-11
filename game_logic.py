@@ -86,3 +86,44 @@ def check_win_condition(game):
     if len(alive_imposters) >= len(alive_crew):
         return "imposter"
     return None
+
+
+def create_game_from_setup(setup):
+    """Create a local pass-and-play game from a setup dict."""
+    from room_manager import generate_room_code
+
+    players_data = setup["players"]
+    imposter_count = setup.get("imposter_count", 1)
+    jester_count = setup.get("jester_count", 0)
+    jester_info = setup.get("jester_info", "nothing")
+    secret_word = setup.get("secret_word") or random_word(setup.get("word_category"))["word"]
+    category = setup.get("word_category", "Animals")
+
+    game = Game(
+        room_code=generate_room_code(),
+        num_players=len(players_data),
+        imposter_count=imposter_count,
+        jester_count=jester_count,
+        jester_info=jester_info,
+        secret_word=secret_word,
+        category=category,
+        status="active",
+        phase="clue",
+        round_number=1,
+        current_player_index=0,
+    )
+    db.session.add(game)
+    db.session.flush()
+
+    assign_roles(players_data, imposter_count, jester_count)
+    for p in players_data:
+        player = Player(
+            game_id=game.game_id,
+            name=p["name"],
+            role=p["role"],
+            color=p.get("color", "#ff0000"),
+        )
+        db.session.add(player)
+
+    db.session.commit()
+    return game

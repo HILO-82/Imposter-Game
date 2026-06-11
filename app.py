@@ -6,6 +6,7 @@ from flask_socketio import SocketIO
 from config import Config
 from extensions import db, socketio
 from models import Word
+from routes.game import game_bp
 from routes.lobby import lobby_bp
 from socketio_events import register_socketio_events
 from words import seed_words_table
@@ -17,6 +18,7 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     app.register_blueprint(lobby_bp)
+    app.register_blueprint(game_bp)
 
     socketio.init_app(app, cors_allowed_origins="*", async_mode='threading')
     register_socketio_events(socketio)

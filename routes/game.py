@@ -16,6 +16,44 @@ from security import game_session_required, validate_clue, validate_positive_int
 game_bp = Blueprint("game", __name__)
 
 
+@game_bp.route("/game/setup", methods=["GET"])
+def setup_form():
+    from words import get_word_categories
+    categories = get_word_categories()
+    return render_template("setup.html", categories=categories)
+
+
+@game_bp.route("/game/setup", methods=["POST"])
+def create_local_game():
+    names = request.form.getlist("player_name")
+    names = [n.strip() for n in names if n.strip()]
+    if len(names) < 3:
+        from words import get_word_categories
+        return render_template("setup.html", error="At least 3 players required", categories=get_word_categories())
+    if len(names) > 8:
+        from words import get_word_categories
+        return render_template("setup.html", error="Maximum 8 players", categories=get_word_categories())
+
+    imposter_count = int(request.form.get("imposter_count", 1))
+    jester_count = int(request.form.get("jester_count", 0))
+    jester_info = request.form.get("jester_info", "nothing")
+    category = request.form.get("category", "Animals")
+    secret_word = request.form.get("secret_word", "").strip()
+
+    setup = {
+        "players": [{"name": n} for n in names],
+        "imposter_count": imposter_count,
+        "jester_count": jester_count,
+        "jester_info": jester_info,
+        "word_category": category,
+        "secret_word": secret_word or None,
+    }
+    game = create_game_from_setup(setup)
+    session["game_id"] = game.game_id
+    session.modified = True
+    return redirect(url_for("game.view_game", game_id=game.game_id))
+
+
 @game_bp.route("/game/new", methods=["POST"])
 def new_game():
     setup = session.get("setup")
@@ -99,15 +137,10 @@ def submit_vote(game_id):
     if not voter or not target or voter.was_voted_out or target.was_voted_out:
         return redirect(url_for("game.view_game", game_id=game_id))
 
-    round_row = Round.query.filter_by(
-        game_id=game_id, round_number=game.round_number
-    ).first()
-    round_id = round_row.round_id if round_row else None
-
     db.session.add(
         Vote(
             game_id=game_id,
-            round_id=round_id,
+            round_number=game.round_number,
             voter_id=voter_id,
             target_id=target_id,
         )
@@ -163,13 +196,10 @@ def _bot_cast_vote(game):
     if not target_id:
         return
 
-    round_row = Round.query.filter_by(
-        game_id=game.game_id, round_number=game.round_number
-    ).first()
     db.session.add(
         Vote(
             game_id=game.game_id,
-            round_id=round_row.round_id if round_row else None,
+            round_number=game.round_number,
             voter_id=bot.player_id,
             target_id=target_id,
         )

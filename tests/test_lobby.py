@@ -81,6 +81,87 @@ class TestHTTPRoutes:
         assert b"Room not found" in resp.data or b"IMPOSTER" in resp.data
 
 
+# ─── Local Game (Pass-and-Play) Route Tests ──────────────────────────
+
+class TestLocalGameRoutes:
+    def test_setup_page(self, client):
+        resp = client.get("/game/setup")
+        assert resp.status_code == 200
+        assert b"Local Game Setup" in resp.data
+
+    def test_setup_too_few_players(self, client):
+        resp = client.post("/game/setup", data={
+            "player_name": ["Alice", "Bob"],
+            "imposter_count": 1,
+            "jester_count": 0,
+            "jester_info": "nothing",
+            "category": "Animals",
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        assert b"At least 3 players" in resp.data
+
+    def test_setup_creates_game(self, client):
+        resp = client.post("/game/setup", data={
+            "player_name": ["Alice", "Bob", "Charlie"],
+            "imposter_count": 1,
+            "jester_count": 0,
+            "jester_info": "nothing",
+            "category": "Animals",
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        assert b"Round 1" in resp.data or b"Phase:" in resp.data
+
+    def test_game_view_and_clue_submit(self, client):
+        resp = client.post("/game/setup", data={
+            "player_name": ["Alice", "Bob", "Charlie"],
+            "imposter_count": 1,
+            "jester_count": 0,
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        assert b"Round 1" in resp.data
+
+        with client.session_transaction() as sess:
+            gid = sess.get("game_id")
+        assert gid is not None
+
+        from models import Player
+        from extensions import db
+        with client.application.app_context():
+            player = Player.query.filter_by(game_id=gid).first()
+            assert player is not None
+            pid = player.player_id
+
+        resp = client.post(f"/game/{gid}/clue", data={
+            "player_id": pid, "clue": "ocean"
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+
+    def test_vote_local(self, client):
+        resp = client.post("/game/setup", data={
+            "player_name": ["Alice", "Bob", "Charlie"],
+            "imposter_count": 1,
+            "jester_count": 0,
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+
+        with client.session_transaction() as sess:
+            gid = sess.get("game_id")
+        assert gid is not None
+
+        from models import Player
+        from extensions import db
+        with client.application.app_context():
+            players = Player.query.filter_by(game_id=gid).order_by(Player.player_id).all()
+            voter = players[0]
+            target = players[1]
+
+            resp = client.post(f"/game/{gid}/vote", data={
+                "voter_id": voter.player_id,
+                "target_id": target.player_id,
+            }, follow_redirects=True)
+            assert resp.status_code == 200
+
+
 # ─── Game Logic Tests ───────────────────────────────────────────────
 
 class TestGameLogic:

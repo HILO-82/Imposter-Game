@@ -89,7 +89,7 @@ def create_room_route():
     db.session.commit()
 
     session["room_code"] = game.room_code
-    return redirect(url_for("lobby.room_page", room_code=game.room_code))
+    return redirect(url_for("lobby.room_page", room_code=game.room_code, t=player_token))
 
 
 @lobby_bp.route("/room/join", methods=["POST"])
@@ -130,7 +130,7 @@ def join_room_route():
     session["player_token"] = player_token
     session["player_name"] = player_name
 
-    return redirect(url_for("lobby.room_page", room_code=room_code))
+    return redirect(url_for("lobby.room_page", room_code=room_code, t=player_token))
 
 
 @lobby_bp.route("/room/<room_code>")
@@ -139,10 +139,11 @@ def room_page(room_code):
     if not game:
         return redirect(url_for("lobby.index"))
 
-    player_token = session.get("player_token")
+    player_token = request.args.get("t") or session.get("player_token")
     current_player = None
     if player_token:
         current_player = Player.query.filter_by(game_id=game.game_id, player_token=player_token).first()
+        session["player_token"] = player_token
 
     players = Player.query.filter_by(game_id=game.game_id).order_by(Player.player_id).all()
     messages = ChatMessage.query.filter_by(game_id=game.game_id).order_by(ChatMessage.timestamp).all()

@@ -120,6 +120,9 @@
                         <div class="flex items-center space-x-2">
                             {% if p.is_connected %}<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>{% else %}<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>{% endif %}
                             {% if p.is_ready %}<span class="text-green-600"><i class="fas fa-check-circle"></i></span>{% endif %}
+                            {% if p.player_id != game.creator_player_id %}
+                            <button onclick="kickPlayer({{ p.player_id }})" class="text-red-500 hover:text-red-700 text-sm ml-2" title="Kick"><i class="fas fa-times"></i></button>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
@@ -177,6 +180,7 @@
 <script>
 const ROOM_CODE = '{{ room_code }}';
 const PLAYER_TOKEN = '{{ current_player.player_token }}';
+const IS_CREATOR = {{ 'true' if current_player.player_id == game.creator_player_id else 'false' }};
 
 function joinSocketRoom() {
     if (socket.connected) {
@@ -194,13 +198,23 @@ socket.on('players_updated', function(data) {
     data.players.forEach(function(p) {
         const div = document.createElement('div');
         div.className = 'flex items-center justify-between p-2 bg-white rounded-lg';
-        div.innerHTML = '<div class="flex items-center space-x-3"><div class="w-6 h-6 rounded-full" style="background:' + p.color + '"></div><span class="font-medium">' + p.name + '</span>' + (p.is_bot ? '<span class="text-xs bg-gray-200 px-2 py-0.5 rounded"><i class="fas fa-robot"></i> Bot</span>' : '') + '</div><div class="flex items-center space-x-2">' + (p.is_connected ? '<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>' : '<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>') + (p.is_ready ? '<span class="text-green-600"><i class="fas fa-check-circle"></i></span>' : '') + '</div>';
+        const isCreator = window.IS_CREATOR === true;
+        div.innerHTML = '<div class="flex items-center space-x-3"><div class="w-6 h-6 rounded-full" style="background:' + p.color + '"></div><span class="font-medium">' + p.name + '</span>' + (p.is_bot ? '<span class="text-xs bg-gray-200 px-2 py-0.5 rounded"><i class="fas fa-robot"></i> Bot</span>' : '') + '</div><div class="flex items-center space-x-2">' + (p.is_connected ? '<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>' : '<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>') + (p.is_ready ? '<span class="text-green-600"><i class="fas fa-check-circle"></i></span>' : '') + (isCreator && p.player_id !== {{ game.creator_player_id }} ? '<button onclick="kickPlayer(' + p.player_id + ')" class="text-red-500 hover:text-red-700 text-sm ml-2" title="Kick"><i class="fas fa-times"></i></button>' : '') + '</div>';
         list.appendChild(div);
     });
     if (count) count.textContent = '(' + data.players.length + ')';
 });
 
 socket.on('game_starting', function() { location.reload(); });
+
+socket.on('kicked', function() {
+    window.location.href = '/hub';
+});
+
+function kickPlayer(targetId) {
+    if (!confirm('Kick this player from the room?')) return;
+    socket.emit('kick_player', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN, target_id: targetId });
+}
 
 if (document.getElementById('readyBtn')) {
     document.getElementById('readyBtn').addEventListener('click', function() {

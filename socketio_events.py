@@ -121,6 +121,29 @@ def register_socketio_events(socketio):
         db.session.commit()
         emit("players_updated", {"players": _serialize_players(game.game_id)}, room=room_code)
 
+    @socketio.on("kick_player")
+    def handle_kick_player(data):
+        room_code = data.get("room_code")
+        player_token = data.get("player_token")
+        target_id = data.get("target_id")
+        if not room_code or not player_token or not target_id:
+            return
+        game = Game.query.filter_by(room_code=room_code).first()
+        requester = Player.query.filter_by(game_id=game.game_id, player_token=player_token).first()
+        if not game or not requester or requester.player_id != game.creator_player_id:
+            return
+
+        target = Player.query.get(target_id)
+        if not target or target.game_id != game.game_id or target.is_bot:
+            return
+
+        db.session.delete(target)
+        game.num_players = Player.query.filter_by(game_id=game.game_id).count()
+        db.session.commit()
+
+        emit("kicked", room=target.player_token)
+        emit("players_updated", {"players": _serialize_players(game.game_id)}, room=room_code)
+
     @socketio.on("add_ai_bot")
     def handle_add_ai_bot(data):
         room_code = data.get("room_code")

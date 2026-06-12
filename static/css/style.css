@@ -3,16 +3,77 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+}
+
 .slide-in {
     animation: slideIn 0.3s ease-out;
+}
+
+.pulse-word {
+    animation: pulse 2s ease-in-out infinite;
 }
 
 body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .game-container {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.btn {
+    transition: all 0.2s ease;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+input:focus, select:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+input, select, button {
+    min-height: 44px;
+}
+
+.role-card {
+    transition: all 0.3s ease;
+}
+
+.role-card:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    body { font-size: 14px; }
+    .game-container { border-radius: 1rem !important; }
+    h1 { font-size: 2.5rem !important; }
+    h2 { font-size: 1.5rem !important; }
+    h3 { font-size: 1.25rem !important; }
+    .btn { width: 100%; margin-bottom: 0.5rem; }
+}
+
+@media (max-width: 480px) {
+    #app { padding: 0.5rem !important; }
+    .game-container { padding: 1rem !important; }
+    h1 { font-size: 2rem !important; }
 }

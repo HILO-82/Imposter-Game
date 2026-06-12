@@ -51,7 +51,7 @@ def create_local_game():
     game = create_game_from_setup(setup)
     session["game_id"] = game.game_id
     session.modified = True
-    return redirect(url_for("game.view_game", game_id=game.game_id))
+    return redirect(url_for("game.reveal_roles", game_id=game.game_id))
 
 
 @game_bp.route("/game/new", methods=["POST"])
@@ -242,8 +242,19 @@ def result(game_id):
     )
 
 
+@game_bp.route("/game/<int:game_id>/roles")
+@game_session_required
+def reveal_roles(game_id):
+    game = Game.query.get_or_404(game_id)
+    players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
+    players_data = [{"name": p.name, "role": p.role, "player_id": p.player_id} for p in players]
+    return render_template("reveal.html", game=game, players=players_data)
+
+
 @game_bp.route("/game/<int:game_id>/start-play", methods=["POST"])
 @game_session_required
 def start_play(game_id):
-    """After role reveal, begin clue/vote rounds."""
+    game = Game.query.get_or_404(game_id)
+    game.phase = "clue"
+    db.session.commit()
     return redirect(url_for("game.view_game", game_id=game_id))

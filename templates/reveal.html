@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Role Reveal{% endblock %}
+{% block content %}
+<div class="game-container max-w-lg mx-auto rounded-2xl shadow-2xl p-8">
+    <h2 class="text-3xl font-bold text-purple-800 mb-6 text-center">
+        <i class="fas fa-eye"></i> Role Assignment
+    </h2>
+
+    <div id="roleReveal" class="text-center">
+    </div>
+
+    <div id="doneScreen" class="hidden text-center">
+        <div class="slide-in">
+            <h3 class="text-2xl font-bold text-purple-800 mb-4">All roles are assigned!</h3>
+            <p class="text-gray-600 mb-6">The game can now begin. Remember your role and don't reveal it to others.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{{ url_for('game.setup_form') }}" class="btn bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-xl text-lg w-full sm:w-auto">
+                    <i class="fas fa-redo"></i> Play Again
+                </a>
+                <a href="{{ url_for('lobby.index') }}" class="btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-xl text-lg w-full sm:w-auto">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const players = {{ players|tojson }};
+    const secretWord = '{{ game.secret_word }}';
+    const category = '{{ game.category }}';
+    const jesterInfo = '{{ game.jester_info }}';
+    let currentIndex = 0;
+
+    function showCurrentPlayer() {
+        const container = document.getElementById('roleReveal');
+
+        if (currentIndex >= players.length) {
+            container.classList.add('hidden');
+            document.getElementById('doneScreen').classList.remove('hidden');
+            return;
+        }
+
+        container.classList.remove('hidden');
+        document.getElementById('doneScreen').classList.add('hidden');
+
+        const player = players[currentIndex];
+        const role = player.role;
+        let roleHtml = '';
+
+        if (role === 'imposter') {
+            roleHtml = `
+                <div class="text-6xl mb-4"><i class="fas fa-skull text-red-600"></i></div>
+                <div class="text-4xl font-bold text-red-600 mb-4">IMPOSTER</div>
+                <p class="text-red-600 mb-4">Eliminate all crewmates to win!</p>
+                <p class="text-gray-500 text-sm">You don't know the secret word</p>
+            `;
+        } else if (role === 'jester') {
+            let info = '';
+            if (jesterInfo === 'nothing') info = 'No word information';
+            else if (jesterInfo === 'category') info = 'Category: ' + category;
+            else if (jesterInfo === 'partial') info = 'Partial word: ' + secretWord.substring(0, 3) + '...';
+            else if (jesterInfo === 'full') info = 'Full word: ' + secretWord;
+            roleHtml = `
+                <div class="text-6xl mb-4"><i class="fas fa-masks-theater text-green-600"></i></div>
+                <div class="text-4xl font-bold text-green-600 mb-4">JESTER</div>
+                <p class="text-green-600 mb-4">Get voted out to win!</p>
+                <div class="bg-yellow-100 rounded-lg p-4 mt-4">
+                    <p class="text-yellow-800 font-semibold">${info}</p>
+                </div>
+            `;
+        } else {
+            roleHtml = `
+                <div class="text-6xl mb-4"><i class="fas fa-user-astronaut text-blue-600"></i></div>
+                <div class="text-4xl font-bold text-blue-600 mb-4">CREWMATE</div>
+                <p class="text-blue-600 mb-4">Find the imposter!</p>
+                <div class="bg-blue-100 rounded-lg p-4 mt-4">
+                    <p class="text-blue-800 font-semibold">Secret Word: ${secretWord}</p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="slide-in">
+                <div id="playerHeader">
+                    <h3 class="text-2xl font-bold mb-4">${player.name}</h3>
+                    <p class="text-lg mb-6 text-gray-600">Pass device to ${player.name} and click below to reveal their role:</p>
+                    <button onclick="revealRole()" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg mb-6 w-full sm:w-auto">
+                        <i class="fas fa-eye"></i> Reveal Role
+                    </button>
+                </div>
+                <div id="roleDisplay" class="hidden">
+                    ${roleHtml}
+                    <button onclick="nextPlayer()" class="btn bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg mt-6 w-full sm:w-auto">
+                        <i class="fas fa-arrow-right"></i> Next Player
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function revealRole() {
+        document.getElementById('playerHeader').classList.add('hidden');
+        document.getElementById('roleDisplay').classList.remove('hidden');
+    }
+
+    function nextPlayer() {
+        currentIndex++;
+        showCurrentPlayer();
+    }
+
+    showCurrentPlayer();
+</script>
+{% endblock %}

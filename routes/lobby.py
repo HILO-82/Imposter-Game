@@ -95,7 +95,7 @@ def create_room_route():
 @lobby_bp.route("/room/join", methods=["POST"])
 def join_room_route():
     room_code = request.form.get("room_code", "").strip().upper()
-    player_name = request.form.get("player_name", "").strip()
+    player_name = session.get("player_name", "").strip()
 
     if not room_exists(room_code):
         session["error"] = "Room not found."

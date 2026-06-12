@@ -22,7 +22,7 @@
             <input type="text" name="clue" maxlength="100" placeholder="One-word clue"
                 class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"
                 {% if clues.get(player.player_id) %}value="{{ clues[player.player_id] }}"{% endif %}>
-            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">Save</button>
+            <button type="submit" class="btn bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">Save</button>
         </form>
         {% endif %}
         {% endfor %}
@@ -57,7 +57,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg w-full">
+            <button type="submit" class="btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg w-full">
                 <i class="fas fa-gavel"></i> Submit Vote
             </button>
         </form>
@@ -65,9 +65,9 @@
     {% endif %}
 
     <div class="flex justify-center gap-4">
-        <a href="{{ url_for('lobby.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">Home</a>
+        <a href="{{ url_for('lobby.index') }}" class="btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg">Home</a>
         {% if game.status == 'finished' %}
-        <a href="{{ url_for('game.result', game_id=game.game_id) }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">Results</a>
+        <a href="{{ url_for('game.result', game_id=game.game_id) }}" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">Results</a>
         {% endif %}
     </div>
 </div>

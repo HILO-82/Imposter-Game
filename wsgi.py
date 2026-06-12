@@ -6,4 +6,4 @@ project_home = Path(__file__).resolve().parent
 if str(project_home) not in sys.path:
     sys.path.insert(0, str(project_home))
 
-from app import app as application  # noqa: E402, F401
+from app import flask_app as application  # noqa: E402, F401

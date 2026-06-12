@@ -94,15 +94,17 @@
     </form>
 </div>
 {% else %}
-<div class="game-container max-w-4xl mx-auto rounded-2xl shadow-2xl p-8">
+{% set creator = players|selectattr("player_id", "equalto", game.creator_player_id)|first %}
+<div class="game-container max-w-2xl mx-auto rounded-2xl shadow-2xl p-8">
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h2 class="text-3xl font-bold text-purple-800"><i class="fas fa-door-open"></i> Lobby</h2>
+            <h2 class="text-3xl font-bold text-purple-800"><i class="fas fa-door-open"></i> {{ creator.name }}'s Room</h2>
             <div class="text-lg font-mono tracking-widest text-purple-600">Room: {{ room_code }}</div>
         </div>
         <a href="{{ url_for('lobby.index') }}" class="btn bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-times"></i> Leave</a>
     </div>
 
+    {% if current_player.player_id == game.creator_player_id and game.phase == "lobby" %}
     <div class="grid md:grid-cols-3 gap-6">
         <div class="md:col-span-2 space-y-4">
             <div class="bg-gray-50 rounded-xl p-4">
@@ -118,30 +120,13 @@
                         <div class="flex items-center space-x-2">
                             {% if p.is_connected %}<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>{% else %}<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>{% endif %}
                             {% if p.is_ready %}<span class="text-green-600"><i class="fas fa-check-circle"></i></span>{% endif %}
-                            {% if p.was_voted_out %}<span class="text-red-500 text-sm">Eliminated</span>{% endif %}
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
-
-            <div class="bg-gray-50 rounded-xl p-4">
-                <h3 class="font-semibold text-lg mb-3"><i class="fas fa-comments"></i> Chat</h3>
-                <div id="chatMessages" class="h-40 overflow-y-auto mb-3 space-y-1 text-sm bg-white rounded-lg p-3">
-                    {% for m in messages %}
-                    <div><span class="font-semibold" style="color:{{ m.player.color }}">{{ m.player.name }}:</span> {{ m.content }}</div>
-                    {% endfor %}
-                </div>
-                <form id="chatForm" class="flex space-x-2">
-                    <input type="text" id="chatInput" placeholder="Type a message..." maxlength="500"
-                        class="flex-1 px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none text-sm">
-                    <button type="submit" class="btn bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-paper-plane"></i></button>
-                </form>
-            </div>
         </div>
-
         <div class="space-y-4">
-            {% if current_player.player_id == game.creator_player_id and game.phase == "lobby" %}
             <div class="bg-purple-50 rounded-xl p-4">
                 <h3 class="font-semibold text-lg mb-3"><i class="fas fa-cog"></i> Settings</h3>
                 <div class="space-y-3">
@@ -172,31 +157,26 @@
                             {% for c in word_categories %}<option value="{{ c }}" {% if game.category == c %}selected{% endif %}>{{ c }}</option>{% endfor %}
                         </select>
                     </div>
-                    <button id="saveSettingsBtn" class="btn w-full bg-gray-600 hover:bg-gray-700 text-white text-sm py-2 rounded-lg"><i class="fas fa-save"></i> Save</button>
                 </div>
             </div>
-
             <button id="addAiBotBtn" class="btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg"><i class="fas fa-robot"></i> Add AI Bot</button>
             <button id="startGameBtn" class="btn w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-lg"><i class="fas fa-play"></i> Start Game</button>
-
-            {% else %}
-            <div class="bg-yellow-50 rounded-xl p-4 text-center">
-                <p class="text-yellow-800 font-semibold">Waiting for the host to start the game...</p>
-                <p class="text-sm text-yellow-600 mt-2">Players: {{ players|length }}</p>
-            </div>
-            {% endif %}
-
-            {% if current_player.player_id != game.creator_player_id %}
-            <button id="readyBtn" class="btn w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-lg"><i class="fas fa-check"></i> I'm Ready</button>
-            {% endif %}
         </div>
     </div>
+
+    {% else %}
+    <div class="text-center space-y-4">
+        <div class="bg-yellow-50 rounded-xl p-4">
+            <p class="text-yellow-800 font-semibold">Waiting for {{ creator.name }} to start the game...</p>
+        </div>
+        <button id="readyBtn" class="btn w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-lg"><i class="fas fa-check"></i> I'm Ready</button>
+    </div>
+    {% endif %}
 </div>
 
 <script>
 const ROOM_CODE = '{{ room_code }}';
 const PLAYER_TOKEN = '{{ current_player.player_token }}';
-const IS_CREATOR = {{ 'true' if current_player.player_id == game.creator_player_id else 'false' }};
 
 function joinSocketRoom() {
     if (socket.connected) {
@@ -209,44 +189,18 @@ joinSocketRoom();
 socket.on('players_updated', function(data) {
     const list = document.getElementById('playerList');
     const count = document.getElementById('playerCount');
+    if (!list) return;
     list.innerHTML = '';
     data.players.forEach(function(p) {
         const div = document.createElement('div');
         div.className = 'flex items-center justify-between p-2 bg-white rounded-lg';
-        div.innerHTML = '<div class="flex items-center space-x-3"><div class="w-6 h-6 rounded-full" style="background:' + p.color + '"></div><span class="font-medium">' + p.name + '</span>' + (p.is_bot ? '<span class="text-xs bg-gray-200 px-2 py-0.5 rounded"><i class="fas fa-robot"></i> Bot</span>' : '') + '</div><div class="flex items-center space-x-2">' + (p.is_connected ? '<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>' : '<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>') + (p.is_ready ? '<span class="text-green-600"><i class="fas fa-check-circle"></i></span>' : '') + (p.was_voted_out ? '<span class="text-red-500 text-sm">Eliminated</span>' : '') + '</div>';
+        div.innerHTML = '<div class="flex items-center space-x-3"><div class="w-6 h-6 rounded-full" style="background:' + p.color + '"></div><span class="font-medium">' + p.name + '</span>' + (p.is_bot ? '<span class="text-xs bg-gray-200 px-2 py-0.5 rounded"><i class="fas fa-robot"></i> Bot</span>' : '') + '</div><div class="flex items-center space-x-2">' + (p.is_connected ? '<span class="text-green-500 text-sm"><i class="fas fa-circle"></i></span>' : '<span class="text-red-400 text-sm"><i class="fas fa-circle"></i></span>') + (p.is_ready ? '<span class="text-green-600"><i class="fas fa-check-circle"></i></span>' : '') + '</div>';
         list.appendChild(div);
     });
-    count.textContent = '(' + data.players.length + ')';
-});
-
-socket.on('chat_message', function(data) {
-    const container = document.getElementById('chatMessages');
-    const msg = document.createElement('div');
-    msg.innerHTML = '<span class="font-semibold" style="color:' + (data.player_color || '#000') + '">' + data.player_name + ':</span> ' + data.message;
-    container.appendChild(msg);
-    container.scrollTop = container.scrollHeight;
-});
-
-socket.on('settings_updated', function(data) {
-    document.getElementById('imposterCount').value = data.imposter_count;
-    document.getElementById('jesterCount').value = data.jester_count;
-    document.getElementById('jesterInfo').value = data.jester_info;
-    document.getElementById('wordCategory').value = data.category;
+    if (count) count.textContent = '(' + data.players.length + ')';
 });
 
 socket.on('game_starting', function() { location.reload(); });
-
-if (document.getElementById('chatForm')) {
-    document.getElementById('chatForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const input = document.getElementById('chatInput');
-        const msg = input.value.trim();
-        if (msg) {
-            socket.emit('chat_message', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN, message: msg });
-            input.value = '';
-        }
-    });
-}
 
 if (document.getElementById('readyBtn')) {
     document.getElementById('readyBtn').addEventListener('click', function() {
@@ -260,29 +214,11 @@ if (document.getElementById('addAiBotBtn')) {
     });
 }
 
-if (document.getElementById('saveSettingsBtn')) {
-    document.getElementById('saveSettingsBtn').addEventListener('click', function() {
-        socket.emit('update_settings', {
-            room_code: ROOM_CODE,
-            player_token: PLAYER_TOKEN,
-            settings: {
-                imposter_count: parseInt(document.getElementById('imposterCount').value),
-                jester_count: parseInt(document.getElementById('jesterCount').value),
-                jester_info: document.getElementById('jesterInfo').value,
-                category: document.getElementById('wordCategory').value,
-            }
-        });
-    });
-}
-
 if (document.getElementById('startGameBtn')) {
     document.getElementById('startGameBtn').addEventListener('click', function() {
         socket.emit('start_game', { room_code: ROOM_CODE, player_token: PLAYER_TOKEN });
     });
 }
-
-const chatContainer = document.getElementById('chatMessages');
-if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
 </script>
 {% endif %}
 

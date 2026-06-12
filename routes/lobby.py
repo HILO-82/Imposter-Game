@@ -3,7 +3,7 @@ import secrets
 from flask import Blueprint, redirect, render_template, request, session, url_for
 
 from extensions import db
-from models import Game, Player, ChatMessage
+from models import Player, ChatMessage
 from room_manager import create_room, get_room, room_exists
 from security import validate_player_name
 from words import get_word_categories, random_word

@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask, render_template
-from flask_socketio import SocketIO
 
 from config import Config
 from extensions import db, socketio
@@ -26,10 +25,7 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
         seed_words_table(db.session, Word)
-        model_dir = os.path.join(app.root_path, "knn_model.pkl")
-        if not os.path.exists(model_dir):
-            from ml.train_models import main as train_models
-            train_models()
+
 
     @app.errorhandler(403)
     def forbidden(_e):
@@ -46,8 +42,8 @@ def create_app(config_class=Config):
     return app, socketio
 
 
-app, socketio = create_app()
+flask_app, socketio_instance = create_app()
 
 if __name__ == "__main__":
     host = os.environ.get("FLASK_HOST", "127.0.0.1")
-    socketio.run(app, host=host, port=int(os.environ.get("PORT", 5001)), debug=app.config["DEBUG"])
+    socketio_instance.run(flask_app, host=host, port=int(os.environ.get("PORT", 5001)), debug=flask_app.config["DEBUG"])

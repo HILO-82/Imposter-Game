@@ -3,7 +3,7 @@ from collections import Counter
 
 from extensions import db
 from models import Game, Player, Round, Vote
-from words import lookup_word, random_word
+from words import random_word
 
 
 def default_setup_state():

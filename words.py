@@ -1,34 +1,50 @@
+import json
+import random
+from pathlib import Path
+
 from extensions import db
 from models import Word
-import random
+
+WORDS_PATH = Path(__file__).resolve().parent / "data" / "words.json"
+
+_words_cache = None
+
+
+def _get_words():
+    global _words_cache
+    if _words_cache is None:
+        with open(WORDS_PATH, encoding="utf-8") as f:
+            _words_cache = json.load(f)
+    return _words_cache
 
 
 def get_all_words():
-    return Word.query.all()
+    return _get_words()
 
 
 def get_word_categories():
-    categories = db.session.query(Word.category).distinct().all()
-    return sorted([c[0] for c in categories])
+    words = _get_words()
+    return sorted({w["category"] for w in words})
 
 
 def lookup_word(word):
-    return Word.query.filter_by(word=word.strip().lower()).first()
+    target = word.strip().lower()
+    for w in _get_words():
+        if w["word"] == target:
+            return w
+    return None
 
 
 def random_word(category=None):
-    query = Word.query
-    if category:
-        query = query.filter_by(category=category)
-    pool = query.all()
+    words = _get_words()
+    pool = [w for w in words if w["category"] == category] if category else words
     return random.choice(pool) if pool else None
 
 
 def seed_words_table(db_session, Word):
-    """Insert dictionary words into DB if empty."""
     if Word.query.count() > 0:
         return
-    for entry in get_all_words():
+    for entry in _get_words():
         row = Word(
             word=entry["word"],
             category_id=entry["category_id"],

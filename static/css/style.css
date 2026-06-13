@@ -72,6 +72,43 @@ input, select, button {
     .btn { width: 100%; margin-bottom: 0.5rem; }
 }
 
+.dark-mode {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e0e0e0;
+}
+
+.dark-mode .game-container {
+    background: rgba(30, 30, 50, 0.95);
+    color: #e0e0e0;
+}
+
+.dark-mode .bg-purple-100 { background-color: #2d1b69; }
+.dark-mode .bg-gray-50 { background-color: #2a2a3d; }
+.dark-mode .bg-white { background-color: #252538; }
+.dark-mode .bg-yellow-50 { background-color: #3d3520; }
+.dark-mode .text-purple-800 { color: #b794f4; }
+.dark-mode .text-gray-600 { color: #a0aec0; }
+.dark-mode .text-gray-700 { color: #cbd5e0; }
+.dark-mode .text-gray-500 { color: #8a8a9a; }
+.dark-mode .text-yellow-800 { color: #f6e05e; }
+.dark-mode .text-yellow-700 { color: #ecc94b; }
+.dark-mode .border-gray-200 { border-color: #3d3d5c; }
+.dark-mode .border-gray-300 { border-color: #4a4a6a; }
+.dark-mode .border-purple-200 { border-color: #553c9a; }
+.dark-mode .border-purple-300 { border-color: #6b46c1; }
+.dark-mode .border-red-200 { border-color: #9b2c2c; }
+.dark-mode .border-red-300 { border-color: #c53030; }
+.dark-mode .border-green-200 { border-color: #276749; }
+.dark-mode .border-green-300 { border-color: #2f855a; }
+.dark-mode .text-purple-700 { color: #b794f4; }
+.dark-mode .text-red-700 { color: #fc8181; }
+.dark-mode .text-green-700 { color: #68d391; }
+.dark-mode select, .dark-mode input {
+    background-color: #2a2a3d;
+    color: #e0e0e0;
+    border-color: #4a4a6a;
+}
+
 @media (max-width: 480px) {
     #app { padding: 0.5rem !important; }
     .game-container { padding: 1rem !important; }

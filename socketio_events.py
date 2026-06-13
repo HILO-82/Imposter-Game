@@ -205,7 +205,7 @@ def register_socketio_events(socketio):
             return
 
         voter = Player.query.filter_by(game_id=game.game_id, player_token=token).first()
-        target = Player.query.get(target_id)
+        target = db.session.get(Player, target_id)
         if not voter or not target or voter.was_voted_out or target.was_voted_out:
             return
 

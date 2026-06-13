@@ -65,7 +65,7 @@ def eliminate_top_voted(game):
     max_votes = max(counts.values())
     top = [pid for pid, c in counts.items() if c == max_votes]
     target_id = random.choice(top)
-    player = Player.query.get(target_id)
+    player = db.session.get(Player, target_id)
     if player:
         player.was_voted_out = True
         db.session.commit()

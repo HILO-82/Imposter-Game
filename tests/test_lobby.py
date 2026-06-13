@@ -3,6 +3,7 @@
 import json
 import secrets
 
+from extensions import db
 from models import Game, Player, Round, Vote
 from game_logic import assign_roles
 
@@ -221,10 +222,9 @@ class TestSocketIOEvents:
     def test_empty_clue_rejected(self, app, socketio_client):
         with app.app_context():
             rc, token, gid = self._create_multi_game(app)
-            game = Game.query.get(gid)
+            game = db.session.get(Game, gid)
             game.phase = "clue"
-            from extensions import db as _db
-            _db.session.commit()
+            db.session.commit()
 
         socketio_client.emit("join_game", {
             "room_code": rc, "token": token, "is_host": False
@@ -238,12 +238,11 @@ class TestSocketIOEvents:
         assert len(received) == 0
 
     def test_duplicate_clue_rejected(self, app, socketio_client):
-        from extensions import db as _db
         with app.app_context():
             rc, token, gid = self._create_multi_game(app)
-            game = Game.query.get(gid)
+            game = db.session.get(Game, gid)
             game.phase = "clue"
-            _db.session.commit()
+            db.session.commit()
 
         socketio_client.emit("join_game", {
             "room_code": rc, "token": token, "is_host": False
@@ -263,12 +262,11 @@ class TestSocketIOEvents:
         assert len(clue_events) == 0
 
     def test_xss_in_clue_rejected(self, app, socketio_client):
-        from extensions import db as _db
         with app.app_context():
             rc, token, gid = self._create_multi_game(app)
-            game = Game.query.get(gid)
+            game = db.session.get(Game, gid)
             game.phase = "clue"
-            _db.session.commit()
+            db.session.commit()
 
         socketio_client.emit("join_game", {
             "room_code": rc, "token": token, "is_host": False

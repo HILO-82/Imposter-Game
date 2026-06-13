@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, g, render_template
 
 from config import Config
 from extensions import db, socketio
@@ -27,9 +27,15 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
         seed_words_table(db.session, Word)
-        if not Settings.query.get(1):
-            db.session.add(Settings(id=1))
-            db.session.commit()
+
+    @app.before_request
+    def load_settings():
+        from routes.settings import get_or_create_settings
+        g.settings = get_or_create_settings()
+
+    @app.context_processor
+    def inject_settings():
+        return {"dark_mode": getattr(g, 'settings', None) is not None and g.settings.dark_mode}
 
     @app.errorhandler(403)
     def forbidden(_e):
@@ -46,8 +52,7 @@ def create_app(config_class=Config):
     return app, socketio
 
 
-flask_app, socketio_instance = create_app()
-
 if __name__ == "__main__":
+    flask_app, socketio_instance = create_app()
     host = os.environ.get("FLASK_HOST", "127.0.0.1")
     socketio_instance.run(flask_app, host=host, port=int(os.environ.get("PORT", 5001)), debug=flask_app.config["DEBUG"], allow_unsafe_werkzeug=True)

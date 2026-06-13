@@ -12,6 +12,7 @@ class Settings(db.Model):
     default_jester_info = db.Column(db.String(20), default="nothing", nullable=False)
     default_category = db.Column(db.String(50), default="Animals", nullable=False)
     default_player_count = db.Column(db.Integer, default=6, nullable=False)
+    dark_mode = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class Game(db.Model):

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from extensions import db
 
@@ -78,6 +78,20 @@ class Vote(db.Model):
     round_number = db.Column(db.Integer, nullable=False)
     voter_id = db.Column(db.Integer, db.ForeignKey("players.player_id"), nullable=False)
     target_id = db.Column(db.Integer, db.ForeignKey("players.player_id"), nullable=False)
+
+
+class GameEvent(db.Model):
+    __tablename__ = "game_events"
+
+    event_id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, db.ForeignKey("games.game_id"), nullable=False)
+    round_number = db.Column(db.Integer, nullable=False)
+    player_id = db.Column(db.Integer, db.ForeignKey("players.player_id"), nullable=True)
+    event_type = db.Column(db.String(50), nullable=False)  # e.g. "eliminated", "imposter_out"
+    notes = db.Column(db.Text, nullable=True)
+
+    game = db.relationship("Game", backref="events")
+    player = db.relationship("Player", foreign_keys=[player_id])
 
 
 class Word(db.Model):

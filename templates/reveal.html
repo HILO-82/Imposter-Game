@@ -14,8 +14,8 @@
             <h3 class="text-2xl font-bold text-purple-800 mb-4">All roles are assigned!</h3>
             <p class="text-gray-600 mb-6">The game can now begin. Remember your role and don't reveal it to others.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="{{ url_for('game.setup_form') }}" class="btn bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-xl text-lg w-full sm:w-auto">
-                    <i class="fas fa-redo"></i> Play Again
+                <a href="{{ url_for('game.game_stats', game_id=game.game_id) }}" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl text-lg w-full sm:w-auto">
+                    <i class="fas fa-chart-bar"></i> Game Stats
                 </a>
                 <a href="{{ url_for('lobby.index') }}" class="btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-xl text-lg w-full sm:w-auto">
                     <i class="fas fa-home"></i> Home

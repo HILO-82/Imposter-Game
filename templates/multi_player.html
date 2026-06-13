@@ -2,15 +2,7 @@
 {% block title %}Imposter Game{% endblock %}
 {% block content %}
 <div class="game-container max-w-lg mx-auto rounded-2xl shadow-2xl p-8 text-center">
-    {% if game.phase == "lobby" %}
-    <div class="text-6xl mb-4"><i class="fas fa-clock text-blue-600"></i></div>
-    <h2 class="text-2xl font-bold text-blue-800 mb-4">Waiting for host to start the game...</h2>
-    <p class="text-gray-600">You are: <strong>{{ player.name }}</strong></p>
-    <div class="mt-6 animate-pulse">
-        <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
-    </div>
-
-    {% elif game.phase == "role_reveal" %}
+    {% if game.phase == "role_reveal" %}
     {% set role = player.role %}
     <div class="slide-in">
         {% if role == "imposter" %}
@@ -127,15 +119,11 @@
         socket.emit('join_game', { room_code: ROOM_CODE, token: TOKEN, is_host: false });
     });
 
-    {% if game.phase != "lobby" %}
     socket.on('your_role', function(data) {
         if (data.player_id === {{ player.player_id }}) {
             // role already shown via server render
         }
     });
-    {% endif %}
-
-    socket.on('game_starting', function() { location.reload(); });
     socket.on('phase_changed', function() { location.reload(); });
     socket.on('game_over', function() { location.reload(); });
 

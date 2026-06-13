@@ -82,55 +82,6 @@ def register_socketio_events(socketio):
                 db.session.commit()
                 emit("players_updated", {"players": _serialize_players(game.game_id)}, room=room_code)
 
-    @socketio.on("start_game")
-    def handle_start_game(data):
-        room_code = data.get("room_code")
-        host_token = data.get("host_token")
-
-        game = Game.query.filter_by(room_code=room_code, is_multi_device=True).first()
-        if not game or game.host_token != host_token:
-            return
-
-        if game.phase != "lobby":
-            return
-
-        players = Player.query.filter_by(game_id=game.game_id).all()
-        unassigned = [p for p in players if not p.player_token]
-        if unassigned:
-            emit("error", {"message": "Waiting for all players to join"}, room=f"host_{game.game_id}")
-            return
-
-        game.phase = "role_reveal"
-        game.status = "roles"
-        game.round_number = 1
-        db.session.commit()
-
-        emit("game_starting", {"room_code": room_code}, room=room_code)
-
-        from words import random_word as rw
-        for p in players:
-            role_data = {
-                "player_id": p.player_id,
-                "role": p.role,
-                "color": p.color,
-                "is_bot": p.is_bot,
-            }
-            if p.role == "crewmate":
-                role_data["secret_word"] = game.secret_word
-                role_data["category"] = game.category
-            elif p.role == "jester":
-                if game.jester_info == "category":
-                    role_data["jester_info"] = f"Category: {game.category}"
-                elif game.jester_info == "partial":
-                    role_data["jester_info"] = f"Partial word: {game.secret_word[:3]}..."
-                elif game.jester_info == "full":
-                    role_data["jester_info"] = f"Full word: {game.secret_word}"
-                else:
-                    role_data["jester_info"] = "No word information"
-
-            if p.player_token:
-                emit("your_role", role_data, room=p.player_token)
-
     @socketio.on("advance_phase")
     def handle_advance_phase(data):
         room_code = data.get("room_code")

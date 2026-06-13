@@ -1,5 +1,9 @@
+import base64
+import io
+import random
 import secrets
 
+import qrcode
 from flask import Blueprint, jsonify, redirect, render_template, request, session, url_for
 
 from extensions import db
@@ -13,12 +17,18 @@ from game_logic import (
 )
 from ml.vote_bot import bot_vote
 from ml.word_bot import bot_guess
-from models import Game, Player, Round, Vote
+from models import Game, GameEvent, Player, Round, Vote
 from room_manager import generate_room_code
-from security import game_session_required, validate_clue, validate_player_name, validate_positive_int
+from security import game_session_required, validate_clue, validate_positive_int
 from words import get_word_categories, random_word
 
 game_bp = Blueprint("game", __name__)
+
+
+def _resolve_category(category):
+    if category == "Random":
+        return random.choice(get_word_categories())
+    return category
 
 
 # ── Single Device (pass-and-play) routes ──
@@ -28,7 +38,16 @@ def setup_form():
     from routes.settings import get_or_create_settings
     s = get_or_create_settings()
     categories = get_word_categories()
-    return render_template("setup.html", categories=categories, defaults=s)
+    names = request.args.getlist("name")
+    return render_template("setup.html", categories=categories, defaults=s, preset_names=names)
+
+
+@game_bp.route("/game/repeat/<int:game_id>")
+def repeat_local_game(game_id):
+    game = Game.query.get_or_404(game_id)
+    players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
+    names = [p.name for p in players]
+    return redirect(url_for("game.setup_form", name=names))
 
 
 @game_bp.route("/game/setup", methods=["POST"])
@@ -53,7 +72,7 @@ def create_local_game():
     imposter_count = int(request.form.get("imposter_count", 1))
     jester_count = int(request.form.get("jester_count", 0))
     jester_info = request.form.get("jester_info", "nothing")
-    category = request.form.get("category", "Animals")
+    category = _resolve_category(request.form.get("category", "Animals"))
     secret_word = request.form.get("secret_word", "").strip()
 
     setup = {
@@ -291,7 +310,7 @@ def multi_host_create():
     imposter_count = int(request.form.get("imposter_count", 1))
     jester_count = int(request.form.get("jester_count", 0))
     jester_info = request.form.get("jester_info", "nothing")
-    category = request.form.get("category", "Animals")
+    category = _resolve_category(request.form.get("category", "Animals"))
     secret_word = request.form.get("secret_word", "").strip()
 
     from game_logic import assign_roles
@@ -309,8 +328,8 @@ def multi_host_create():
         jester_info=jester_info,
         secret_word=final_word,
         category=category,
-        status="lobby",
-        phase="lobby",
+        status="active",
+        phase="role_reveal",
         round_number=1,
         is_multi_device=True,
         host_token=host_token,
@@ -343,6 +362,54 @@ def multi_host_create():
     return redirect(url_for("game.multi_host_dashboard", game_id=game.game_id))
 
 
+@game_bp.route("/multi-device/host/repeat/<int:game_id>")
+def multi_host_repeat(game_id):
+    old = Game.query.get_or_404(game_id)
+    players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
+    names = [p.name for p in players]
+
+    code = generate_room_code()
+    host_token = secrets.token_urlsafe(32)
+
+    game = Game(
+        room_code=code,
+        num_players=old.num_players,
+        imposter_count=old.imposter_count,
+        jester_count=old.jester_count,
+        jester_info=old.jester_info,
+        secret_word=random_word(old.category)["word"],
+        category=old.category,
+        status="active",
+        phase="role_reveal",
+        round_number=1,
+        is_multi_device=True,
+        host_token=host_token,
+    )
+    db.session.add(game)
+    db.session.flush()
+
+    players_data = [{"name": n, "role": "crewmate"} for n in names]
+    from game_logic import assign_roles
+    assigned = assign_roles(players_data, old.imposter_count, old.jester_count)
+    colors = ["#7c3aed", "#10b981", "#f59e0b", "#ef4444", "#3b82f6", "#ec4899", "#14b8a6", "#f97316"]
+    for i, p in enumerate(assigned):
+        player = Player(
+            game_id=game.game_id,
+            player_token=None,
+            name=p["name"],
+            role=p["role"],
+            color=colors[i % 8],
+        )
+        db.session.add(player)
+    db.session.commit()
+
+    session["host_token"] = host_token
+    session["game_id"] = game.game_id
+    session.modified = True
+
+    return redirect(url_for("game.multi_host_dashboard", game_id=game.game_id))
+
+
 @game_bp.route("/multi-device/dashboard/<int:game_id>")
 def multi_host_dashboard(game_id):
     game = Game.query.get_or_404(game_id)
@@ -350,17 +417,18 @@ def multi_host_dashboard(game_id):
     if not host_token or game.host_token != host_token:
         return redirect(url_for("lobby.index"))
 
-    players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
-    clues = Round.query.filter_by(game_id=game_id, round_number=game.round_number).all()
-
     host_url = request.host_url.rstrip("/")
     join_url = f"{host_url}/multi-device/join/{game.room_code}"
 
+    img = qrcode.make(join_url)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    qr_b64 = base64.b64encode(buf.getvalue()).decode()
+
     return render_template("multi_host.html",
         game=game,
-        players=players,
-        clues=clues,
         join_url=join_url,
+        qr_data_uri=f"data:image/png;base64,{qr_b64}",
         host_token=host_token)
 
 
@@ -370,37 +438,25 @@ def multi_join(code):
     if not game:
         return render_template("error.html", code=404, message="Game not found.")
 
-    if game.status != "lobby":
-        return redirect(url_for("game.multi_play", code=code, token=request.args.get("token", "")))
-
+    unclaimed = Player.query.filter_by(game_id=game.game_id, player_token=None).all()
     error = request.args.get("error", "")
-    player_count = Player.query.filter_by(game_id=game.game_id).count()
-    max_players = Player.query.filter_by(game_id=game.game_id).count()  # fixed by initial setup
-    return render_template("multi_join.html", game=game, error=error, code=code)
+    return render_template("multi_join.html", game=game, error=error, code=code, unclaimed=unclaimed)
 
 
 @game_bp.route("/multi-device/join/<code>", methods=["POST"])
 def multi_join_post(code):
     game = Game.query.filter_by(room_code=code, is_multi_device=True).first()
-    if not game or game.status != "lobby":
+    if not game:
         return redirect(url_for("lobby.index"))
 
-    name = request.form.get("name", "").strip()
-    if not validate_player_name(name):
-        return redirect(url_for("game.multi_join", code=code, error="Please enter a valid name."))
-
-    existing = Player.query.filter_by(game_id=game.game_id, name=name).first()
-    if existing:
-        return redirect(url_for("game.multi_join", code=code, error=f"Name '{name}' is already taken."))
-
-    unassigned = Player.query.filter_by(game_id=game.game_id, player_token=None).first()
-    if not unassigned:
-        return redirect(url_for("game.multi_join", code=code, error="Game is full."))
+    player_id = request.form.get("player_id", type=int)
+    player = Player.query.filter_by(game_id=game.game_id, player_id=player_id, player_token=None).first()
+    if not player:
+        return redirect(url_for("game.multi_join", code=code, error="That name is no longer available."))
 
     player_token = secrets.token_urlsafe(32)
-    unassigned.name = name
-    unassigned.player_token = player_token
-    unassigned.session_id = player_token
+    player.player_token = player_token
+    player.session_id = player_token
     db.session.commit()
 
     return redirect(url_for("game.multi_play", code=code, token=player_token))
@@ -428,3 +484,31 @@ def multi_play(code):
         votes=votes_this_round,
         players=Player.query.filter_by(game_id=game.game_id).all(),
         code=code)
+
+
+@game_bp.route("/game/stats/<int:game_id>", methods=["GET", "POST"])
+def game_stats(game_id):
+    game = Game.query.get_or_404(game_id)
+    if request.method == "POST":
+        round_number = int(request.form.get("round_number", 1))
+        player_id = request.form.get("player_id", type=int)
+        event_type = request.form.get("event_type", "eliminated")
+        notes = request.form.get("notes", "").strip() or None
+        event = GameEvent(game_id=game_id, round_number=round_number,
+                          player_id=player_id, event_type=event_type, notes=notes)
+        db.session.add(event)
+        db.session.commit()
+        return redirect(url_for("game.game_stats", game_id=game_id))
+
+    players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
+    events = GameEvent.query.filter_by(game_id=game_id).order_by(GameEvent.round_number, GameEvent.event_id).all()
+    return render_template("stats.html", game=game, players=players, events=events)
+
+
+@game_bp.route("/game/stats/delete/<int:event_id>", methods=["POST"])
+def delete_event(event_id):
+    event = GameEvent.query.get_or_404(event_id)
+    game_id = event.game_id
+    db.session.delete(event)
+    db.session.commit()
+    return redirect(url_for("game.game_stats", game_id=game_id))

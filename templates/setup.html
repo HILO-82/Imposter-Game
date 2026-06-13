@@ -13,8 +13,10 @@
         <div class="bg-gray-50 rounded-xl p-4">
             <h3 class="font-semibold text-lg mb-3"><i class="fas fa-user"></i> Players (3-8)</h3>
             <div id="playerInputs" class="space-y-2">
-                {% for i in range(defaults.default_player_count) %}
-                <input type="text" name="player_name" placeholder="Player {{ i + 1 }} name" maxlength="50"
+                {% set count = preset_names|length if preset_names else defaults.default_player_count %}
+                {% for i in range(count) %}
+                <input type="text" name="player_name" placeholder="Player {{ i + 1 }} name"
+                    value="{% if preset_names and i < preset_names|length %}{{ preset_names[i] }}{% else %}Player {{ i + 1 }}{% endif %}" maxlength="50"
                     class="w-full px-3 py-3 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"
                     {% if i < 3 %}required{% endif %}>
                 {% endfor %}
@@ -57,11 +59,12 @@
                 <div class="space-y-3">
                     <div>
                         <label class="text-sm font-medium">Category</label>
-                        <select name="category" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
-                            {% for c in categories %}
-                            <option value="{{ c }}" {% if defaults.default_category == c %}selected{% endif %}>{{ c }}</option>
-                            {% endfor %}
-                        </select>
+                            <select name="category" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
+                                <option value="Random">Random</option>
+                                {% for c in categories %}
+                                <option value="{{ c }}">{{ c }}</option>
+                                {% endfor %}
+                            </select>
                     </div>
                     <div>
                         <label class="text-sm font-medium">Secret Word <span class="text-gray-400">(optional)</span></label>
@@ -95,6 +98,7 @@
         input.type = 'text';
         input.name = 'player_name';
         input.placeholder = 'Player ' + num + ' name';
+        input.value = 'Player ' + num;
         input.maxLength = 50;
         input.className = 'w-full px-3 py-3 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none';
         container.appendChild(input);

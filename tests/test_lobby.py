@@ -210,14 +210,19 @@ class TestSocketIOEvents:
 
         resp2 = client.get(f"/multi-device/join/{code}")
         assert resp2.status_code == 200
-        assert b"Join Game" in resp2.data
+        assert b"Select your name" in resp2.data
+
+        # Extract first player_id from the join page
+        id_match = re.search(rb'name="player_id" value="(\d+)"', resp2.data)
+        assert id_match, "Player ID not found on join page"
+        player_id = id_match.group(1).decode()
 
         resp3 = client.post(f"/multi-device/join/{code}", data={
-            "name": "Alice"
+            "player_id": player_id
         }, follow_redirects=True)
-        # Should redirect to play page
+        # Should redirect to play page showing role
         assert resp3.status_code == 200
-        assert b"Waiting for host" in resp3.data or b"IMPOSTER" in resp3.data or b"CREWMATE" in resp3.data
+        assert b"IMPOSTER" in resp3.data or b"CREWMATE" in resp3.data or b"JESTER" in resp3.data
 
     def test_empty_clue_rejected(self, app, socketio_client):
         with app.app_context():

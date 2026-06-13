@@ -7,7 +7,40 @@
             <h1 class="text-5xl font-bold text-purple-800 mb-2"><i class="fas fa-user-astronaut"></i> IMPOSTER</h1>
             <p class="text-gray-600">Social deduction word game</p>
         </div>
-        <div class="p-8 space-y-6">
+        <div class="px-8 pt-6 pb-2 text-left">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-3 mb-4 rounded-r-lg text-sm cursor-pointer" id="rulesToggle" onclick="document.getElementById('rulesContent').classList.toggle('hidden')">
+                <i class="fas fa-info-circle"></i> How to play <span class="text-yellow-600 text-xs">(click to expand)</span>
+            </div>
+            <div id="rulesContent" class="hidden space-y-4 mb-6">
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <h4 class="font-bold text-purple-800 mb-1"><i class="fas fa-bullseye"></i> Aim</h4>
+                    <p class="text-sm text-gray-700">A secret word is given to all Crewmates. Imposters don't know it. Each round, players give one-word clues about the word, then vote to eliminate someone. The goal is to find the Imposter before they take over.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="bg-white rounded-lg p-3 role-card border border-purple-200">
+                        <h4 class="font-bold text-purple-700 text-sm mb-1"><i class="fas fa-users"></i> Crewmate</h4>
+                        <p class="text-xs text-gray-600">Knows the secret word. Gives clues to identify other crewmates without revealing the word to the imposter.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 role-card border border-red-200">
+                        <h4 class="font-bold text-red-700 text-sm mb-1"><i class="fas fa-skull"></i> Imposter</h4>
+                        <p class="text-xs text-gray-600">Doesn't know the word. Blends in by watching clues and tries to avoid being voted out.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 role-card border border-green-200">
+                        <h4 class="font-bold text-green-700 text-sm mb-1"><i class="fas fa-masks-theater"></i> Jester</h4>
+                        <p class="text-xs text-gray-600">May get partial word info. Wins by getting voted out — act suspicious!</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <h4 class="font-bold text-gray-700 text-sm mb-1"><i class="fas fa-list-ol"></i> Game Flow</h4>
+                    <ol class="text-xs text-gray-600 list-decimal ml-4 space-y-0.5">
+                        <li>One-word clue phase — each alive player gives a hint</li>
+                        <li>Vote phase — players vote to eliminate a suspected imposter</li>
+                        <li>If the Jester is voted out, the Jester wins</li>
+                        <li>If all Imposters are eliminated, Crewmates win</li>
+                        <li>If Imposters outnumber Crewmates, Imposters win</li>
+                    </ol>
+                </div>
+            </div>
             <p class="text-gray-700 text-lg">Choose how you want to play:</p>
 
             <a href="{{ url_for('game.setup_form') }}"

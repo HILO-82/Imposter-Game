@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Join Game{% endblock %}
+{% block content %}
+<div class="game-container max-w-md mx-auto rounded-2xl shadow-2xl p-8 text-center">
+    <div class="text-6xl mb-4"><i class="fas fa-user-astronaut text-blue-600"></i></div>
+    <h1 class="text-3xl font-bold text-blue-800 mb-2">Join Game</h1>
+    <p class="text-gray-600 mb-6">Enter your name to join the game</p>
+
+    {% if error %}
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 text-sm">{{ error }}</div>
+    {% endif %}
+
+    <form action="{{ url_for('game.multi_join_post', code=code) }}" method="POST" class="space-y-4">
+        <input type="text" name="name" placeholder="Your name" maxlength="50" required
+            class="w-full px-4 py-3 rounded-lg border-2 border-blue-300 focus:border-blue-500 focus:outline-none text-center text-lg">
+        <button type="submit" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full text-lg">
+            <i class="fas fa-sign-in-alt"></i> Join Game
+        </button>
+    </form>
+</div>
+{% endblock %}

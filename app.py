@@ -4,9 +4,10 @@ from flask import Flask, render_template
 
 from config import Config
 from extensions import db, socketio
-from models import Word
+from models import Settings, Word
 from routes.game import game_bp
 from routes.lobby import lobby_bp
+from routes.settings import settings_bp
 from socketio_events import register_socketio_events
 from words import seed_words_table
 
@@ -18,6 +19,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     app.register_blueprint(lobby_bp)
     app.register_blueprint(game_bp)
+    app.register_blueprint(settings_bp)
 
     socketio.init_app(app, cors_allowed_origins="*", async_mode='threading')
     register_socketio_events(socketio)
@@ -25,7 +27,9 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
         seed_words_table(db.session, Word)
-
+        if not Settings.query.get(1):
+            db.session.add(Settings(id=1))
+            db.session.commit()
 
     @app.errorhandler(403)
     def forbidden(_e):
@@ -46,4 +50,4 @@ flask_app, socketio_instance = create_app()
 
 if __name__ == "__main__":
     host = os.environ.get("FLASK_HOST", "127.0.0.1")
-    socketio_instance.run(flask_app, host=host, port=int(os.environ.get("PORT", 5001)), debug=flask_app.config["DEBUG"])
+    socketio_instance.run(flask_app, host=host, port=int(os.environ.get("PORT", 5001)), debug=flask_app.config["DEBUG"], allow_unsafe_werkzeug=True)

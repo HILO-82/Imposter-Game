@@ -1,26 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Local Game Setup{% endblock %}
+{% block title %}Multi-Device Setup{% endblock %}
 {% block content %}
 <div class="game-container max-w-2xl mx-auto rounded-2xl shadow-2xl p-8">
     <div class="text-center mb-6">
-        <h1 class="text-4xl font-bold text-purple-800"><i class="fas fa-users"></i> Local Game Setup</h1>
-        <p class="text-gray-600">Pass-and-play on one device</p>
+        <h1 class="text-4xl font-bold text-blue-800"><i class="fas fa-wifi"></i> Multi-Device Setup</h1>
+        <p class="text-gray-600">Each player uses their own device</p>
     </div>
     {% if error %}
     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 text-sm">{{ error }}</div>
     {% endif %}
-    <form action="{{ url_for('game.create_local_game') }}" method="POST" class="space-y-6">
+    <form action="{{ url_for('game.multi_host_create') }}" method="POST" class="space-y-6">
         <div class="bg-gray-50 rounded-xl p-4">
             <h3 class="font-semibold text-lg mb-3"><i class="fas fa-user"></i> Players (3-8)</h3>
+            <p class="text-xs text-gray-500 mb-3">Enter placeholder names — players will claim their spot by scanning the QR code.</p>
             <div id="playerInputs" class="space-y-2">
                 {% for i in range(defaults.default_player_count) %}
-                <input type="text" name="player_name" placeholder="Player {{ i + 1 }} name" maxlength="50"
-                    class="w-full px-3 py-3 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"
-                    {% if i < 3 %}required{% endif %}>
+                <input type="text" name="player_name" placeholder="Player {{ i + 1 }}" maxlength="50"
+                    class="w-full px-3 py-3 border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                    value="Player {{ i + 1 }}">
                 {% endfor %}
             </div>
             <div class="mt-2 flex gap-2">
-                <button type="button" id="addPlayerBtn" class="btn bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-lg"><i class="fas fa-plus"></i> Add</button>
+                <button type="button" id="addPlayerBtn" class="btn bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg"><i class="fas fa-plus"></i> Add</button>
                 <button type="button" id="removePlayerBtn" class="btn bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-lg"><i class="fas fa-minus"></i> Remove</button>
             </div>
         </div>
@@ -31,19 +32,23 @@
                 <div class="space-y-3">
                     <div>
                         <label class="text-sm font-medium">Imposters</label>
-                        <select name="imposter_count" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
-                            {% for n in range(1,5) %}<option value="{{ n }}" {% if defaults.default_imposter_count == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+                        <select name="imposter_count" class="w-full px-3 py-2 border-2 border-blue-300 rounded-lg text-sm">
+                            {% for n in range(1, 5) %}
+                            <option value="{{ n }}" {% if defaults.default_imposter_count == n %}selected{% endif %}>{{ n }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div>
                         <label class="text-sm font-medium">Jesters</label>
-                        <select name="jester_count" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
-                            {% for n in range(0,3) %}<option value="{{ n }}" {% if defaults.default_jester_count == n %}selected{% endif %}>{{ n }}</option>{% endfor %}
+                        <select name="jester_count" class="w-full px-3 py-2 border-2 border-blue-300 rounded-lg text-sm">
+                            {% for n in range(0, 3) %}
+                            <option value="{{ n }}" {% if defaults.default_jester_count == n %}selected{% endif %}>{{ n }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div>
                         <label class="text-sm font-medium">Jester Info</label>
-                        <select name="jester_info" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
+                        <select name="jester_info" class="w-full px-3 py-2 border-2 border-blue-300 rounded-lg text-sm">
                             <option value="nothing" {% if defaults.default_jester_info == 'nothing' %}selected{% endif %}>Nothing</option>
                             <option value="category" {% if defaults.default_jester_info == 'category' %}selected{% endif %}>Category</option>
                             <option value="partial" {% if defaults.default_jester_info == 'partial' %}selected{% endif %}>Partial</option>
@@ -57,7 +62,7 @@
                 <div class="space-y-3">
                     <div>
                         <label class="text-sm font-medium">Category</label>
-                        <select name="category" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
+                        <select name="category" class="w-full px-3 py-2 border-2 border-blue-300 rounded-lg text-sm">
                             {% for c in categories %}
                             <option value="{{ c }}" {% if defaults.default_category == c %}selected{% endif %}>{{ c }}</option>
                             {% endfor %}
@@ -66,19 +71,21 @@
                     <div>
                         <label class="text-sm font-medium">Secret Word <span class="text-gray-400">(optional)</span></label>
                         <input type="text" name="secret_word" placeholder="Leave blank for random" maxlength="100"
-                            class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none text-sm">
+                            class="w-full px-3 py-2 border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:outline-none text-sm">
                     </div>
                 </div>
             </div>
         </div>
 
         <button type="submit" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl w-full text-lg">
-            <i class="fas fa-play"></i> Start Local Game
+            <i class="fas fa-play"></i> Create Game
         </button>
     </form>
 
     <div class="text-center mt-4">
-        <a href="{{ url_for('lobby.index') }}" class="btn inline-block bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm"><i class="fas fa-arrow-left"></i> Back to home</a>
+        <a href="{{ url_for('lobby.index') }}" class="btn inline-block bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
     </div>
 </div>
 
@@ -94,9 +101,10 @@
         const input = document.createElement('input');
         input.type = 'text';
         input.name = 'player_name';
-        input.placeholder = 'Player ' + num + ' name';
+        input.placeholder = 'Player ' + num;
         input.maxLength = 50;
-        input.className = 'w-full px-3 py-3 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none';
+        input.className = 'w-full px-3 py-3 border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:outline-none';
+        input.value = 'Player ' + num;
         container.appendChild(input);
     });
 

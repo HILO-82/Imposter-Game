@@ -33,8 +33,14 @@ def setup_form():
 
 @game_bp.route("/game/setup", methods=["POST"])
 def create_local_game():
-    names = request.form.getlist("player_name")
-    names = [n.strip() for n in names if n.strip()]
+    raw_names = request.form.getlist("player_name")
+    names = []
+    for i, n in enumerate(raw_names):
+        stripped = n.strip()
+        if stripped:
+            names.append(stripped)
+        else:
+            names.append(f"Player {i + 1}")
     if len(names) < 3:
         from routes.settings import get_or_create_settings
         categories = get_word_categories()

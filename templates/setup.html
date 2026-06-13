@@ -52,6 +52,7 @@
                             <option value="full" {% if defaults.default_jester_info == 'full' %}selected{% endif %}>Full</option>
                         </select>
                     </div>
+
                 </div>
             </div>
             <div class="bg-gray-50 rounded-xl p-4">
@@ -59,12 +60,13 @@
                 <div class="space-y-3">
                     <div>
                         <label class="text-sm font-medium">Category</label>
-                            <select name="category" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
-                                <option value="Random">Random</option>
+                            <select name="category" id="categorySelect" class="w-full px-3 py-2 border-2 border-purple-300 rounded-lg text-sm">
+                                <option value="Random" data-label="">Random (AI-balanced pick)</option>
                                 {% for c in categories %}
-                                <option value="{{ c }}">{{ c }}</option>
+                                <option value="{{ c }}" data-label="{% for d in cat_difficulty %}{% if d.name == c %}{{ d.label }}{% endif %}{% endfor %}">{{ c }}</option>
                                 {% endfor %}
                             </select>
+                            <p id="catHelp" class="text-xs text-gray-500 mt-1"><i class="fas fa-info-circle"></i> AI suggests balanced categories based on past games</p>
                     </div>
                     <div>
                         <label class="text-sm font-medium">Secret Word <span class="text-gray-400">(optional)</span></label>
@@ -109,5 +111,15 @@
         if (inputs.length <= 3) return;
         container.removeChild(inputs[inputs.length - 1]);
     });
+
+    const catSelect = document.getElementById('categorySelect');
+    const catHelp = document.getElementById('catHelp');
+    if (catSelect) {
+        catSelect.addEventListener('change', function() {
+            const opt = this.options[this.selectedIndex];
+            const label = opt.getAttribute('data-label');
+            catHelp.innerHTML = label ? '<i class="fas fa-info-circle"></i> ' + label : '<i class="fas fa-info-circle"></i> AI picks the most balanced category from past games';
+        });
+    }
 </script>
 {% endblock %}

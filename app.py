@@ -4,6 +4,7 @@ from flask import Flask, g, render_template
 
 from config import Config
 from extensions import db, socketio
+from ml.insights import seed_example_games
 from models import GameEvent, Settings, Word
 from routes.game import game_bp
 from routes.lobby import lobby_bp
@@ -27,6 +28,7 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
         seed_words_table(db.session, Word)
+        seed_example_games()
 
     @app.before_request
     def load_settings():

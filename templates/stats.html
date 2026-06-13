@@ -75,6 +75,45 @@
         {% endif %}
     </div>
 
+    <div class="bg-purple-50 border-2 border-purple-200 rounded-xl p-4 mb-6">
+        <h3 class="font-semibold text-lg mb-2"><i class="fas fa-robot"></i> AI Insights</h3>
+        {% if pred %}
+        <p class="text-purple-800 font-medium text-sm mb-1">
+            <i class="fas fa-chart-line"></i> Predicted winner: <strong>{{ pred[0] }}</strong> ({{ pred[1] }}% confidence)
+        </p>
+        {% endif %}
+        <p class="text-gray-600 text-sm"><i class="fas fa-lightbulb"></i>
+        {% if tip %}{{ tip }}{% else %}Record events and declare a winner above to start seeing AI insights!{% endif %}</p>
+    </div>
+
+    {% if not game.winning_role %}
+    <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4 mb-6">
+        <h3 class="font-semibold text-lg mb-3"><i class="fas fa-trophy"></i> Who Won?</h3>
+        <form method="POST" action="{{ url_for('game.game_stats', game_id=game.game_id) }}" class="space-y-3">
+            <input type="hidden" name="winning_role" id="winning_role_input">
+            <input type="hidden" name="finish_action" id="finish_action_input">
+            <div class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="setWinner('crewmate', this)"
+                    class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-sm text-center">
+                    <i class="fas fa-user-astronaut"></i> Crewmates
+                </button>
+                <button type="button" onclick="setWinner('imposter', this)"
+                    class="btn bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-sm text-center">
+                    <i class="fas fa-skull"></i> Imposters
+                </button>
+                <button type="button" onclick="setWinner('jester', this)"
+                    class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-sm text-center">
+                    <i class="fas fa-mask"></i> Jester
+                </button>
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div class="bg-green-50 border-2 border-green-200 rounded-xl p-4 mb-6 text-center">
+        <p class="text-green-800 font-semibold"><i class="fas fa-trophy"></i> Winner: {{ game.winning_role|capitalize }}s</p>
+    </div>
+    {% endif %}
+
     <div class="mt-6 flex gap-3">
         {% if game.is_multi_device %}
         <a href="{{ url_for('game.multi_host_repeat', game_id=game.game_id) }}"
@@ -91,4 +130,12 @@
         </a>
     </div>
 </div>
+
+<script>
+function setWinner(role, btn) {
+    document.getElementById('winning_role_input').value = role;
+    document.getElementById('finish_action_input').value = 'stats';
+    btn.closest('form').submit();
+}
+</script>
 {% endblock %}

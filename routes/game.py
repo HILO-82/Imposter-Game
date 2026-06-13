@@ -15,6 +15,8 @@ from game_logic import (
     eliminate_top_voted,
     tally_votes,
 )
+from ml.assignment import balanced_role_assign
+from ml.insights import balanced_category_pick, get_category_difficulty, predict_winner, random_tip
 from ml.vote_bot import bot_vote
 from ml.word_bot import bot_guess
 from models import Game, GameEvent, Player, Round, Vote
@@ -27,6 +29,9 @@ game_bp = Blueprint("game", __name__)
 
 def _resolve_category(category):
     if category == "Random":
+        balanced = balanced_category_pick()
+        if balanced:
+            return balanced
         return random.choice(get_word_categories())
     return category
 
@@ -39,7 +44,8 @@ def setup_form():
     s = get_or_create_settings()
     categories = get_word_categories()
     names = request.args.getlist("name")
-    return render_template("setup.html", categories=categories, defaults=s, preset_names=names)
+    cat_difficulty = get_category_difficulty()
+    return render_template("setup.html", categories=categories, defaults=s, preset_names=names, cat_difficulty=cat_difficulty)
 
 
 @game_bp.route("/game/repeat/<int:game_id>")
@@ -74,9 +80,15 @@ def create_local_game():
     jester_info = request.form.get("jester_info", "nothing")
     category = _resolve_category(request.form.get("category", "Animals"))
     secret_word = request.form.get("secret_word", "").strip()
+    from routes.settings import get_or_create_settings as _gcs
+    smart_assign = _gcs().smart_assign
+
+    players_data = [{"name": n} for n in names]
+    if smart_assign and Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).count() > 0:
+        balanced_role_assign(players_data, imposter_count, jester_count)
 
     setup = {
-        "players": [{"name": n} for n in names],
+        "players": players_data,
         "imposter_count": imposter_count,
         "jester_count": jester_count,
         "jester_info": jester_info,
@@ -289,7 +301,8 @@ def multi_host_setup():
     from routes.settings import get_or_create_settings
     s = get_or_create_settings()
     categories = get_word_categories()
-    return render_template("multi_setup.html", categories=categories, defaults=s)
+    cat_difficulty = get_category_difficulty()
+    return render_template("multi_setup.html", categories=categories, defaults=s, cat_difficulty=cat_difficulty)
 
 
 @game_bp.route("/multi-device/host", methods=["POST"])
@@ -312,8 +325,16 @@ def multi_host_create():
     jester_info = request.form.get("jester_info", "nothing")
     category = _resolve_category(request.form.get("category", "Animals"))
     secret_word = request.form.get("secret_word", "").strip()
+    from routes.settings import get_or_create_settings as _gcs
+    smart_assign = _gcs().smart_assign
 
-    from game_logic import assign_roles
+    from game_logic import assign_roles as random_assign
+
+    players_data = [{"name": n} for n in names]
+    if smart_assign and Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).count() > 0:
+        balanced_role_assign(players_data, imposter_count, jester_count)
+    else:
+        random_assign(players_data, imposter_count, jester_count)
 
     code = generate_room_code()
     host_token = secrets.token_urlsafe(32)
@@ -337,10 +358,8 @@ def multi_host_create():
     db.session.add(game)
     db.session.flush()
 
-    players_data = [{"name": n, "role": "crewmate"} for n in names]
-    assigned = assign_roles(players_data, imposter_count, jester_count)
     player_list = []
-    for i, p in enumerate(assigned):
+    for i, p in enumerate(players_data):
         player = Player(
             game_id=game.game_id,
             player_token=None,
@@ -490,6 +509,18 @@ def multi_play(code):
 def game_stats(game_id):
     game = Game.query.get_or_404(game_id)
     if request.method == "POST":
+        winning_role = request.form.get("winning_role")
+        if winning_role:
+            game.winning_role = winning_role
+            game.status = "finished"
+            finish_action = request.form.get("finish_action", "stats")
+            db.session.commit()
+            if finish_action == "repeat_multi":
+                return redirect(url_for("game.multi_host_repeat", game_id=game_id))
+            elif finish_action == "repeat_local":
+                return redirect(url_for("game.repeat_local_game", game_id=game_id))
+            return redirect(url_for("game.game_stats", game_id=game_id))
+
         round_number = int(request.form.get("round_number", 1))
         player_id = request.form.get("player_id", type=int)
         event_type = request.form.get("event_type", "eliminated")
@@ -502,7 +533,9 @@ def game_stats(game_id):
 
     players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
     events = GameEvent.query.filter_by(game_id=game_id).order_by(GameEvent.round_number, GameEvent.event_id).all()
-    return render_template("stats.html", game=game, players=players, events=events)
+    tip = random_tip()
+    pred = predict_winner(game.num_players, game.imposter_count, game.jester_count, game.category)
+    return render_template("stats.html", game=game, players=players, events=events, tip=tip, pred=pred)
 
 
 @game_bp.route("/game/stats/delete/<int:event_id>", methods=["POST"])

@@ -115,7 +115,8 @@ def create_game_from_setup(setup):
     db.session.add(game)
     db.session.flush()
 
-    assign_roles(players_data, imposter_count, jester_count)
+    if not players_data[0].get("role"):
+        assign_roles(players_data, imposter_count, jester_count)
     for p in players_data:
         player = Player(
             game_id=game.game_id,

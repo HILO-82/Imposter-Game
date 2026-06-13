@@ -38,5 +38,6 @@ def save_settings():
         s.default_jester_info = request.form.get("jester_info", "nothing")
         s.default_category = request.form.get("category", "Animals")
         s.default_player_count = int(request.form.get("player_count", 6))
+        s.smart_assign = request.form.get("smart_assign") == "on"
     db.session.commit()
     return redirect(url_for("settings.settings_page", tab=tab))

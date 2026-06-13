@@ -15,6 +15,7 @@ class Settings(db.Model):
     dark_mode = db.Column(db.Boolean, default=False, nullable=False)
     font_size = db.Column(db.Integer, default=16, nullable=False)
     high_contrast = db.Column(db.Boolean, default=False, nullable=False)
+    smart_assign = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class Game(db.Model):

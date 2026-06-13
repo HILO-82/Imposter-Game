@@ -474,9 +474,8 @@ def multi_join(code):
     if not game:
         return render_template("error.html", code=404, message="Game not found.")
 
-    unclaimed = Player.query.filter_by(game_id=game.game_id, player_token=None).all()
-    error = request.args.get("error", "")
-    return render_template("multi_join.html", game=game, error=error, code=code, unclaimed=unclaimed)
+    unclaimed = Player.query.filter_by(game_id=game.game_id).all()
+    return render_template("multi_join.html", game=game, code=code, unclaimed=unclaimed)
 
 
 @game_bp.route("/multi-device/join/<code>", methods=["POST"])
@@ -486,16 +485,16 @@ def multi_join_post(code):
         return redirect(url_for("lobby.index"))
 
     player_id = request.form.get("player_id", type=int)
-    player = Player.query.filter_by(game_id=game.game_id, player_id=player_id, player_token=None).first()
+    player = Player.query.filter_by(game_id=game.game_id, player_id=player_id).first()
     if not player:
-        return redirect(url_for("game.multi_join", code=code, error="That name is no longer available."))
+        return redirect(url_for("game.multi_join", code=code))
 
-    player_token = secrets.token_urlsafe(32)
-    player.player_token = player_token
-    player.session_id = player_token
-    db.session.commit()
+    if not player.player_token:
+        player.player_token = secrets.token_urlsafe(32)
+        player.session_id = player.player_token
+        db.session.commit()
 
-    return redirect(url_for("game.multi_play", code=code, token=player_token))
+    return redirect(url_for("game.multi_play", code=code, token=player.player_token))
 
 
 @game_bp.route("/multi-device/play/<code>")

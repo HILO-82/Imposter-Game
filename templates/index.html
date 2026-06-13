@@ -8,10 +8,7 @@
             <p class="text-gray-600">Social deduction word game</p>
         </div>
         <div class="px-8 pt-6 pb-2 text-left">
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-3 mb-4 rounded-r-lg text-sm cursor-pointer" id="rulesToggle" onclick="document.getElementById('rulesContent').classList.toggle('hidden')">
-                <i class="fas fa-info-circle"></i> How to play <span class="text-yellow-600 text-xs">(click to expand)</span>
-            </div>
-            <div id="rulesContent" class="hidden space-y-4 mb-6">
+            <div class="space-y-4 mb-6">
                 <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                     <h4 class="font-bold text-purple-800 mb-1"><i class="fas fa-bullseye"></i> Aim</h4>
                     <p class="text-sm text-gray-700">A secret word is given to all Crewmates. Imposters don't know it. Each round, players give one-word clues about the word, then vote to eliminate someone. The goal is to find the Imposter before they take over.</p>
@@ -41,24 +38,22 @@
                     </ol>
                 </div>
             </div>
-            <p class="text-gray-700 text-lg">Choose how you want to play:</p>
 
-            <a href="{{ url_for('game.setup_form') }}"
-               class="btn flex items-center justify-between bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-xl w-full text-lg">
-                <span><i class="fas fa-mobile-alt mr-3"></i> Single Device</span>
-                <span class="text-purple-200 text-sm">Pass-and-play</span>
-            </a>
-
-            <a href="{{ url_for('game.multi_host_setup') }}"
-               class="btn flex items-center justify-between bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl w-full text-lg">
-                <span><i class="fas fa-wifi mr-3"></i> Multi Device</span>
-                <span class="text-blue-200 text-sm">Each player on their own device</span>
-            </a>
-
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <a href="{{ url_for('game.setup_form') }}"
+                   class="btn flex flex-col items-center justify-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-8 rounded-xl text-lg" style="aspect-ratio:1/1">
+                    <i class="fas fa-mobile-alt text-3xl mb-2"></i>
+                    <span>Single Device</span>
+                </a>
+                <a href="{{ url_for('game.multi_host_setup') }}"
+                   class="btn flex flex-col items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 rounded-xl text-lg" style="aspect-ratio:1/1">
+                    <i class="fas fa-wifi text-3xl mb-2"></i>
+                    <span>Multi Device</span>
+                </a>
+            </div>
             <a href="{{ url_for('settings.settings_page') }}"
-               class="btn flex items-center justify-between bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-xl w-full text-lg">
-                <span><i class="fas fa-cog mr-3"></i> Settings</span>
-                <span class="text-gray-300 text-sm">Default game options</span>
+               class="btn flex items-center justify-center bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-xl w-full max-w-xs mx-auto text-base">
+                <i class="fas fa-cog mr-2"></i> Settings
             </a>
         </div>
     </div>

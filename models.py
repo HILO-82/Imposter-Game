@@ -38,6 +38,7 @@ class Game(db.Model):
     creator_player_id = db.Column(db.Integer, nullable=True)
     is_multi_device = db.Column(db.Boolean, default=False, nullable=False)
     host_token = db.Column(db.String(100), nullable=True, unique=True, index=True)
+    starter_player_name = db.Column(db.String(50), nullable=True)
 
     players = db.relationship("Player", backref="game", lazy=True, cascade="all, delete-orphan")
     rounds = db.relationship("Round", backref="game", lazy=True, cascade="all, delete-orphan")

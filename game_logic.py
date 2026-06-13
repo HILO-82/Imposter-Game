@@ -98,6 +98,7 @@ def create_game_from_setup(setup):
     jester_info = setup.get("jester_info", "nothing")
     secret_word = setup.get("secret_word") or random_word(setup.get("word_category"))["word"]
     category = setup.get("word_category", "Animals")
+    starter = setup.get("starter_player_name")
 
     game = Game(
         room_code=generate_room_code(),
@@ -111,6 +112,7 @@ def create_game_from_setup(setup):
         phase="clue",
         round_number=1,
         current_player_index=0,
+        starter_player_name=starter,
     )
     db.session.add(game)
     db.session.flush()

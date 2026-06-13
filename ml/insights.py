@@ -265,3 +265,38 @@ def balanced_category_pick():
         if r <= cumulative:
             return d["name"]
     return diffs[-1]["name"]
+
+
+def get_word_ratings():
+    games = Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).all()
+    words = {}
+    for g in games:
+        w = g.secret_word
+        if w not in words:
+            words[w] = {"imposter_wins": 0, "crewmate_wins": 0, "jester_wins": 0, "total": 0, "category": g.category}
+        words[w][g.winning_role + "_wins"] += 1
+        words[w]["total"] += 1
+    result = []
+    for word, data in sorted(words.items()):
+        t = data["total"]
+        crew_pct = round(data["crewmate_wins"] / t * 100) if t else 0
+        imp_pct = round(data["imposter_wins"] / t * 100) if t else 0
+        balance = 100 - abs(crew_pct - imp_pct)
+        result.append({**data, "word": word, "crewmate_pct": crew_pct, "imposter_pct": imp_pct, "balance": balance})
+    return result
+
+
+def balanced_word(category=None):
+    ratings = get_word_ratings()
+    pool = [r for r in ratings if (category is None or r["category"] == category) and r["total"] >= 1]
+    if not pool:
+        return None
+    weights = [max(1, r["balance"] / 10) for r in pool]
+    total_w = sum(weights)
+    r = random.uniform(0, total_w)
+    cumulative = 0
+    for i, w in enumerate(pool):
+        cumulative += weights[i]
+        if r <= cumulative:
+            return w["word"]
+    return pool[-1]["word"]

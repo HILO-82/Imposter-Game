@@ -84,6 +84,23 @@
         {% endif %}
         <p class="text-gray-600 text-sm"><i class="fas fa-lightbulb"></i>
         {% if tip %}{{ tip }}{% else %}Record events and declare a winner above to start seeing AI insights!{% endif %}</p>
+        {% if pstats %}
+        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {% for name, s in pstats.items()|sort %}
+            <div class="bg-white rounded-lg p-2 text-xs border border-purple-100">
+                <span class="font-semibold text-purple-800">{{ name }}</span>
+                <span class="text-gray-500 ml-1">{{ s.games_played }}g</span>
+                <div class="flex gap-2 text-gray-600 mt-0.5">
+                    <span>{{ s.as_imposter }}x imp</span>
+                    <span>{{ s.imposter_wins }}iw</span>
+                    <span>{{ s.crewmate_wins }}cw</span>
+                    <span>{{ s.first_eliminations }} early</span>
+                    <span>{{ s.starts }} starts</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 
     {% if not game.winning_role %}

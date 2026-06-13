@@ -15,8 +15,8 @@ from game_logic import (
     eliminate_top_voted,
     tally_votes,
 )
-from ml.assignment import balanced_role_assign
-from ml.insights import balanced_category_pick, get_category_difficulty, predict_winner, random_tip
+from ml.assignment import balanced_role_assign, pick_starting_player
+from ml.insights import balanced_category_pick, balanced_word, get_category_difficulty, predict_winner, random_tip
 from ml.vote_bot import bot_vote
 from ml.word_bot import bot_guess
 from models import Game, GameEvent, Player, Round, Vote
@@ -84,8 +84,16 @@ def create_local_game():
     smart_assign = _gcs().smart_assign
 
     players_data = [{"name": n} for n in names]
-    if smart_assign and Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).count() > 0:
+    has_data = Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).count() > 0
+    starter_name = None
+    if smart_assign and has_data:
         balanced_role_assign(players_data, imposter_count, jester_count)
+        starter_name = pick_starting_player(players_data)
+
+    if not secret_word and has_data:
+        bw = balanced_word(category)
+        if bw:
+            secret_word = bw
 
     setup = {
         "players": players_data,
@@ -94,6 +102,7 @@ def create_local_game():
         "jester_info": jester_info,
         "word_category": category,
         "secret_word": secret_word or None,
+        "starter_player_name": starter_name,
     }
     game = create_game_from_setup(setup)
     session["game_id"] = game.game_id
@@ -331,8 +340,15 @@ def multi_host_create():
     from game_logic import assign_roles as random_assign
 
     players_data = [{"name": n} for n in names]
-    if smart_assign and Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).count() > 0:
+    has_data = Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).count() > 0
+    starter_name = None
+    if smart_assign and has_data:
         balanced_role_assign(players_data, imposter_count, jester_count)
+        starter_name = pick_starting_player(players_data)
+        if not secret_word:
+            bw = balanced_word(category)
+            if bw:
+                secret_word = bw
     else:
         random_assign(players_data, imposter_count, jester_count)
 
@@ -354,6 +370,7 @@ def multi_host_create():
         round_number=1,
         is_multi_device=True,
         host_token=host_token,
+        starter_player_name=starter_name,
     )
     db.session.add(game)
     db.session.flush()
@@ -535,7 +552,9 @@ def game_stats(game_id):
     events = GameEvent.query.filter_by(game_id=game_id).order_by(GameEvent.round_number, GameEvent.event_id).all()
     tip = random_tip()
     pred = predict_winner(game.num_players, game.imposter_count, game.jester_count, game.category)
-    return render_template("stats.html", game=game, players=players, events=events, tip=tip, pred=pred)
+    from ml.assignment import get_player_stats
+    pstats = get_player_stats()
+    return render_template("stats.html", game=game, players=players, events=events, tip=tip, pred=pred, pstats=pstats)
 
 
 @game_bp.route("/game/stats/delete/<int:event_id>", methods=["POST"])
@@ -545,3 +564,15 @@ def delete_event(event_id):
     db.session.delete(event)
     db.session.commit()
     return redirect(url_for("game.game_stats", game_id=game_id))
+
+
+@game_bp.route("/api/ml/history")
+def ml_history():
+    from ml.assignment import get_player_stats
+    from ml.insights import get_category_difficulty, get_word_ratings, compute_insights
+    return jsonify({
+        "player_stats": get_player_stats(),
+        "category_stats": get_category_difficulty(),
+        "word_ratings": get_word_ratings(),
+        "insights": compute_insights(),
+    })

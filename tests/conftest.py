@@ -1,6 +1,10 @@
 """Pytest configuration and fixtures."""
 
 import os
+
+os.environ["SECRET_KEY"] = "test-secret-key"
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+
 import pytest
 
 from app import create_app
@@ -10,13 +14,8 @@ from extensions import db as _db
 @pytest.fixture(scope="session")
 def app():
     """Create a test app with an in-memory SQLite database."""
-    os.environ["SECRET_KEY"] = "test-secret-key"
-    os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-
     app, socketio = create_app()
     app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    app.config["SECRET_KEY"] = "test-secret-key"
 
     with app.app_context():
         _db.create_all()

@@ -109,6 +109,20 @@ input, select, button {
     border-color: #4a4a6a;
 }
 
+.high-contrast .game-container {
+    border: 3px solid #fff !important;
+    box-shadow: none !important;
+}
+
+.high-contrast a, .high-contrast .btn {
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+.high-contrast input, .high-contrast select {
+    border-width: 3px !important;
+}
+
 @media (max-width: 480px) {
     #app { padding: 0.5rem !important; }
     .game-container { padding: 1rem !important; }

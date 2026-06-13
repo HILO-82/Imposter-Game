@@ -13,6 +13,8 @@ class Settings(db.Model):
     default_category = db.Column(db.String(50), default="Animals", nullable=False)
     default_player_count = db.Column(db.Integer, default=6, nullable=False)
     dark_mode = db.Column(db.Boolean, default=False, nullable=False)
+    font_size = db.Column(db.Integer, default=16, nullable=False)
+    high_contrast = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class Game(db.Model):

@@ -35,7 +35,12 @@ def create_app(config_class=Config):
 
     @app.context_processor
     def inject_settings():
-        return {"dark_mode": getattr(g, 'settings', None) is not None and g.settings.dark_mode}
+        s = getattr(g, 'settings', None)
+        return {
+            "dark_mode": s is not None and s.dark_mode,
+            "font_size": s.font_size if s else 16,
+            "high_contrast": s is not None and s.high_contrast,
+        }
 
     @app.errorhandler(403)
     def forbidden(_e):

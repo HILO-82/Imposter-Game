@@ -30,6 +30,8 @@ def save_settings():
     tab = request.form.get("tab", "game")
     if tab == "app":
         s.dark_mode = request.form.get("dark_mode") == "on"
+        s.font_size = int(request.form.get("font_size", 16))
+        s.high_contrast = request.form.get("high_contrast") == "on"
     else:
         s.default_imposter_count = int(request.form.get("imposter_count", 1))
         s.default_jester_count = int(request.form.get("jester_count", 0))

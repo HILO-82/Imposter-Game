@@ -3,8 +3,8 @@
 ```mermaid
 flowchart TD
     START([Landing Page]):::page
-    CHOOSE_MODE{Choose mode?}:::decision
-    SETUP_PAGE["Local Game Setup\nnames, counts, category"]:::page
+    CHOOSE_MODE{Mode?}:::decision
+    SETUP_PAGE["Local Setup\nnames, counts, category"]:::page
     MULTI_SETUP["Multi-Device Setup\nnames, counts, category"]:::page
     SETTINGS_PAGE["Settings\ndefaults, appearance"]:::page
 
@@ -14,56 +14,42 @@ flowchart TD
     CHOOSE_MODE -->|"Settings"| SETTINGS_PAGE
     SETTINGS_PAGE -->|"Back"| START
 
-    REVEAL["Role Reveal\npass-and-play"]:::page
+    REVEAL["Role Reveal\nshow roles on screen"]:::page
     SETUP_PAGE -->|"Start Game"| REVEAL
 
     HOST_DASH["Host Dashboard\nQR code, join URL"]:::page
     MULTI_SETUP -->|"Create Game"| HOST_DASH
-    HOST_DASH -->|"Advance Phase\n(SocketIO)"| REVEAL_HOST
 
-    JOIN_PAGE["Join Game\npick your name"]:::page
-    HOST_DASH -.->|"share QR"| JOIN_PAGE
-    JOIN_PAGE -->|"Claim name"| PLAYER_VIEW
+    JOIN_PAGE["Join Game\nclaim your name\n→ see your role"]:::page
+    HOST_DASH -.->|"Players scan QR"| JOIN_PAGE
 
-    PLAYER_VIEW["Player View\nrole reveal"]:::page
-    REVEAL_HOST["Role Reveal\n(all players seen)"]:::page
-    REVEAL -->|"Ready"| CLUE_PHASE
-    REVEAL_HOST -->|"Host advances"| CLUE_PHASE_M
+    ROLES_SEEN["All players know their roles"]:::page
+    REVEAL --> ROLES_SEEN
+    JOIN_PAGE --> ROLES_SEEN
 
-    CLUE_PHASE["Clue Phase\nsubmit one-word clue"]:::page
-    CLUE_PHASE_M["Clue Phase\nsubmit one-word clue"]:::page
+    PLAY_IN_PERSON["🎲  Play In Person  🎲\ntalk, bluff, argue, vote\nno computers involved"]:::page
 
-    CLUE_PHASE -->|"All clues in"| VOTE_PHASE
-    CLUE_PHASE_M -->|"All clues in"| VOTE_PHASE_M
+    ROLES_SEEN --> PLAY_IN_PERSON
 
-    VOTE_PHASE["Vote Phase\nvote to eliminate"]:::page
-    VOTE_PHASE_M["Vote Phase\nvote to eliminate"]:::page
+    ENTER_EVENTS{"Game over?\nLog it"}:::decision
+    PLAY_IN_PERSON --> ENTER_EVENTS
 
-    NEXT_ROUND{Next round?}:::decision
-    VOTE_PHASE -->|"No winner"| NEXT_ROUND
-    NEXT_ROUND -->|"Continue"| CLUE_PHASE
+    STATS_PAGE["Stats Page\nadd events (who was\nvoted out each round)"]:::page
+    ENTER_EVENTS -->|"Yes"| STATS_PAGE
 
-    VOTE_PHASE_M -->|"No winner"| NEXT_ROUND_M
-    VOTE_PHASE_M -->|"Winner"| RESULT_M
-    NEXT_ROUND_M -->|"Continue"| CLUE_PHASE_M
+    DECLARE_WINNER["Declare Winner\nchoose: Crewmates /\nImposters / Jester"]:::page
+    STATS_PAGE --> DECLARE_WINNER
 
-    VOTE_PHASE -->|"Winner"| RESULT
-    VOTE_PHASE -->|"Eliminated\n(spectate)"| CLUE_PHASE
+    VIEW_INSIGHTS["AI Insights\nwin prediction,\nplayer stats"]:::page
+    DECLARE_WINNER --> VIEW_INSIGHTS
 
-    RESULT["Game Result\nwinner, word, roles"]:::page
-    RESULT_M["Game Result\nwinner, word, roles"]:::page
+    WHAT_NEXT{What next?}:::decision
+    VIEW_INSIGHTS --> WHAT_NEXT
 
-    RESULT -->|"View Stats"| STATS_PAGE
-    RESULT_M -->|"View Stats"| STATS_PAGE
+    WHAT_NEXT -->|"Play Again\n(same settings)"| REPLAY
+    WHAT_NEXT -->|"Home"| START
 
-    POST_GAME{What next?}:::decision
-    STATS_PAGE["Game Stats\nadd events, declare winner,\nAI insights"]:::page
-    STATS_PAGE --> POST_GAME
-
-    POST_GAME -->|"Play Again"| REPLAY
-    POST_GAME -->|"Home"| START
-
-    REPLAY["Repeat Game\nsame settings, new game"]:::page
+    REPLAY["Auto-fill setup\nwith same names"]:::page
     REPLAY -->|"Local"| SETUP_PAGE
     REPLAY -->|"Multi"| MULTI_SETUP
 

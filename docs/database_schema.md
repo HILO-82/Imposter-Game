@@ -28,10 +28,10 @@ erDiagram
         str winning_role    "nullable; crewmate|imposter|jester"
         str secret_word     "🔒 never sent to imposters (app-layer)"
         str category
-        str status          "lobby|active|finished"
-        int round_number
-        str phase           "role_reveal|clue|vote"
-        int current_player_index
+        str status          "lobby|active|finished  🔒 set via stats page"
+        int round_number    "tracked for game_events"
+        str phase           "legacy: not used in in-person flow"
+        int current_player_index "legacy"
         int creator_player_id
         bool is_multi_device
         str host_token      "UK, IX  🔒 unique + session-gated"
@@ -46,25 +46,9 @@ erDiagram
         str name            "🔒 regex-validated alphanumeric + spaces, max 50"
         str role            "crewmate|imposter|jester"
         str color
-        bool was_voted_out
-        bool is_bot
-        bool is_connected
-    }
-
-    rounds {
-        int round_id PK
-        int game_id FK
-        int round_number
-        str clue_given      "🔒 max 100 chars, blocks SQL injection patterns"
-        int player_id FK
-    }
-
-    votes {
-        int vote_id PK
-        int game_id FK
-        int round_number
-        int voter_id FK
-        int target_id FK
+        bool was_voted_out  "🔒 set via game_events on stats page"
+        bool is_bot         "legacy: not used in in-person flow"
+        bool is_connected   "for multi-device presence"
     }
 
     game_events {
@@ -86,12 +70,7 @@ erDiagram
     }
 
     games ||--o{ players : "has"
-    games ||--o{ rounds : "contains"
-    games ||--o{ votes : "contains"
     games ||--o{ game_events : "logs"
-    players ||--o{ rounds : "submits"
-    players ||--o{ votes : "casts as voter"
-    players ||--o{ votes : "receives as target"
     players ||--o{ game_events : "involved in"
 ```
 
@@ -104,7 +83,6 @@ erDiagram
 | **Schema** | `UNIQUE` constraint | `games.room_code`, `games.host_token`, `players.player_token`, `words.word` | Prevents duplicate tokens / room codes / words |
 | **Schema** | `INDEX` | `games.room_code`, `games.host_token`, `players.player_token`, `players.session_id` | Fast lookup for join/auth queries |
 | **Input** | Regex validation | `validate_player_name()` in `security.py:36` | Player names: `^[\w\s\-'.']{1,50}$` — no HTML, no special chars |
-| **Input** | SQL injection block | `validate_clue()` in `security.py:43` | Blocks `<script`, `drop table`, `union select`, `--`, `/*` |
 | **Input** | HTML stripping | `strip_html()` in `security.py:32` and `validate_message()` at `security.py:51` | Sanitises notes and chat messages |
 | **Input** | Length limits | `Config.MAX_NAME_LENGTH=50`, `Config.MAX_CLUE_LENGTH=100`, message max=500 | Prevents oversized input attacks |
 | **Input** | Positive integer check | `validate_positive_int()` in `security.py:60` | All numeric fields validated min/max |

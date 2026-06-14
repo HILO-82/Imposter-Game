@@ -8,11 +8,13 @@ from models import Game, GameEvent, Player
 
 
 def _encoded_label(winning_role):
+    # Convert string role to integer for GaussianNB (which requires numeric y)
     mapping = {"crewmate": 0, "imposter": 1, "jester": 2}
     return mapping.get(winning_role, 0)
 
 
 def _decoded_label(label):
+    # Convert numeric prediction back to display string
     mapping = {0: "Crewmates", 1: "Imposters", 2: "Jester"}
     return mapping.get(label, "Crewmates")
 
@@ -51,6 +53,12 @@ def compute_insights():
 
 
 def build_model():
+    # Gaussian Naive Bayes classifier trained on finished games.
+    # Features: [player_count, imposter_count, jester_count, category_id]
+    # These numeric game-config features are assumed independent and normally
+    # distributed per class — a reasonable fit because game setup values are
+    # chosen from fixed ranges and categories are encoded consistently.
+    # Requires at least 3 finished games to produce a minimally useful model.
     games = Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).all()
     if len(games) < 3:
         return None
@@ -69,6 +77,9 @@ def build_model():
 
 
 def predict_winner(num_players, imposter_count, jester_count, category):
+    # Rebuilds the model on every call so new finished games feed back
+    # immediately without manual retraining. predict_proba returns per-class
+    # probabilities; we take the highest as confidence.
     bundle = build_model()
     if bundle is None:
         return None
@@ -246,6 +257,11 @@ def get_category_difficulty():
 
 def balanced_category_pick():
     """Pick a category weighted toward balanced ones or those needing more data."""
+    # Categories with no data get weight 3 (high) to collect samples quickly.
+    # Categories with balanced outcomes (crewmate_pct ≈ imposter_pct) score
+    # higher — the balance metric is 100 - |crewmate_pct - imposter_pct|,
+    # divided by 10 so weights stay in a reasonable range. Uses the same
+    # proportional selection (roulette wheel) as the role assignment.
     diffs = get_category_difficulty()
     if not diffs:
         return None

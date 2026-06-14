@@ -98,6 +98,7 @@ def register_socketio_events(socketio):
 
     @socketio.on("submit_clue")
     def handle_submit_clue(data):
+        # Rate-limit check before any DB work — prevents socket flood attacks
         if not rate_limit(request.sid):
             return
         room_code = data.get("room_code")
@@ -142,6 +143,7 @@ def register_socketio_events(socketio):
 
     @socketio.on("cast_vote")
     def handle_cast_vote(data):
+        # Rate-limit check — same sliding window as submit_clue
         if not rate_limit(request.sid):
             return
         room_code = data.get("room_code")

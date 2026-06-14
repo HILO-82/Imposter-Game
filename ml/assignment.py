@@ -6,6 +6,7 @@ from models import Game, GameEvent, Player
 
 
 def get_player_stats():
+    # Only finished games with a declared winner count toward stats
     games = Game.query.filter(Game.status == "finished", Game.winning_role.isnot(None)).all()
     stats = defaultdict(lambda: {
         "games_played": 0, "games_won": 0,
@@ -64,6 +65,7 @@ def imposter_score(name, stats):
     s = stats.get(name, {})
     gp = s.get("games_played", 0)
     if gp == 0:
+        # New players start at neutral 50 so they are not favoured or penalised
         return 50.0
     cwr = s.get("crewmate_wins", 0) / max(s.get("as_crewmate", 0), 1)
     iwr = s.get("imposter_wins", 0) / max(s.get("as_imposter", 0), 1)
@@ -73,7 +75,11 @@ def imposter_score(name, stats):
     crew_rounds = s.get("crewmate_rounds", [])
     avg_crew_surv = sum(crew_rounds) / max(len(crew_rounds), 1) if crew_rounds else 0
     first_elim = s.get("first_eliminations", 0)
-    # Higher = more likely to get imposter
+    # Weighted formula: rewards strong crewmates (+cwr*50), penalises good imposters
+    # (-iwr*30) so strong imposters get the role less often. Surviving many rounds as
+    # crewmate (+avg_crew_surv*10) suggests skill, while surviving long as imposter
+    # (-avg_imp_surv*5) means they already had a fair go. Frequent past imposters
+    # (-times_imp*2) and first-round eliminations (+first_elim*15) increase odds.
     return (cwr * 50 - iwr * 30 + avg_crew_surv * 10
             - avg_imp_surv * 5 - times_imp * 2 + first_elim * 15)
 
@@ -86,10 +92,17 @@ def start_player_score(name, stats):
     starts = s.get("starts", 0)
     start_wins = s.get("start_wins", 0)
     start_losses = s.get("start_losses", 0)
+    # Prefers players who started less often (-starts*2) or lost when they
+    # did start (+start_losses*3) — gives struggling players a fresh chance.
+    # Clamped at floor of 20 so no player is ever completely excluded.
     return max(20, 100 - starts * 2 + start_losses * 3)
 
 
 def _weighted_pick(candidates, score_fn, stats, count):
+    # Proportional selection (roulette wheel): each candidate's probability is
+    # their score divided by the sum of all scores. Scores are floored at 1 to
+    # keep every candidate eligible. After each pick the selected candidate is
+    # removed so no one is picked twice, and the wheel recalculates.
     if len(candidates) <= count:
         return candidates[:]
     scores = [max(score_fn(p, stats), 1) for p in candidates]

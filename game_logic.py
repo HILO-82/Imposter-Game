@@ -23,6 +23,9 @@ def default_setup_state():
 
 
 def assign_roles(players_data, imposter_count, jester_count):
+    # Random shuffle with fixed imposter/jester counts: shuffle player indices,
+    # assign first N as imposters, next M as jesters, rest as crewmates.
+    # This is the baseline (non-ML) assignment used when smart_assign is off.
     n = len(players_data)
     indices = list(range(n))
     random.shuffle(indices)
@@ -73,6 +76,11 @@ def eliminate_top_voted(game):
 
 
 def check_win_condition(game):
+    # Three win conditions checked in priority order:
+    # 1. Jester wins if voted out at any point (jester's goal)
+    # 2. Crewmates win if all imposters are eliminated
+    # 3. Imposters win if they equal or outnumber remaining crewmates
+    #    (imposters gain majority — crew can no longer outvote them)
     players = Player.query.filter_by(game_id=game.game_id).all()
     alive = [p for p in players if not p.was_voted_out]
     alive_imposters = [p for p in alive if p.role == "imposter"]
@@ -92,6 +100,9 @@ def create_game_from_setup(setup):
     """Create a local pass-and-play game from a setup dict."""
     from room_manager import generate_room_code
 
+    # Phase starts at "clue" so the game page renders clue forms immediately
+    # after role reveal. Multi-device games start at "role_reveal" instead
+    # and wait for the host to advance.
     players_data = setup["players"]
     imposter_count = setup.get("imposter_count", 1)
     jester_count = setup.get("jester_count", 0)

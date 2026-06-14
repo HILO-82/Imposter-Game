@@ -43,7 +43,7 @@ erDiagram
         int game_id FK
         str session_id      "IX  🔒 session-linked"
         str player_token    "UK, IX  🔒 unique + token-gated"
-        str name            "🔒 regex-validated ^[\\w\\s\\-'.""]{1,50}$"
+        str name            "🔒 regex-validated alphanumeric + spaces, max 50"
         str role            "crewmate|imposter|jester"
         str color
         bool was_voted_out

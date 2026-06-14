@@ -1,7 +1,6 @@
 import random
 from collections import defaultdict
 
-from extensions import db
 from models import Game, GameEvent, Player
 
 
@@ -90,7 +89,6 @@ def start_player_score(name, stats):
     if gp == 0:
         return 50.0
     starts = s.get("starts", 0)
-    start_wins = s.get("start_wins", 0)
     start_losses = s.get("start_losses", 0)
     # Prefers players who started less often (-starts*2) or lost when they
     # did start (+start_losses*3) — gives struggling players a fresh chance.

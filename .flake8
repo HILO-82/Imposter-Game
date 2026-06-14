@@ -1,4 +1,4 @@
 [flake8]
 max-line-length = 100
-exclude = .git,__pycache__,venv,.venv,imposter-game.html
+exclude = .git,__pycache__,venv,.venv,imposter-game.html,tests/,ml/word_bot.py,ml/vote_bot.py,ml/generate_vote_data.py,ml/train_models.py,wsgi.py
 ignore = E501,W503

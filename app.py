@@ -5,7 +5,7 @@ from flask import Flask, g, render_template
 from config import Config
 from extensions import db, socketio
 from ml.insights import seed_example_games
-from models import GameEvent, Settings, Word
+from models import Word
 from routes.game import game_bp
 from routes.lobby import lobby_bp
 from routes.settings import settings_bp

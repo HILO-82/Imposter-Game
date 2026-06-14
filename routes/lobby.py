@@ -1,6 +1,5 @@
-from flask import Blueprint, redirect, render_template, session, url_for
+from flask import Blueprint, render_template, session
 
-from models import Settings
 from ml.insights import random_tip
 
 lobby_bp = Blueprint("lobby", __name__)

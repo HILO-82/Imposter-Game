@@ -13,7 +13,6 @@ from game_logic import (
     check_win_condition,
     create_game_from_setup,
     eliminate_top_voted,
-    tally_votes,
 )
 from ml.assignment import balanced_role_assign, pick_starting_player
 from ml.insights import balanced_category_pick, balanced_word, get_category_difficulty, predict_winner, random_tip
@@ -50,7 +49,7 @@ def setup_form():
 
 @game_bp.route("/game/repeat/<int:game_id>")
 def repeat_local_game(game_id):
-    game = Game.query.get_or_404(game_id)
+    Game.query.get_or_404(game_id)
     players = Player.query.filter_by(game_id=game_id).order_by(Player.player_id).all()
     names = [p.name for p in players]
     return redirect(url_for("game.setup_form", name=names))
@@ -461,11 +460,13 @@ def multi_host_dashboard(game_id):
     img.save(buf, format="PNG")
     qr_b64 = base64.b64encode(buf.getvalue()).decode()
 
-    return render_template("multi_host.html",
+    return render_template(
+        "multi_host.html",
         game=game,
         join_url=join_url,
         qr_data_uri=f"data:image/png;base64,{qr_b64}",
-        host_token=host_token)
+        host_token=host_token,
+    )
 
 
 @game_bp.route("/multi-device/join/<code>", methods=["GET"])
@@ -512,13 +513,15 @@ def multi_play(code):
     clue_map = {c.player_id: c.clue_given for c in clues}
     votes_this_round = Vote.query.filter_by(game_id=game.game_id, round_number=game.round_number).all()
 
-    return render_template("multi_player.html",
+    return render_template(
+        "multi_player.html",
         game=game,
         player=player,
         clues=clue_map,
         votes=votes_this_round,
         players=Player.query.filter_by(game_id=game.game_id).all(),
-        code=code)
+        code=code,
+    )
 
 
 @game_bp.route("/game/stats/<int:game_id>", methods=["GET", "POST"])

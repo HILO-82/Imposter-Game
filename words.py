@@ -2,9 +2,6 @@ import json
 import random
 from pathlib import Path
 
-from extensions import db
-from models import Word
-
 WORDS_PATH = Path(__file__).resolve().parent / "data" / "words.json"
 
 _words_cache = None

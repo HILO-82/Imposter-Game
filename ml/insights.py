@@ -109,12 +109,12 @@ def random_tip():
     for pc, counts in sorted(insights["by_player_count"].items()):
         c = sum(counts.values())
         if c > 0:
-            tips.append(f"In {pc}-player games: Crewmates win {round(counts.get('crewmate',0)/c*100)}%")
+            tips.append(f"In {pc}-player games: Crewmates win {round(counts.get('crewmate', 0) / c * 100)}%")
 
     for cat, counts in sorted(insights["by_category"].items()):
         c = sum(counts.values())
         if c >= 2:
-            tips.append(f"Category '{cat}': Crewmates win {round(counts.get('crewmate',0)/c*100)}%")
+            tips.append(f"Category '{cat}': Crewmates win {round(counts.get('crewmate', 0) / c * 100)}%")
 
     if insights["avg_imposter_round"] is not None:
         tips.append(f"Imposters are typically caught around round {insights['avg_imposter_round']}")
